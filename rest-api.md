@@ -2,11 +2,11 @@
 
 ## 端点信息
 
-名称 | 基本端点
------------- | ------------
-rest-api | **[https://api.jbex.com](https://api.jbex.com)**
-web-socket-streams | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)**
-user-data-stream | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)**
+| 名称 | 基本端点 |
+| :--- | :--- |
+| rest-api | [**https://api.jbex.com**](https://api.jbex.com) |
+| web-socket-streams | [**wss://wsapi.jbex.com**](wss://wsapi.jbex.com) |
+| user-data-stream | [**wss://wsapi.jbex.com**](wss://wsapi.jbex.com) |
 
 ## 通用API信息
 
@@ -48,17 +48,17 @@ user-data-stream | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)**
 * API-keys和secret-keys **要区分大小写**。
 * 默认情况下，API-keys可以访问所有的安全节点。
 
-安全类型 | 描述
------------- | ------------
-NONE | 端点可以自由访问。
-TRADE | 端点需要发送有效的API-Key和签名。
-USER_DATA | 端点需要发送有效的API-Key和签名。
-USER_STREAM | 端点需要发送有效的API-Key。
-MARKET_DATA | 端点需要发送有效的API-Key。
+| 安全类型 | 描述 |
+| :--- | :--- |
+| NONE | 端点可以自由访问。 |
+| TRADE | 端点需要发送有效的API-Key和签名。 |
+| USER\_DATA | 端点需要发送有效的API-Key和签名。 |
+| USER\_STREAM | 端点需要发送有效的API-Key。 |
+| MARKET\_DATA | 端点需要发送有效的API-Key。 |
 
 * `TRADE` 和 `USER_DATA` 端点是 `SIGNED`（需要签名）的端点。
 
-### SIGNED（有签名的）(TRADE和USER_DATA) 端点安全
+### SIGNED（有签名的）\(TRADE和USER\_DATA\) 端点安全
 
 * `SIGNED`（需要签名）的端点需要发送一个参数，`signature`，在`query string` 或者 `request body`里。
 * 端点用`HMAC SHA256`签名。`HMAC SHA256 signature`是一个对key进行`HMAC SHA256`加密的结果。用你的`secretKey`作为key和`totalParams`作为value来完成这一加密过程。
@@ -67,7 +67,7 @@ MARKET_DATA | 端点需要发送有效的API-Key。
 
 ### 时效安全
 
-* 一个`SIGNED`(有签名)的端点还需要发送一个参数，`timestamp`，这是当请求发起时的毫秒级时间戳。
+* 一个`SIGNED`\(有签名\)的端点还需要发送一个参数，`timestamp`，这是当请求发起时的毫秒级时间戳。
 * 一个额外的参数（非强制性）, `recvWindow`, 可以说明这个请求在多少毫秒内是有效的。如果`recvWindow`没有被发送，**默认值是5000**。
 * 在当前，只有创建订单的时候才会用到`recvWindow`。
 * 该参数的逻辑如下：
@@ -80,8 +80,7 @@ MARKET_DATA | 端点需要发送有效的API-Key。
   }
   ```
 
-**严谨的交易和时效紧紧相关** 网络有时会不稳定或者不可靠，这会导致请求发送服务器的时间不一致。
-有了`recvWindow`，你可以说明在多少毫秒内请求是有效的，否则就会被服务器拒绝。
+**严谨的交易和时效紧紧相关** 网络有时会不稳定或者不可靠，这会导致请求发送服务器的时间不一致。 有了`recvWindow`，你可以说明在多少毫秒内请求是有效的，否则就会被服务器拒绝。
 
 **建议使用一个相对小的recvWindow（5000或以下）！**
 
@@ -89,52 +88,52 @@ MARKET_DATA | 端点需要发送有效的API-Key。
 
 这里有一个详细的用Linux`echo`, `openssl`, 和 `curl`举例来展示如何发送一个有效的签名payload。
 
-Key | 值
------------- | ------------
-apiKey | tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW
-secretKey | lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76
+| Key | 值 |
+| :--- | :--- |
+| apiKey | tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW |
+| secretKey | lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76 |
 
-参数名 | 参数值
------------- | ------------
-symbol | ETHBTC
-side | BUY
-type | LIMIT
-timeInForce | GTC
-quantity | 1
-price | 0.1
-recvWindow | 5000
-timestamp | 1538323200000
+| 参数名 | 参数值 |
+| :--- | :--- |
+| symbol | ETHBTC |
+| side | BUY |
+| type | LIMIT |
+| timeInForce | GTC |
+| quantity | 1 |
+| price | 0.1 |
+| recvWindow | 5000 |
+| timestamp | 1538323200000 |
 
 #### 例子 1: 在`queryString`里
 
-* **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order?symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6'
 ```
 
 #### 例子 2:  在`request body`里
 
-* **requestBody:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **requestBody:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order' -d 'symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6'
 ```
@@ -142,19 +141,20 @@ timestamp | 1538323200000
 #### 例子 3: `queryString`和`request body`混合在一起
 
 * **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC
-* **requestBody:** quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **requestBody:** quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTCquantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 885c9e3dd89ccd13408b25e6d54c2330703759d7494bea6dd5a3d1fd16ba3afa
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order?symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC' -d 'quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=885c9e3dd89ccd13408b25e6d54c2330703759d7494bea6dd5a3d1fd16ba3afa'
 ```
 
-***注意在例子3里有一点不一样，"GTC"和"quantity=1"之间没有&。***
+_**注意在例子3里有一点不一样，"GTC"和"quantity=1"之间没有&。**_
+

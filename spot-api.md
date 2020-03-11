@@ -3,7 +3,6 @@
 ## 术语解释
 
 * `base asset` 指的是symbol的`quantity`（即数量）。
-
 * `quote asset` 指的是symbol的`price`（即价格）。
 
 ## ENUM 定义
@@ -26,22 +25,22 @@
 **订单状态:**
 
 * NEW - 新订单，暂无成交
-* PARTIALLY_FILLED - 部分成交
+* PARTIALLY\_FILLED - 部分成交
 * FILLED - 完全成交
 * CANCELED - 已取消
-* PENDING_CANCEL - 等待取消
+* PENDING\_CANCEL - 等待取消
 * REJECTED - 被拒绝
 
 **订单类型:**
 
 * LIMIT - 限价单
 * MARKET - 市价单
-* LIMIT_MAKER - maker限价单
-* STOP_LOSS (unavailable now)  - 暂无
-* STOP_LOSS_LIMIT (unavailable now) - 暂无
-* TAKE_PROFIT (unavailable now) - 暂无
-* TAKE_PROFIT_LIMIT (unavailable now) - 暂无
-* MARKET_OF_PAYOUT (unavailable now) - 暂无
+* LIMIT\_MAKER - maker限价单
+* STOP\_LOSS \(unavailable now\)  - 暂无
+* STOP\_LOSS\_LIMIT \(unavailable now\) - 暂无
+* TAKE\_PROFIT \(unavailable now\) - 暂无
+* TAKE\_PROFIT\_LIMIT \(unavailable now\) - 暂无
+* MARKET\_OF\_PAYOUT \(unavailable now\) - 暂无
 
 **订单方向:**
 
@@ -56,7 +55,7 @@
 
 **k线/烛线图区间:**
 
-  m -> 分钟; h -> 小时; d -> 天; w -> 周; M -> 月
+m -&gt; 分钟; h -&gt; 小时; d -&gt; 天; w -&gt; 周; M -&gt; 月
 
 * 1m
 * 3m
@@ -74,9 +73,9 @@
 * 1w
 * 1M
 
-**频率限制类型 (rateLimitType)**
+**频率限制类型 \(rateLimitType\)**
 
-* REQUESTS_WEIGHT
+* REQUESTS\_WEIGHT
 * ORDERS
 
 **频率限制区间**
@@ -89,17 +88,15 @@
 
 ### 测试连接
 
-```shell
+```text
 GET /openapi/v1/ping
 ```
 
 测试REST API的连接。
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -109,17 +106,15 @@ NONE
 
 ### 服务器时间
 
-```shell
+```text
 GET /openapi/v1/time
 ```
 
 测试连接并获取当前服务器的时间。
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -131,17 +126,15 @@ NONE
 
 ### Broker信息
 
-```shell
+```text
 GET /openapi/v1/brokerInfo
 ```
 
 当前broker交易规则和symbol信息
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -196,7 +189,7 @@ NONE
 
 ### 订单簿
 
-```shell
+```text
 GET /openapi/quote/v1/depth
 ```
 
@@ -204,24 +197,24 @@ GET /openapi/quote/v1/depth
 
 根据limit不同：
 
-Limit | Weight
------------- | ------------
-5, 10, 20, 50, 100 | 1
-500 | 5
-1000 | 10
+| Limit | Weight |
+| :--- | :--- |
+| 5, 10, 20, 50, 100 | 1 |
+| 500 | 5 |
+| 1000 | 10 |
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-limit | INT | NO | 默认 100; 最大 100.
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| limit | INT | NO | 默认 100; 最大 100. |
 
 **注意:** 如果设置limit=0会返回很多数据。
 
 **Response:**
 
-[价格, 数量]
+\[价格, 数量\]
 
 ```javascript
 {
@@ -250,21 +243,20 @@ limit | INT | NO | 默认 100; 最大 100.
 
 ### 最近成交
 
-```shell
+```text
 GET /openapi/quote/v1/trades
 ```
 
 获取当前最新成交（最多500）
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-limit | INT | NO | Default 500; max 1000.
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| limit | INT | NO | Default 500; max 1000. |
 
 **Response:**
 
@@ -281,25 +273,23 @@ limit | INT | NO | Default 500; max 1000.
 
 ### k线/烛线图数据
 
-```shell
+```text
 GET /openapi/quote/v1/klines
 ```
 
-symbol的k线/烛线图数据
-K线会根据开盘时间而辨别。
+symbol的k线/烛线图数据 K线会根据开盘时间而辨别。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-interval | ENUM | YES |
-startTime | LONG | NO |
-endTime | LONG | NO |
-limit | INT | NO | 默认500; 最大1000.
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| interval | ENUM | YES |  |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| limit | INT | NO | 默认500; 最大1000. |
 
 * 如果startTime和endTime没有发送，只有最新的K线会被返回。
 
@@ -325,7 +315,7 @@ limit | INT | NO | 默认500; 最大1000.
 
 ### 24小时ticker价格变化数据
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/24hr
 ```
 
@@ -337,9 +327,9 @@ GET /openapi/quote/v1/ticker/24hr
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol没有被发送，所有symbol的数据都会被返回。
 
@@ -377,20 +367,19 @@ OR
 
 ### Symbol价格
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/price
 ```
 
 单个或多个symbol的最新价。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol没有发送，所有symbol的最新价都会被返回。
 
@@ -419,20 +408,19 @@ OR
 
 ### Symbol最佳订单簿价格
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/bookTicker
 ```
 
 单个或者多个symbol的最佳买单卖单价格。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol没有被发送，所有symbol的最佳订单簿价格都会被返回。
 
@@ -471,46 +459,44 @@ OR
 
 ## 账户接口
 
-### 创建新订单  (TRADE)
+### 创建新订单  \(TRADE\)
 
-```shell
+```text
 POST /openapi/v1/order  (HMAC SHA256)
 ```
 
 发送一个新的订单
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-assetType | STRING | NO |
-side | ENUM | YES |
-type | ENUM | YES |
-timeInForce | ENUM | NO |
-quantity | DECIMAL | YES |
-price | DECIMAL | NO |
-newClientOrderId | STRING | NO | 一个自己给订单定义的ID，如果没有发送会自动生成。
-stopPrice | DECIMAL | NO | 与 `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, 和`TAKE_PROFIT_LIMIT` 订单一起使用. **当前不可用**
-icebergQty | DECIMAL | NO | 与 `LIMIT`, `STOP_LOSS_LIMIT`, 和 `TAKE_PROFIT_LIMIT` 来创建冰山订单. **当前不可用**
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| assetType | STRING | NO |  |
+| side | ENUM | YES |  |
+| type | ENUM | YES |  |
+| timeInForce | ENUM | NO |  |
+| quantity | DECIMAL | YES |  |
+| price | DECIMAL | NO |  |
+| newClientOrderId | STRING | NO | 一个自己给订单定义的ID，如果没有发送会自动生成。 |
+| stopPrice | DECIMAL | NO | 与 `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, 和`TAKE_PROFIT_LIMIT` 订单一起使用. **当前不可用** |
+| icebergQty | DECIMAL | NO | 与 `LIMIT`, `STOP_LOSS_LIMIT`, 和 `TAKE_PROFIT_LIMIT` 来创建冰山订单. **当前不可用** |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 在`type`上的额外强制参数:
 
-类型 | 额外强制参数
------------- | ------------
-`LIMIT` | `timeInForce`, `quantity`, `price`
-`MARKET` | `quantity`
-`STOP_LOSS` | `quantity`, `stopPrice`  **当前不可用**
-`STOP_LOSS_LIMIT` | `timeInForce`, `quantity`,  `price`, `stopPrice` **当前不可用**
-`TAKE_PROFIT` | `quantity`, `stopPrice` **当前不可用**
-`TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **当前不可用**
-`LIMIT_MAKER` | `quantity`, `price`
-
+| 类型 | 额外强制参数 |
+| :--- | :--- |
+| `LIMIT` | `timeInForce`, `quantity`, `price` |
+| `MARKET` | `quantity` |
+| `STOP_LOSS` | `quantity`, `stopPrice`  **当前不可用** |
+| `STOP_LOSS_LIMIT` | `timeInForce`, `quantity`,  `price`, `stopPrice` **当前不可用** |
+| `TAKE_PROFIT` | `quantity`, `stopPrice` **当前不可用** |
+| `TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **当前不可用** |
+| `LIMIT_MAKER` | `quantity`, `price` |
 
 **Response:**
 
@@ -521,17 +507,15 @@ timestamp | LONG | YES |
 }
 ```
 
-### 测试新订单 (TRADE)
+### 测试新订单 \(TRADE\)
 
-```shell
+```text
 POST /openapi/v1/order/test (HMAC SHA256)
 ```
 
-用signature和recvWindow测试生成新订单。
-创建和验证一个新订单但是不送入撮合引擎。
+用signature和recvWindow测试生成新订单。 创建和验证一个新订单但是不送入撮合引擎。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
@@ -543,30 +527,29 @@ POST /openapi/v1/order/test (HMAC SHA256)
 {}
 ```
 
-### 查询订单 (USER_DATA)
+### 查询订单 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/order (HMAC SHA256)
 ```
 
 查询订单状态。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-orderId | LONG | NO |
-origClientOrderId | STRING | NO |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| orderId | LONG | NO |  |
+| origClientOrderId | STRING | NO |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 Notes:
 
 * 单一 `orderId` 或者 `origClientOrderId` 必须被发送。
-* 对于某些历史数据 `cummulativeQuoteQty` 可能会 < 0, 这说明数据当前不可用。
+* 对于某些历史数据 `cummulativeQuoteQty` 可能会 &lt; 0, 这说明数据当前不可用。
 
 **Response:**
 
@@ -591,25 +574,24 @@ Notes:
 }
 ```
 
-### 取消订单 (TRADE)
+### 取消订单 \(TRADE\)
 
-```shell
+```text
 DELETE /openapi/v1/order  (HMAC SHA256)
 ```
 
 取消当前正在交易的订单。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-orderId | LONG | NO |
-clientOrderId | STRING | NO |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| orderId | LONG | NO |  |
+| clientOrderId | STRING | NO |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 单一 `orderId` 或者 `clientOrderId`必须被发送。
 
@@ -624,26 +606,25 @@ timestamp | LONG | YES |
 }
 ```
 
-### 当前订单(USER_DATA)
+### 当前订单\(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/openOrders  (HMAC SHA256)
 ```
 
 获取当前单个或者多个symbol的当前订单。**注意** 如果没有发送symbol，会返回很多数据。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | String | NO |
-orderId | LONG | NO |
-limit | INT | NO | 默认 500; 最多 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | String | NO |  |
+| orderId | LONG | NO |  |
+| limit | INT | NO | 默认 500; 最多 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -674,27 +655,27 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 历史订单 (USER_DATA)
+### 历史订单 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/historyOrders (HMAC SHA256)
 ```
+
 获取当前账户的所有订单。亦或是取消的，完全成交的，拒绝的。
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | String | NO |
-orderId | LONG | NO |
-startTime | LONG | NO |
-endTime | LONG | NO |
-limit | INT | NO | Default 500; max 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | String | NO |  |
+| orderId | LONG | NO |  |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| limit | INT | NO | Default 500; max 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -725,23 +706,22 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 账户信息 (USER_DATA)
+### 账户信息 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/account (HMAC SHA256)
 ```
 
 获取当前账户信息
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -766,28 +746,27 @@ timestamp | LONG | YES |
 }
 ```
 
-### 账户交易记录 (USER_DATA)
+### 账户交易记录 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/myTrades  (HMAC SHA256)
 ```
 
 获取当前账户历史成交记录
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-startTime | LONG | NO |
-endTime | LONG | NO |
-fromId | LONG | NO | TradeId to fetch from.
-toId | LONG | NO | TradeId to fetch to.
-limit | INT | NO | Default 500; max 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| fromId | LONG | NO | TradeId to fetch from. |
+| toId | LONG | NO | TradeId to fetch to. |
+| limit | INT | NO | Default 500; max 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -795,7 +774,8 @@ timestamp | LONG | YES |
 * 如果只有`toId`，会返回订单号小于`toId`的，升序排列。
 * 如果同时有`fromId`和`toId`, 会返回订单号在`fromId`和`toId`的，倒序排列。
 * 如果`fromId`和`toId`都没有，会返回最新的成交记录，倒序排列。
-**Response:**
+
+  **Response:**
 
 ```javascript
 [
@@ -815,27 +795,26 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 账户存款记录 (USER_DATA)
+### 账户存款记录 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/depositOrders  (HMAC SHA256)
 ```
 
 获取当前账户的存款记录
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-startTime | LONG | NO |
-endTime | LONG | NO |
-fromId | LONG | NO | 从哪个OrderId起开始抓取。默认抓取最新的存款记录。
-limit | INT | NO | 默认 500; 最大 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| fromId | LONG | NO | 从哪个OrderId起开始抓取。默认抓取最新的存款记录。 |
+| limit | INT | NO | 默认 500; 最大 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -846,20 +825,21 @@ timestamp | LONG | YES |
 ```javascript
 [
   {
-	"orderId": 100234,
-	"token": "EOS",
-	"address": "deposit2jb",
-	"addressTag": "19012584",
-	"fromAddress": "clarkkent",
-	"fromAddressTag": "19029901",
-	"time": 1499865549590,
-	"quantity": "1.01"
+    "orderId": 100234,
+    "token": "EOS",
+    "address": "deposit2jb",
+    "addressTag": "19012584",
+    "fromAddress": "clarkkent",
+    "fromAddressTag": "19029901",
+    "time": 1499865549590,
+    "quantity": "1.01"
   }
 ]
 ```
-### 子账户列表(SUB_ACCOUNT_LIST)
 
-```shell
+### 子账户列表\(SUB\_ACCOUNT\_LIST\)
+
+```text
 POST /openapi/v1/subAccount/query
 ```
 
@@ -869,8 +849,7 @@ POST /openapi/v1/subAccount/query
 
 无
 
-**Weight:**
-5
+**Weight:** 5
 
 **Response:**
 
@@ -902,27 +881,27 @@ POST /openapi/v1/subAccount/query
     },
 ]
 ```
-### 账户内转账 (ACCOUNT_TRANSFER)
 
-```shell
+### 账户内转账 \(ACCOUNT\_TRANSFER\)
+
+```text
 POST /openapi/v1/transfer
 ```
 
 转账
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-fromAccountType | int | YES |源账户类型, 1 钱包(币币)账户 2 期权账户 3 合约账户
-fromAccountIndex | int | YES |子账户index, 主账户Api调用时候有用，从子账户列表接口获取
-toAccountType | int | YES | 目标账户类型, 1 钱包(币币)账户 2 期权账户 3 合约账户
-toAccountIndex | int | YES | 子账户index, 主账户Api调用时候有用，从子账户列表接口获取
-tokenId | STRING | YES | tokenID
-amount | STRING | YES | 转账数量
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| fromAccountType | int | YES | 源账户类型, 1 钱包\(币币\)账户 2 期权账户 3 合约账户 |
+| fromAccountIndex | int | YES | 子账户index, 主账户Api调用时候有用，从子账户列表接口获取 |
+| toAccountType | int | YES | 目标账户类型, 1 钱包\(币币\)账户 2 期权账户 3 合约账户 |
+| toAccountIndex | int | YES | 子账户index, 主账户Api调用时候有用，从子账户列表接口获取 |
+| tokenId | STRING | YES | tokenID |
+| amount | STRING | YES | 转账数量 |
 
 **Response:**
 
@@ -934,35 +913,34 @@ amount | STRING | YES | 转账数量
 
 **说明**
 
-1、转账账户和收款账户的其中一方，必须是主账户(钱包账户)
+1、转账账户和收款账户的其中一方，必须是主账户\(钱包账户\)
 
-2、主账户Api可以从钱包账户向其他账户(包括子账户)转账，也可以从其他账户向钱包账户转账
+2、主账户Api可以从钱包账户向其他账户\(包括子账户\)转账，也可以从其他账户向钱包账户转账
 
-3、**子账户Api调用的时候只能从当前子账户向主账户(钱包账户)转账，所以fromAccountType\fromAccountIndex\toAccountType\toAccountIndex不用填**
+3、**子账户Api调用的时候只能从当前子账户向主账户\(钱包账户\)转账，所以fromAccountType\fromAccountIndex\toAccountType\toAccountIndex不用填**
 
-### 查询流水 (BALANCE_FLOW)
+### 查询流水 \(BALANCE\_FLOW\)
 
-```shell
+```text
 POST /openapi/v1/balance_flow
 ```
 
 查询账户流水
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-|名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
- | accountType   | int     | 否 | 账户对应的account_type | 默认1 |
- | accountIndex  | int     | 否 | 账户对应的account_index | 默认0 |
- | tokenId       | string  | 否     | token_id     | eg: BTC                                |
- | fromFlowId  | long    | 否     | 顺向查询数据 | 指定查询 id < fromFlowId的数据 |
- | endFlowId   | long    | 否     | 反向查询数据 | 指定查询 id > |endFlowId的数据  |
-| startTime     | long    | 否     | 开始时间     | 毫秒时间戳                             |
-| endTime       | long    | 否     | 结束时间     | 毫秒时间戳                             |
-| limit          | integer | 否     | 每页记录数   | 默认50，最大100                                       |
+| 名称 | 类型 | 是否强制 | 描述 |  |  |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| accountType | int | 否 | 账户对应的account\_type | 默认1 |  |
+| accountIndex | int | 否 | 账户对应的account\_index | 默认0 |  |
+| tokenId | string | 否 | token\_id | eg: BTC |  |
+| fromFlowId | long | 否 | 顺向查询数据 | 指定查询 id &lt; fromFlowId的数据 |  |
+| endFlowId | long | 否 | 反向查询数据 | 指定查询 id &gt; | endFlowId的数据 |
+| startTime | long | 否 | 开始时间 | 毫秒时间戳 |  |
+| endTime | long | 否 | 结束时间 | 毫秒时间戳 |  |
+| limit | integer | 否 | 每页记录数 | 默认50，最大100 |  |
 
 **Response:**
 
@@ -997,55 +975,54 @@ POST /openapi/v1/balance_flow
 
 **说明**
 
-1、主账户Api可以查询钱包账户或者其他账户(包括子账户，指定accountType和accountIndex)的流水’
+1、主账户Api可以查询钱包账户或者其他账户\(包括子账户，指定accountType和accountIndex\)的流水’
 
 2、子账户Api只能查询当前子账户的流水，所以不用指定accountType和accountIndex
 
 **流水类型说明请见如下**
 
-归类|类型参数名|类型参数代号|解释说明|
-------|------|------|------|
-通用流水类|TRADE|1|交易|
-通用流水类|FEE|2|交易手续费|
-通用流水类|TRANSFER|3|转账|
-通用流水类|DEPOSIT|4|充值|
-衍生品业务|MAKER_REWARD|27|maker奖励
-衍生品业务|PNL|28|期货等的盈亏
-衍生品业务|SETTLEMENT|30|交割
-衍生品业务|LIQUIDATION|31|强平
-衍生品业务|FUNDING_SETTLEMENT|32|期货等的资金费率结算
-用户子账户之间内部转账|USER_ACCOUNT_TRANSFER|51|userAccountTransfer 专用，流水没有subjectExtId
-OTC|OTC_BUY_COIN|65|OTC 买入coin
-OTC|OTC_SELL_COIN|66|OTC 卖出coin
-OTC|OTC_FEE|73|OTC 手续费
-OTC|OTC_TRADE|200|旧版 OTC 流水
-活动|ACTIVITY_AWARD|67|活动奖励
-活动|INVITATION_REFERRAL_BONUS|68|邀请返佣
-活动|REGISTER_BONUS|69|注册送礼
-活动|AIRDROP|70|空投
-活动|MINE_REWARD|71|挖矿奖励
+| 归类 | 类型参数名 | 类型参数代号 | 解释说明 |
+| :--- | :--- | :--- | :--- |
+| 通用流水类 | TRADE | 1 | 交易 |
+| 通用流水类 | FEE | 2 | 交易手续费 |
+| 通用流水类 | TRANSFER | 3 | 转账 |
+| 通用流水类 | DEPOSIT | 4 | 充值 |
+| 衍生品业务 | MAKER\_REWARD | 27 | maker奖励 |
+| 衍生品业务 | PNL | 28 | 期货等的盈亏 |
+| 衍生品业务 | SETTLEMENT | 30 | 交割 |
+| 衍生品业务 | LIQUIDATION | 31 | 强平 |
+| 衍生品业务 | FUNDING\_SETTLEMENT | 32 | 期货等的资金费率结算 |
+| 用户子账户之间内部转账 | USER\_ACCOUNT\_TRANSFER | 51 | userAccountTransfer 专用，流水没有subjectExtId |
+| OTC | OTC\_BUY\_COIN | 65 | OTC 买入coin |
+| OTC | OTC\_SELL\_COIN | 66 | OTC 卖出coin |
+| OTC | OTC\_FEE | 73 | OTC 手续费 |
+| OTC | OTC\_TRADE | 200 | 旧版 OTC 流水 |
+| 活动 | ACTIVITY\_AWARD | 67 | 活动奖励 |
+| 活动 | INVITATION\_REFERRAL\_BONUS | 68 | 邀请返佣 |
+| 活动 | REGISTER\_BONUS | 69 | 注册送礼 |
+| 活动 | AIRDROP | 70 | 空投 |
+| 活动 | MINE\_REWARD | 71 | 挖矿奖励 |
 
 ## 用户数据流接口
 
 详细的用户信息流说明在另一个文档中。
 
-### 开始用户信息流 (USER_STREAM)
+### 开始用户信息流 \(USER\_STREAM\)
 
-```shell
+```text
 POST /openapi/v1/userDataStream
 ```
 
 开始一个新的用户信息流。如果keepalive指令没有发送，信息流将将会在60分钟后关闭。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -1055,24 +1032,23 @@ timestamp | LONG | YES |
 }
 ```
 
-### Keepalive用户信息流 (USER_STREAM)
+### Keepalive用户信息流 \(USER\_STREAM\)
 
-```shell
+```text
 PUT /openapi/v1/userDataStream
 ```
 
 维持用户信息流来防止断开连接。用户信息流会在60分钟后自动中断，所以建议30分钟发送一次ping请求。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -1080,38 +1056,37 @@ timestamp | LONG | YES |
 {}
 ```
 
-### 关闭用户信息流 (USER_STREAM)
+### 关闭用户信息流 \(USER\_STREAM\)
 
-```shell
+```text
 DELETE /openapi/v1/userDataStream
 ```
 
 关闭用户信息流
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名称 | 类型 | 是否强制 | 描述
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名称 | 类型 | 是否强制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
 ```javascript
 {}
 ```
+
 ## 过滤层
 
-过滤层（filter）定义某个broker的某个symbol的交易规则
-过滤层（filter）有两个大类：`symbol filters` 和 `broker filters`
+过滤层（filter）定义某个broker的某个symbol的交易规则 过滤层（filter）有两个大类：`symbol filters` 和 `broker filters`
 
 ### Symbol过滤层
 
-#### PRICE_FILTER
+#### PRICE\_FILTER
 
 `PRICE_FILTER` 定义某个symbol的`price` 精度. 一共有3个部分：
 
@@ -1121,9 +1096,9 @@ timestamp | LONG | YES |
 
 如果要通过`price filter`要求，`price`/`stopPrice`必须满足：
 
-* `price` >= `minPrice`
-* `price` <= `maxPrice`
-* (`price`-`minPrice`) % `tickSize` == 0
+* `price` &gt;= `minPrice`
+* `price` &lt;= `maxPrice`
+* \(`price`-`minPrice`\) % `tickSize` == 0
 
 **/brokerInfo格式:**
 
@@ -1136,9 +1111,9 @@ timestamp | LONG | YES |
   }
 ```
 
-#### LOT_SIZE
+#### LOT\_SIZE
 
-`LOT_SIZE` 过滤层定义某个symbol `quantity`(在拍卖行里又称为"lots"）的精度。 一共有三个部分：
+`LOT_SIZE` 过滤层定义某个symbol `quantity`\(在拍卖行里又称为"lots"）的精度。 一共有三个部分：
 
 * `minQty` 定义最小允许的  `quantity`/`icebergQty`
 * `maxQty` 定义最大允许的  `quantity`/`icebergQty`
@@ -1146,9 +1121,9 @@ timestamp | LONG | YES |
 
 如果要通过`lot size`要求，`quantity`/`icebergQty`必须满足:
 
-* `quantity` >= `minQty`
-* `quantity` <= `maxQty`
-* (`quantity`-`minQty`) % `stepSize` == 0
+* `quantity` &gt;= `minQty`
+* `quantity` &lt;= `maxQty`
+* \(`quantity`-`minQty`\) % `stepSize` == 0
 
 **/brokerInfo格式:**
 
@@ -1161,9 +1136,9 @@ timestamp | LONG | YES |
   }
 ```
 
-#### MIN_NOTIONAL
+#### MIN\_NOTIONAL
 
-`MIN_NOTIONAL` 过滤层定义某个symbol的名义金额精度。一个订单的名义金额为 `price` * `quantity`.
+`MIN_NOTIONAL` 过滤层定义某个symbol的名义金额精度。一个订单的名义金额为 `price` \* `quantity`.
 
 **/brokerInfo format:**
 
@@ -1174,7 +1149,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### MAX_NUM_ORDERS
+#### MAX\_NUM\_ORDERS
 
 `MAX_NUM_ORDERS` 过滤层定义账户在某个symbol上的最大挂单数。请注意，此过滤层同时计算“算法”订单和普通订单。
 
@@ -1187,7 +1162,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### MAX_NUM_ALGO_ORDERS
+#### MAX\_NUM\_ALGO\_ORDERS
 
 `MAX_ALGO_ORDERS` 过滤层定义账户在某个symbol上的最大“算法”挂单数。“算法”订单包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等订单类型。
 
@@ -1200,7 +1175,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### ICEBERG_PARTS
+#### ICEBERG\_PARTS
 
 `ICEBERG_PARTS` 过滤层定义冰山订单部件的最大值。`ICEBERG_PARTS`的定义为`CEIL(qty / icebergQty)`.
 
@@ -1215,7 +1190,7 @@ timestamp | LONG | YES |
 
 ### Broker Filters
 
-#### BROKER_MAX_NUM_ORDERS
+#### BROKER\_MAX\_NUM\_ORDERS
 
 `BROKER_MAX_NUM_ORDERS` 过滤层定义账户在broker上的最大挂单数。请注意，此过滤层同时计算“算法”订单和普通订单。
 
@@ -1228,7 +1203,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### BROKER_MAX_NUM_ALGO_ORDERS
+#### BROKER\_MAX\_NUM\_ALGO\_ORDERS
 
 `BROKER_MAX_NUM_ALGO_ORDERS` 过滤层定义账户在broker上的最大“算法”挂单数。“算法”订单包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等订单类型。
 
@@ -1240,3 +1215,4 @@ timestamp | LONG | YES |
     "limit": 200
   }
 ```
+
