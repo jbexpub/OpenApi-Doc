@@ -1,5 +1,6 @@
 # OPEN API DOC
 
+* [Changelog](README.md)
 * [General Information](REST%20API.md)
 * [Spot](Spot%20API.md)
 * [Contract](Contract%20API.md)
