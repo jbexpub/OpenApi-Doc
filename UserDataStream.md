@@ -1,30 +1,30 @@
-# User Data Stream
+# 用户数据流推送
 
-## General WSS information
+## 基本信息 
 
-* A User Data Stream `listenKey` is valid for 60 minutes after creation.
-* Doing a `PUT` on a `listenKey` will extend its validity for 60 minutes.
-* Doing a `DELETE` on a `listenKey` will close the stream.
-* User Data Streams are accessed at **/openapi/ws/\<listenKey\>**
-* A single connection to api endpoint is only valid for 24 hours; expect to be disconnected at the 24 hour mark
-* User data stream payloads are **not guaranteed** to be in order during heavy periods; **make sure to order your updates using Event**
+* 一个用户数据流的`listenKey`在创建之后的有效期只有60分钟
+* 如果对`listenKey`做`PUT`请求可以延长有效期60分钟
+* 如果对`listenKey`做`DELETE`请求会关闭推送
+* 用户数据流推送在这个端点 **/openapi/ws/<listenKey>** 访问
+* 单一API连接的有效期只有24小时，请做好在24小时后被断开连接的准备
+* 用户信息流返回在订单繁忙期**不保证**顺序正常，**请使用E字段进行排序**
 
-## User Data Stream API
+## 推送接口
 
-### Create a listenKey
+### 创建listenKey
 
 ```shell
 POST /openapi/v1/userDataStream
 ```
 
-Start a new user data stream. The stream will close after 60 minutes unless a keepalive is sent.
+创建一个新的用户信息流。如果没有发送keepalive，推送将会在60分钟后断开。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名称 | 类型 | 是否强制 | 描述 
 ------------ | ------------ | ------------ | ------------
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
@@ -37,20 +37,20 @@ timestamp | LONG | YES |
 }
 ```
 
-### Ping/Keep-alive a listenKey
+### 延长listenKey有效期
 
 ```shell
 PUT /openapi/v1/userDataStream
 ```
 
-Keepalive a user data stream to prevent a time out. User data streams will close after 60 minutes. It's recommended to send a ping about every 30 minutes.
+发送PUT请求会有效期延长至本次调用后60分钟，建议每30分钟发送一个ping。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名称 | 类型 | 是否强制 | 描述 
 ------------ | ------------ | ------------ | ------------
 listenKey | STRING | YES |
 recvWindow | LONG | NO |
@@ -62,13 +62,13 @@ timestamp | LONG | YES |
 {}
 ```
 
-### Close a listenKey
+### 关闭listenKey
 
 ```shell
 DELETE /openapi/v1/userDataStream
 ```
 
-Close out a user data stream.
+关闭用户数据流。
 
 **Weight:**
 1
@@ -89,80 +89,84 @@ timestamp | LONG | YES |
 
 ## Web Socket Payloads
 
-### Account Update
+### 账户更新
 
-Account state is updated with the `outboundAccountInfo` event.
+使用`outboundAccountInfo` event进行账户更新。
 
 **Payload:**
 
 ```javascript
 {
-  "e": "outboundAccountInfo",   // Event type
-  "E": 1499405658849,           // Event time
-  // "m": 0,                       // Maker commission rate (bips)
-  // "t": 0,                       // Taker commission rate (bips)
-  // "b": 0,                       // Buyer commission rate (bips)
-  // "s": 0,                       // Seller commission rate (bips)
-  "T": true,                    // Can trade?
-  "W": true,                    // Can withdraw?
-  "D": true,                    // Can deposit?
-  // "u": 1499405658848,           // Time of last account update
-  "B": [                        // Balances changed
+  "e": "outboundAccountInfo",   // 事件类型
+  "E": 1499405658849,           // 事件时间
+  "T": true,                    // 允许交易?
+  "W": true,                    // 允许体现?
+  "D": true,                    // 允许充值?
+  "B": [                        // 余额变化
     {
-      "a": "LTC",               // Asset
-      "f": "17366.18538083",    // Free amount
-      "l": "0.00000000"         // Locked amount
+      "a": "LTC",               // 资产名称
+      "f": "17366.18538083",    // 可用数量
+      "l": "0.00000000"         // 冻结数量
     }
   ]
 }
 ```
 
-### Order Update
+### 订单更新
 
-Orders are updated with the `executionReport` event. Check the API documentation and below for relevant enum definitions.
-Average price can be found by doing `Z` divided by `z`.
+订单通过`executionReport`事件进行更新。详细说明信息请查看 [这里](Spot%20API.md)。通过将`Z`除以`z`可以找到平均价格。
 
 **Payload:**
 
 ```javascript
 {
-  "e": "executionReport",        // Event type
-  "E": 1499405658658,            // Event time
-  "s": "ETHBTC",                 // Symbol
+  "e": "executionReport",        // 事件类型
+  "E": 1499405658658,            // 事件时间
+  "s": "ETHBTC",                 // 交易对
   "c": 1000087761,               // Client order ID
-  "S": "BUY",                    // Side
-  "o": "LIMIT",                  // Order type
+  "S": "BUY",                    // 订单方向
+  "o": "LIMIT",                  // 订单类型
   "f": "GTC",                    // Time in force
-  "q": "1.00000000",             // Order quantity
-  "p": "0.10264410",             // Order price
-  // "P": "0.00000000",             // Stop price
-  // "F": "0.00000000",             // Iceberg quantity
-  // "g": -1,                       // Ignore
-  // "x": "NEW",                    // Current execution type
-  "X": "NEW",                    // Current order status
-  // "r": "NONE",                   // Order reject reason; will be an error code.
+  "q": "1.00000000",             // 订单数量
+  "p": "0.10264410",             // 订单价格
+  "X": "NEW",                    // 当前订单状态
   "i": 4293153,                  // Order ID
-  "l": "0.00000000",             // Last executed quantity
-  "z": "0.00000000",             // Cumulative filled quantity
-  "L": "0.00000000",             // Last executed price
-  "n": "0",                      // Commission amount
-  "N": null,                     // Commission asset
-  "u": true,                     // Is the trade normal, ignore for now
-  // "T": 1499405658657,            // Transaction time
-  // "t": -1,                       // Trade ID
-  // "I": 8641984,                  // Ignore
-  "w": true,                     // Is the order working? Stops will have
-  "m": false,                    // Is this trade the maker side?
-  // "M": false,                    // Ignore
-  "O": 1499405658657,            // Order creation time
-  "Z": "0.00000000"              // Cumulative quote asset transacted quantity
+  "l": "0.00000000",             // 最新成交数量
+  "z": "0.00000000",             // 累计成交数量
+  "L": "0.00000000",             // 最新成交价格
+  "n": "0",                      // 手续费
+  "N": null,                     // 手续费币种
+  "u": true,                     // 请忽略
+  "w": true,                     // 订单是否工作，适合Stop单
+  "m": false,                    // 是否是maker，请忽略
+  "O": 1499405658657,            // 订单创建时间
+  "Z": "0.00000000"              // 累计成交数额
 }
 ```
 
-**Execution types:**
+**执行类型:**
 
-* NEW
-* PARTIALLY_FILLED
-* FILLED
-* CANCELED
-* REJECTED
+* NEW（新订单）
+* PARTIALLY_FILLED（部分成交）
+* FILLED（全部成交）
+* CANCELED（已撤销）
+* REJECTED（已拒绝）
+
+### 持仓推送
+
+**Payload:**
+
+```javascript
+{
+  "e": "outboundContractPositionInfo",  // 事件类型
+  "A": "",                              // 账户ID
+  "s": "BTC-SWAP-USDT",                 // symbol
+  "S": "LONG",                          // 仓位方向
+  "p": "9851.5",                        // 平均价格
+  "P": "269",                           // 仓位数量
+  "a": "269",                           // 可用
+  "f": "7705.9",                        // 强子平仓价
+  "m": "59.7884",                       // 保证金
+  "r": "-0.0139"                        // 已实现盈亏
+}
+```

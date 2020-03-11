@@ -1,65 +1,66 @@
-# Web Socket
+# Web Socket推送
 
-## General WSS information
+## 基本信息
 
-* The base endpoint is [here](endpoint.md)
-* Raw streams are accessed at **/openapi/quote/ws/v1**
+* 行情基础端点请参见[这里](endpoint.md)
+* 直接访问时URL格式为 **/openapi/quote/ws/v1**
 
-| name | values |
+| 名称 | 值 |
 | :--- | :---- |
 | topic | realtimes, trade, kline_$interval, depth|
 | event | sub, cancel, cancel_all|
 | interval | 1m, 5m, 15m, 30m, 1h, 2h, 6h, 12h, 1d, 1w, 1M|
 
-**Sample Subscription Data:**
+**请求订阅数据样例:**
 
 ```javascript
 {
-  "symbol" : "$symbol0, $symbol1",
-  "topic" : "$topic",
-  "event" : "sub",
-  // customizable parameter
-  "params" : {
-      // kline max limit is 2000, default is 1
-      "limit" : "$limit",
-      // Whether data is returned in binary format, default to false
-      "binary" : "false"
-  }
+  "symbol": "$symbol0, $symbol1",
+  "topic": "$topic",
+  "event": "sub",
+  // 可调整的参数
+    "params": {
+        // kline返回上限是2000，默认为1
+        "limit": "$limit",
+        // 返回的数据是否是压缩过的，默认为false
+        "binary": "false"
+    }
 }
 ```
 
-| name | Explanation |
+| 名称 | 解释 |
 | :--- | :---- |
-|limit|Specify number of entries returned|
-|binary|Whether returned values is in binary format. **DEFAULT** value is **false**|
+|limit|规定返回结果的数量|
+|binary|规定返回的数据是否是压缩过的。**默认**值是**false**。|
 
-## Heartbeat
+## 心跳
 
-The  client need to send a `PING` message to the server regularly through the Websocket, which then the server replies with `PONG`. If the client does not send the message every 5 minutes, the server will close the connection.
+每隔一段时间，客户端需要发送ping帧，服务端会回复pong帧，否则服务端会在5分钟内主动断开链接。
 
-* Request
+* 请求
 ```javascript
 {
     "ping": 1535975085052
 }
 ```
 
-* Response
+* 返回
 ```javascript
 {
     "pong": 1535975085052
 }
 ```
 
-## Trade Streams
+## 逐笔交易
 
-The Trade Streams push raw trade information; each trade has a unique buyer and seller.
+逐笔交易推送每一笔成交的信息。成交，或者说交易的定义是仅有一个吃单者与一个挂单者相互交易。
 
-After successful handshake and connected to server, the server will return the latest 60 trades. After this payload, the following will be real-time trades.
+在成功连接到服务器后，服务器首先会推送一条最近的60条成交。在这条推送之后，每条推送都是实时的成交。
 
-Variable "v" acts as an tradeId. This variable is shared across different symbols; however, each ID is unique. For example, suppose in the last 5 seconds 3 trades happened in ETHSUDT, BTCUSDT, and JBTBTC. Their version (which is "v") will be consecutive: 112, 113, 114.   
+变量“v”可以理解成一个交易ID。这个变量是全局递增的并且独特的。例如：假设过去5秒有3笔交易发生，分别是ETHUSDT、BTCUSDT、JBTBTC。它们的“v”会为连续的值（112，113，114）。
 
-**Subscription message structure:**
+
+**请求订阅数据样例:**
 
 ```javascript
 {
@@ -72,18 +73,18 @@ Variable "v" acts as an tradeId. This variable is shared across different symbol
 }
 ```
 
-**Payload:**
+**返回:**
 
 ```javascript
 {
   "symbol": "BTCUSDT",
   "topic": "trade",
   "data": [{
-    "v": "426635153180475392", // Version
-    "t": 1565594873508,  //Timestamp
-    "p": "11369", // Price
-    "q": "0.01", // Quantity
-    "m": false // true = buy, false = sell
+    "v": "426635153180475392", // 参见解释
+    "t": 1565594873508,  //时间戳
+    "p": "11369", // 价格
+    "q": "0.01", // 数量
+    "m": false // true = 买, false = 卖
   }, {
     "v": "426635153373413376",
     "t": 1565594873531,
@@ -91,15 +92,15 @@ Variable "v" acts as an tradeId. This variable is shared across different symbol
     "q": "0.0012",
     "m": false
   }],
-  "f": false // Whether this is the first entry
+  "f": false // 是不是第一个返回
 }
 ```
 
-## Market Tickers Stream
+## Symbol的Ticker
 
-24hr Ticker statistics for a symbol that changed in an array.
+按Symbol逐秒刷新的24小时完整ticker信息
 
-**Subscription message structure:**
+**请求订阅数据样例:**
 
 ```javascript
 {
@@ -112,34 +113,37 @@ Variable "v" acts as an tradeId. This variable is shared across different symbol
 }
 ```
 
-**Payload:**
+**返回:**
 
 ```javascript
 {
   "symbol": "ETHUSDT",
   "topic": "realtimes",
   "data": [{
-    "t": "1565592599015", //time
+    "t": "1565592599015", //时间戳
     "s": "ETHUSDT", //symbol
-    "c": "212.63", //close
-    "h": "216.96", //high
-    "l": "206.78", //low
-    "o": "210.23", //open
-    "v": "73013.575", //volume
-    "qv": "15726612.498168", //trade amount (in base asset, in this case is USDT)
+    "c": "212.63", //收盘价
+    "h": "216.96", //最高价
+    "l": "206.78", //最低价
+    "o": "210.23", //开盘价
+    "v": "73013.575", //交易量
+    "qv": "15726612.498168", //交易额
     }],
-  "f": false // Whether this is the first entry
+  "f": false // 是否为第一个返回
 }
 ```
 
 
-## Kline/Candlestick Streams
+## K线/蜡烛图
 
-The Kline/Candlestick Stream push updates to the current klines/candlestick every second.
+K线stream逐秒推送所请求的K线种类(最新一根K线)的更新
 
-**Kline/Candlestick chart intervals:**
+**K线/蜡烛图间隔:**
 
-m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
+订阅Kline需要提供间隔参数，最短为分钟线，最长为月线。支持以下间隔:
+
+
+m -> 分钟; h -> 小时; d -> 天; w -> 周; M -> 月
 
 * 1m
 * 5m
@@ -154,12 +158,12 @@ m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
 * 1w
 * 1M
 
-**Subscription message structure:**
+**请求订阅数据样例:**
 
 ```javascript
 {
   "symbol": "$symbol0, $symbol1",
-  "topic": "kline_"+$interval,
+  "topic": "kline_"+$间隔,
   "event": "sub",
   "params": {
     "binary": false
@@ -167,7 +171,7 @@ m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
 }
 ```
 
-**Payload:**
+**返回:**
 
 ```javascript
 {
@@ -175,32 +179,32 @@ m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
   "topic": "kline",
   "params": {"klineType": "15m"},
   "data": [{
-    "t": 1565595900000, //kline start time
+    "t": 1565595900000, //k线开始时间
     "s": "BTCUSDT", // symbol
-    "c": "11436.14", //close
-    "h": "11437", //high
-    "l": "11381.89", //low
-    "o": "11381.89", //open
-    "v": "16.3306" //volume
+    "c": "11436.14", //收盘价
+    "h": "11437", //最高价
+    "l": "11381.89", //最低价
+    "o": "11381.89", //开盘价
+    "v": "16.3306" //交易量
   }],
-  "f": true// Whether this is the first entry
+  "f": true // 是否为第一个返回
 }
 ```
 
-## Orderbook Depth Stream
+## 订单簿深度信息
 
-The Depth Streams for symbols.
+Symbol的深度信息。
 
-Here is the book dump instructions：
-* The book dump frequency：Every 300ms, if book version changed.
-* The book dump depth：300 for asks and bids each.
-* The book version change event：
-  * order enters book
-  * order leaves book
-  * order quantity or amount changes
-  * order is finished
+这里是订单簿快照推送的详细信息：
+* 订单簿快照频率：每300ms, 如果book变了的话。
+* 订单簿快照频率深度：bids 和 asks各300
+* 订单簿版本变更触发事件：
+  * 订单进入订单簿
+  * 订单离开订单簿
+  * 订单数量变更
+  * 订单已完成
 
-### Merged Depth Stream
+### 有限档深度信息
 
 ```javascript
 {
@@ -213,7 +217,7 @@ Here is the book dump instructions：
 }
 ```
 
-**Payload:**
+**返回:**
 
 ```javascript
 {
@@ -221,10 +225,10 @@ Here is the book dump instructions：
   "topic": "depth",
   "data": [{
     "s": "BTCUSDT", //Symbol
-    "t": 1565600357643, //Timestamp
-    "v": "112801745_18", //Version
+    "t": 1565600357643, //时间戳
+    "v": "112801745_18", //见上面解释
     "b": [ //Bids
-      ["11371.49", "0.0014"], //[Price, Quantity]
+      ["11371.49", "0.0014"], //[价格, 数量]
       ["11371.12", "0.2"],
       ["11369.97", "0.3523"],
       ["11369.96", "0.5"],
@@ -235,7 +239,7 @@ Here is the book dump instructions：
       ["11369.16", "0.2"],
       ["11369.04", "1.3203"],
     "a": [//Asks
-      ["11375.41", "0.0053"], //[Price, Quantity]
+      ["11375.41", "0.0053"], //[价格, 数量]
       ["11375.42", "0.0043"],
       ["11375.48", "0.0052"],
       ["11375.58", "0.0541"],
@@ -247,11 +251,11 @@ Here is the book dump instructions：
       ["11377.61", "0.3"]
     ]
   }],
-  "f": true// Whether this is the first entry
+  "f": true//是否为第一个返回
 }
 ```
 
-### Diff. Depth Stream
+### 增量深度信息
 
 ```javascript
 {
@@ -264,27 +268,27 @@ Here is the book dump instructions：
 }
 ```
 
-Order book price and quantity depth updates used to locally manage an order book pushed every second.
+每秒推送订单簿的变化部分（如果有）。
 
-In the Diff. (difference) depth stream, the quantity doesn"t necessarily mean the corresponding quantity to the price anymore. If the quantity is 0, it means this previous price level is not in the orderbook anymore. If the quantity is > 0, it means the updated quantity for this price level.
+在增量深度信息中，数量不一定等于对应价格的数量。如果数量=0，这说明在上一条推送中的这个价格已经没有了。如果数量>0，这时的数量为更新后的这个价格所对应的数量
 
-Suppose now we have received the first depth data payload:
+假设我们收到的返回数据中有这样一条：
 
 ```javascript
-["0.00181860", "155.92000000"]// price, quantity
+["0.00181860", "155.92000000"]// 价格，数量
 ```
 
-If the next payload is:
+如果下一条返回数据中有：
 ```javascript
 ["0.00181860", "12.3"]
 ```
-This means that this price level"s quantity has changed.
+这说明这个价格对应的数量有变更，已经更新变更的数量
 
-If the next payload is:
+如果下一条返回数据中有：
 ```javascript
 ["0.00181860", "0"]
 ```
-This means that this price level is not in orderbook anymore.
+这说明这个价格对应的数量已经消失，将会在客户端中删除。
 
 **Payload:**
 
@@ -313,15 +317,15 @@ This means that this price level is not in orderbook anymore.
       ["11319.24", "3.0665"]
     ]
   }],
-  "f": false //Whether this is the first entry
+  "f": false //是否为第一个返回值
 }
 ```
 
-## Index Data Stream
+## 指数数据
 
-This stream is for index prices gathered for options and futures.
+期权和期货指数数据。
 
-**Subscription message structure:**
+**请求订阅数据样例:**
 
 ```javascript
 {
@@ -331,25 +335,25 @@ This stream is for index prices gathered for options and futures.
 }
 ```
 
-**Payload:**
+**返回:**
 
 ```javascript
 {
-  "symbol": "HTUSDT",  
+  "symbol": "HTUSDT",
   "topic": "index",
   "data": [{
-    "symbol": "HTUSDT",
-    "index": "5.0941",
-    "edp": "5.08799333",
-    "formula": "(5.0941[HUOBI])/1"
+    "symbol": "HTUSDT", //symbol
+    "index": "5.0941", //当前指数价
+    "edp": "5.08799333", //预计交割价，见期权rest文档
+    "formula": "(5.0941[HUOBI])/1" //来源
   }],
-  "f": true// Whether this is the first entry
+  "f": true //是否为第一个返回
 }
 ```
 
-## Error handling
+## 错误处理
 
-**Error Codes:**
+**错误码:**
 
 ```java
 INVALID_REQUEST("-10000", "Invalid request!")

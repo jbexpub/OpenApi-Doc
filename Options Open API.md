@@ -1,12 +1,12 @@
-# Options
+# 期权交易
 
-The base url of broker open API can be found [here](endpoint.md)
+Broker Open API的地址请见[这里](endpoint.md)
 
-## Public API 
+## 公共接口
 
 ### `brokerInfo`
 
-Current broker trading rules and symbol information.
+获取当前broker的交易规则和symbol的信息（精度单位等信息）
 
 #### **Request Weight:**
 
@@ -22,38 +22,39 @@ GET /openapi/v1/brokerInfo
 None
 
 #### **Response:**
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`timezone`|string|`UTC`|Timezone of timestamp
-`serverTime`|long|`1554887652929`|Retrieves the current time on server (in ms).
+`timezone`|string|`UTC`|服务器所在时区
+`serverTime`|long|`1554887652929`|当前服务器时间（Unix Timestamp格式，ms毫秒级)
 
-In the `symbols` field, the endpoint will return information on current actively trading cryptos. You can ignore this section.
 
-In the `options` field:
-All actively trading options will be displayed.
 
-name|type|example|description
+在`symbols`对应的信息组里，显示的是币币交易的symbol的信息（精度等），与期权交易并无关联，可以忽略。
+
+在 `options`对应的信息组里，所有当前正在交易的期权信息将会被返回：
+
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`symbol`|string|`BTC0308CS3900`|Name of the option
-`status`|string|`TRADING`|Status of the option
-`baseAsset`|string|`BTC0308CS3900`|Underlying asset for the option
-`baseAssetPrecision`|float|`0.001`|Precision of the option quantity
-`quoteAsset`|string|`BUSDT`|Quote asset for the option
-`quoteAssetPrecision`|float|`0.01`|Precision of the option price
-`icebergAllowed`|string|`false`|Whether iceberg orders are allowed.
+`symbol`|string|`BTC0308CS3900`|期权名称
+`status`|string|`TRADING`|期权当前状态
+`baseAsset`|string|`BTC0308CS3900`|期权的名称
+`baseAssetPrecision`|float|`0.001`|期权交易张数精度
+`quoteAsset`|string|`BUSDT`|计价的货币
+`quoteAssetPrecision`|float|`0.01`|期权交易价格的精度
+`icebergAllowed`|string|`false`|是否支持“冰山订单”
 
-For `filters` in `options` field:
+在`options`里面的`filters`对应的信息组里：
 
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`filterType`|string|`PRICE_FILTER`|Type of the filter.
-`minPrice`|float|`0.001`|Precision of the option price。
+`filterType`|string|`PRICE_FILTER`|Filter类型
+`minPrice`|float|`0.001`|期权最小交易价格
 `maxPrice`|float|`100000.00000000`|
-`tickSize`|float|`0.001`|Precision of the option price.
-`minQty`|float|`0.01`|Minimal trading quantity of the option
+`tickSize`|float|`0.001`|期权交易价格精度
+`minQty`|float|`0.01`|期权最小交易张数
 `maxQty`|float|`100000.00000000`|
-`stepSize`|float|`0.001`|Precision of the option quantity
-`minNotional`|float|`1`|Precision of the option order size (quantity * price)
+`stepSize`|float|`0.001`|期权交易张数精度
+`minNotional`|float|`1`|订单金额精度 (数量 * 价格)
 
 #### **Example:**
 ```js
@@ -97,7 +98,7 @@ name|type|example|description
 
 ### `getOptions`
 
-Retrieves available trading and expired options. Expired options will be returned if `expired` is set `true`.
+获取所有正在交易和已经交割的期权信息。如果需要获取历史期权信息，需要将`expired`设置成`true`
 
 #### **Request Weight:**
 
@@ -109,22 +110,22 @@ GET /openapi/v1/getOptions
 ```
 
 #### **Parameters：**
-name|type|required|default|description
------------- | ------------ | ------------ | ------------ | ----
-`expired`|string|`NO`|`false`|Set to `true` to show expired options instead of active ones. This can be useful for retrieving historic data.
+名称|类型|是否强制|默认|描述
+------------ | ------------ | ------------ | ------------ | -----
+`expired`|string|`NO`|`false`|设置为`true`来展示历史期权，可以用来获取历史期权信息。
 
 #### **Response:**
 
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`symbol`|string|`BTC0412CS5400`|Name of the option. 'underlying - expiration date - option type(CS is call spread and PS is put spread) - strike'
-`strike`|float|`5400.0`|The strike price of the option.
-`created`|long|`1554710400000`|Unix timestamp when the option was first created (ms).
-`expiration`|long|`1555055400000`| Unix timestamp when the option will expire (ms)
-`optionType`|integer|`1`|`1`=Call Spread, `0`= Put Spread
-`maxPayoff`|float|`500`|The maximum payoff of the option.
-`underlying`|string|`BTCBUSDT`|The underlying price index name of the option
-`settlement`|string|`weekly`|The settlement interval.
+`symbol`|string|`BTC0412CS5400`|期权名称。命名规则为：`标的资产-交割时间-期权类型（看涨CS/看跌PS）-行权价`
+`strike`|float|`5400.0`|期权的行权价
+`created`|long|`1554710400000`|期权开始交易时的Unix Timestamp（毫秒ms)
+`expiration`|long|`1555055400000`| 期权结束交易时的Unix Timestamp（毫秒ms)
+`optionType`|integer|`1`|期权类型，`1`=看涨期权，`0`= 看跌期权
+`maxPayoff`|float|`500`|期权的最大收益
+`underlying`|string|`BTCBUSDT`|期权的标的的指数价格名称
+`settlement`|string|`weekly`|结算区间。`weekly`=每周。
 
 
 
@@ -144,7 +145,7 @@ name|type|example|description
 ```
 
 ### `index`
-Retrieves the current index price and EDP. This API endpoint does not take any Parameters.
+获取当前指数价格和EDP（预估交割价格）。这个端点不用发送任何参数。
 
 #### **Request Weight:**
 
@@ -152,17 +153,17 @@ Retrieves the current index price and EDP. This API endpoint does not take any P
 
 #### **Request URL:**
 ```
-GET /openapi/quote/v1/option/index
+GET /quote/v1/option/index
 ```
 
 #### **Parameters:**
 None
 
 #### **Response：**
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`index`|float|`3652.81`|The currency index price.
-`edp`|float|`3652.81`|Estimated delivery price (Average index price in the last 10 minutes).
+`index`|float|`3652.81`|当前指数价格。
+`edp`|float|`3652.81`|预估交割价格（过去10分钟指数价格的平均值）
 
 #### **Example:**
 ```js
@@ -177,14 +178,13 @@ name|type|example|description
 
 ### `depth`
 
-Retrieves the options order book.
-
+获取当前订单簿的数据。
 
 #### **Request Weight:**
 
-Adjusted based on the limit:
+根据数量会不一样，请求数量越多，重量越大:
 
-Limit|Weight
+数量|请求重量
 ------------ | ------------
 5, 10, 20, 50, 100|1
 500|5
@@ -197,24 +197,27 @@ GET /openapi/quote/v1/option/depth
 ```
 
 #### **Parameters:**
-parameter|type|required|default|description
+
+名称|类型|是否强制|默认|描述
 ------------ | ------------ | ------------ | ------------ | -----
-`symbol`|string|`YES`||The option name for which to retrieve the order book, use `getOptions` to get option names.
-`limit`|integer|`NO`|`100` (max = 100)|The number of entries to return for bids and asks.
+`symbol`|string|`YES`||用来获取订单簿的期权名称。使用`getOptions`来获取期权名称。
+`limit`|integer|`NO`|`100` (max = 100)|返回`bids`和`asks`的数量
+
 
 #### **Response:**
-name|type|example|description
------------- | ------------ | ------------ | ------------
-`time`|long|`1550829103981`|Current timestamp (ms)
-`bids`|list|(see below)|List of all bids, best bids first. See below for entry details.
-`asks`|list|(see below)|List of all asks, best asks first. See below for entry details.
 
-The fields `bids` and `asks` are lists of order book price level entries, sorted from best to worst.
-
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`''`|float|`123.10`|price level
-`''`|float|`300`|The total quantity of orders for this price level
+`time`|long|`1550829103981`|当前时间（Unix Timestamp，毫秒ms）
+`bids`|list|(如下)|所有bid的价格和数量信息，最优bid价格由上到下排列。
+`asks`|list|(如下)|所有ask的价格和数量信息，最优ask价格由上到下排列。
+
+`bids`和`asks`所对应的信息组代表了订单簿的所有价格以及价格对应数量的信息，由最优价格从上到下排列。
+
+名称|类型|例子|描述
+------------ | ------------ | ------------ | ------------
+`''`|float|`123.10`|价格
+`''`|float|`300`|当前价格对应的数量
 
 #### **Example:**
 
@@ -222,7 +225,7 @@ name|type|example|description
 {
   'time': 1555049455783,
   'bids': [
-   ['78.82', '0.526'],//[Price, Quantity]
+   ['78.82', '0.526'],//[价格，数量]
    ['77.24', '1.22'],
    ['76.65', '1.043'],
    ['76.58', '1.34'],
@@ -239,7 +242,7 @@ name|type|example|description
    ['72.11', '0.703'],
    ['70.61', '0.454']],
    'asks': [
-     ['122.96', '0.381'],//[Price, Quantity]
+     ['122.96', '0.381'],//[价格，数量]
      ['144.46', '1'],
      ['155.55', '0.065'],
      ['160.16', '0.052'],
@@ -255,7 +258,7 @@ name|type|example|description
 
 ### `trades`
 
-Retrieve the latest trades that have occurred for a specific option.
+获取某个期权最近成交订单的信息。
 
 #### **Request Weight:**
 
@@ -266,20 +269,19 @@ Retrieve the latest trades that have occurred for a specific option.
 GET /openapi/quote/v1/option/trades
 ```
 #### **Parameters：**
-Parameter|type|required|default|description
------------- | ------------ | ------------ | ------------ | ------
-`symbol`|string|`YES`||The name of the option.
-`limit`|integer|`NO` (clamped to max 1000)|`100`|The number of trades returned
+名称|类型|是否强制|默认|描述
+------------ | ------------ | ------------ | ------------ | -------
+`symbol`|string|`YES`||期权名称
+`limit`|integer|`NO` (最大值为1000)|`100`|返回成交订单的数量
 
 #### **Response:**
 
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`price`|float|`0.055`|The price of the trade
-`time`|long|`1537797044116`|Current timestamp (ms)
-`qty`|float|`5`|The quantity traded
-`isBuyerMaker`|string|`true`|Maker or taker of the trade. `true`= maker, `false` = taker
-
+`price`|float|`0.055`|交易价格
+`time`|long|`1537797044116`|当前Unix时间戳，毫秒(ms)
+`qty`|float|`5`|数量（张数）
+`isBuyerMaker`|string|`true`|卖方还是买方。`true`=卖方，`false`=买方
 
 #### **Example:**
 ```js
@@ -295,7 +297,7 @@ name|type|example|description
 
 ### `klines`
 
-Retrieves the kline information (open, high, trade volume, etc.) for a specific option.
+获取某个期权的K线信息（高，低，开，收，交易量...)
 
 #### **Request Weight:**
 
@@ -307,56 +309,53 @@ GET /openapi/quote/v1/option/klines
 ```
 
 #### **Parameters：**
-| Parameter|type|required|default|description |
-| ------------ | ------------ | ------------ | ------------ | ---- |
-|`symbol`|string|`YES`||Name of the option.|
-|`interval`|string|`YES`||Interval of the kline. Possible values include: `1m`,`5m`,`15m`,`30m`,`1h`,`1d`,`1w`,`1M`|
-|`limit`|integer|`NO`|`1000`|Number of entries returned. Max is capped at 1000.|
-|`to`|integer|`NO`||timestamp of the last datapoint|
+名称|类型|是否强制|默认|描述
+------------ | ------------ | ------------ | ------------ | ------
+`symbol`|string|`YES`||期权名称
+`interval`|string|`YES`||K线图区间。可识别发送的值为：  `1m`,`5m`,`15m`,`30m`,`1h`,`1d`,`1w`,`1M`（`m`=分钟，`h`=小时,`d`=天，`w`=星期，`M`=月）
+`limit`|integer|`NO`|`1000`|返回值的数量，最大值为1000
+`to`|integer|`NO`||最后一个数据点的时间戳
 
 #### **Response:**
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`''`|long|`1538728740000`|Open Time
-`''`|float|`36.00000'`|Open
-`''`|float|`36.00000`|High
-`''`|float|`36.00000`|Low
-`''`|float|`36.00000`|Close
-`''`|float|`148976.11427815`|Trade volume amount
-`''`|long|`1538728740000`|Close time
-`''`|float|`2434.19055334`|Quote asset volume
-`''`|integer|`308`|Number of trades
-`''`|float|`1756.87402397`|Taker buy base asset volume
-`''`|float|`28.46694368`|Taker buy quote asset volume
+`''`|long|`1538728740000`|开始时间戳，毫秒（ms）
+`''`|float|`36.00000'`|开盘价
+`''`|float|`36.00000`|最高价
+`''`|float|`36.00000`|最低价
+`''`|float|`36.00000`|收盘价
+`''`|float|`148976.11427815`|期权交易金额
+`''`|long|`1538728740000`|停止时间戳，毫秒（ms）
+`''`|float|`2434.19055334`|交易数量（张数）
+`''`|integer|`308`|已成交数量（张数）
+`''`|float|`1756.87402397`|买方购买金额
+`''`|float|`28.46694368`|买方购买数量（张数）
 
 
 #### **Example:**
 ```js
 [
   [
-    1538728740000, //'opentime'
-    '36.000000000000000000', //'open'
-    '36.000000000000000000', //'high'
-    '36.000000000000000000', //'low':
-    '36.000000000000000000', //'close'
-    '148976.11427815',  // Volume
-    1499644799999,      // Close time
-    '2434.19055334',    // Quote asset volume
-    308,                // Number of trades
-    '1756.87402397',    // Taker buy base asset volume
-    '28.46694368'       // Taker buy quote asset volume
+    1538728740000, //'开盘时间'
+    '36.000000000000000000', //'开盘价'
+    '36.000000000000000000', //'最高价'
+    '36.000000000000000000', //'最低价':
+    '36.000000000000000000', //'收盘价'
+    '148976.11427815',  // 期权交易金额
+    1499644799999,      // 收盘时间
+    '2434.19055334',    // 交易数量（张数）
+    308,                // 已成交数量（张数）
+    '1756.87402397',    // 买方购买金额
+    '28.46694368'       // 买方购买数量（张数）
   ],...
 ]
 ```
-`base asset` refers to the asset that is the quantity of a symbol.
 
-`quote asset` refers to the asset that is the price of a symbol.
-
-## Private API
+## 私有接口
 
 ### `order`
 
-Places a buy order for an option. This API endpoint requires your request to be signed.
+下一个做多（buy，即买入）或者做空（sell，即卖出）期权的订单。这个期权端点需要你的签名
 
 #### **Request Weight:**
 
@@ -364,46 +363,48 @@ Places a buy order for an option. This API endpoint requires your request to be 
 
 #### **Request URL:**
 ```bash
-POST /openapi/openapi/option/order
+POST /openapi/option/v1/order
 ```
 
 #### **Parameters：**
-Parameter|type|required|example|description
------------- | ------------ | ------------ | ------------ | ------------
-`symbol`|string|`YES`|`BTC0412PS3900`|Name of option
-`clientOrderId`|string/long|`NO`|`as78sda9f`|A unique ID of the order. Automatically generated if not sent.
-`side`|string|`YES`|`BUY`|Direction of the order. Possible values include `BUY` and `SELL`.
-`type`|string|`YES`|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`timeInForce`|string|`NO`|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`price`|float|`NO` Required for limit orders|`3213.32`|Price of the order
-`quantity`|float|`YES`|`22.12`|The number of contracts to buy
 
-You can get options' price, quantity configuration data in the `brokerInfo` endpoint.
+名称|类型|是否强制|描述
+------------ | ------------ | ------------ | ------------
+`symbol`|string|`YES`|期权名称
+`clientOrderId`|string/long|`NO`|订单的ID。可自己定义，如果没有发送，将会自动生成。
+`side`|string|`YES`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`type`|string|`YES`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`timeInForce`|string|`NO`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`price`|float|`NO` Required for limit orders|订单的价格
+`quantity`|float|`YES`|订单购买的数量（张数）
+
+你可以从`brokerInfo`中获取期权价格，数量的配置信息。
 
 #### **Response:**
-Name|type|example|description
------------- | ------------ | ------------ | ------------
-`time`|long|`1551062936784`|Timestamp when the order is created.
-`updateTime`|long|`1551062936784`|Last time this order was updated
-`orderId`|integer|`891`|ID of the order.
-`clientOrderId`|integer|`213443`|A unique ID of the order.
-`symbol`|string|`BTC0412CS4200`|Name of the option.
-`price`|float|`4765.29`|Price of the order.
-`origQty`|float|`1.01`|Quantity ordered
-`executedQty`|float|`1.01`|Quantity of orders that has been executed
-`avgPrice`|float|`4754.24`|Average price of filled orders.
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`side`|string|`BUY`|Direction of the order. Possible values include `BUY` or `SELL`
-`status`|string|`NEW`|The state of the order.Possible values include `NEW`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, and `REJECTED`.
-`timeInForce`|string|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`fees`|||Fees incurred for this order.
 
-In the `fees` field:
-
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`feeToken`|string|`USDT`|Fee token kind.
-`fee`|float|`0`|Actual transaction fees occurred.
+`time`|long|`1551062936784`|订单创建时的时间戳，毫秒（ms）
+`updateTime`|long|`1551062936784`|上次订单更新时间，毫秒（ms)
+`orderId`|integer|`891`|订单ID（系统生成）
+`clientOrderId`|integer|`213443`|订单ID（自己发送的）
+`symbol`|string|`BTC0412CS4200`|期权名称
+`price`|float|`4765.29`|订单价格
+`origQty`|float|`1.01`|订单数量
+`executedQty`|float|`1.01`|已经成交订单数量
+`avgPrice`|float|`4754.24`|订单已经成交的平均价格
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`status`|string|`NEW`|订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`timeInForce`|string|`GTC`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`fees`|||订单产生的手续费
+
+在`fees`里:
+
+名称|类型|例子|描述
+------------ | ------------ | ------------ | ------------
+`feeToken`|string|`USDT`|手续费计价单位
+`fee`|float|`0`|实际费用值
 
 
 #### **Example:**
@@ -428,7 +429,7 @@ Name|type|example|description
 
 ### `cancel`
 
-Cancels an order, specified by `orderId` or `clientOrderId`. This API endpoint requires your request to be signed.
+取消一个订单，用`orderId` 或者 `clientOrderId`来取消。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -441,38 +442,38 @@ DELETE /openapi/option/v1/order/cancel
 
 #### **Parameter:**
 
-Parameter|type|required|default|description
------------- | ------------ | ------------ | ------------ | -----
-`orderId`|integer|`NO`|`12817334`|The order ID of the order to be canceled
-`clientOrderId`|string/long|`NO`||Unique ID of the order.
+名称|类型|是否强制|描述
+------------ | ------------ | ------------ | ------------
+`orderId`|integer|`NO`|系统自动生成的订单ID。
+`clientOrderId`|string/long|`NO`|自己传送的订单ID。
 
-One **MUST** be provided of these two parameters.
+**必须**传送以上两个参数的其中一个。
 
 #### **Response:**
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`time`|long|`1541161088303`|Timestamp when order request is submitted (ms).
-`updateTime`|long|`1551062936784`|Last time this order was updated (ms)
-`orderId`|integer|`713637304`|ID of the order
-`clientOrderId`|string|`213443`|Unique ID of the order.
-`symbol`|string|`BTC0412CS4200`|name of the option
-`price`|float||Price of the order.
-`origQty`|float|`1.01`|Quantity ordered
-`executedQty`|float|`1.01`|Quantity of orders that has been executed
-`avgPrice`|float|`4754.24`|Average price of filled orders.
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`side`|string|`BUY`|Direction of the order. Possible values include `BUY` or `SELL`
-`status`|string|`NEW`|The state of the order.Possible values include `NEW`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, and `REJECTED`.
-`timeInForce`|string|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`fees`|||Fees incurred for this order.
+`time`|long|`1551062936784`|订单创建时的时间戳，毫秒（ms）
+`updateTime`|long|`1551062936784`|上次订单更新时间，毫秒（ms)
+`orderId`|integer|`891`|订单ID（系统生成）
+`clientOrderId`|integer|`213443`|订单ID（自己发送的）
+`symbol`|string|`BTC0412CS4200`|期权名称
+`price`|float|`4765.29`|订单价格
+`origQty`|float|`1.01`|订单数量
+`executedQty`|float|`1.01`|已经成交订单数量
+`avgPrice`|float|`4754.24`|订单已经成交的平均价格
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`status`|string|`NEW`|订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`timeInForce`|string|`GTC`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`fees`|||订单产生的手续费
 
-In the `fees` field:
+在`fees`里:
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`feeToken`|string|`USDT`|Fee token kind.
-`fee`|float|`0`|Actual transaction fees occurred.
+`feeToken`|string|`USDT`|手续费计价单位
+`fee`|float|`0`|实际费用值
 
 ####  **Example:**
 
@@ -489,7 +490,7 @@ Name|type|example|description
   'avgPrice': 3121.13
   'type': 'LIMIT',
   'side': 'SELL',
-  'status': 'CANCELED', //status will always be `CANCELED` for cancel request
+  'status': 'CANCELED', //cancel请求的订单状态会一直为`CANCELED`
   'timeInForce': 'GTC',
   'fees': []
 }
@@ -497,7 +498,7 @@ Name|type|example|description
 
 #### `openOrders`
 
-Retrieves open orders. This API endpoint requires your request to be signed.
+获取你当前未成交的订单。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -509,41 +510,41 @@ GET /openapi/option/v1/openOrders
 ```
 
 #### **Parameters:**
-Parameter|type|required|default|description
+名称|类型|是否强制|默认|描述
 ------------ | ------------ | ------------ | ------------ | --------
-`symbol`|string|`NO`||Symbol to return open orders for. If not sent, orders of all options will be returned.
-`orderId`|integer|`NO`|| Order ID
-`side`|string|`NO`||Direction of the order, possible values include `BUY` and `SELL`.
-`type`|string|`NO`||Order types to return, possible values include `LIMIT` and `MARKET`.
-`limit`|integer|`NO`|`20`|Number of entries to return.
+`symbol`|string|`NO`||期权名称，如果没有发送默认返回所有期权订单。
+`orderId`|integer|`NO`||订单ID。
+`side`|string|`NO`||订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`type`|string|`NO`||订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`limit`|integer|`NO`|`20`|返回值的数量。
 
-If `orderId` is set, it will get orders < that `orderId`. Otherwise most recent orders are returned.
+如果发送了`orderId`，将会返回小于`orderId`的所有订单。若没有，将会返回最新的订单。
 
 #### **Response:**
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`time`|long|`1541161088303`|Timestamp when order request is submitted (ms).
-`updateTime`|long|`1551062936784`|Last time this order was updated (ms)
-`orderId`|integer|`713637304`|ID of the order
-`clientOrderId`|string|`213443`|Unique ID of the order.
-`symbol`|string|`BTC0412CS4200`|name of the option
-`price`|float|`12.34`|Price of the order.
-`origQty`|float|`1.01`|Quantity ordered
-`executedQty`|float|`1.01`|Quantity of orders that has been executed
-`avgPrice`|float|`4754.24`|Average price of filled orders.
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`side`|string|`BUY`|Direction of the order. Possible values include `BUY` or `SELL`
-`status`|string|`NEW`|The state of the order.Possible values include `NEW`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, and `REJECTED`.
-`timeInForce`|string|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`fees`|||Fees incurred for this order.
+`time`|long|`1551062936784`|订单创建时的时间戳，毫秒（ms）
+`updateTime`|long|`1551062936784`|上次订单更新时间，毫秒（ms)
+`orderId`|integer|`891`|订单ID（系统生成）
+`clientOrderId`|integer|`213443`|订单ID（自己发送的）
+`symbol`|string|`BTC0412CS4200`|期权名称
+`price`|float|`4765.29`|订单价格
+`origQty`|float|`1.01`|订单数量
+`executedQty`|float|`1.01`|已经成交订单数量
+`avgPrice`|float|`4754.24`|订单已经成交的平均价格
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`status`|string|`NEW`|订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`timeInForce`|string|`GTC`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`fees`|||订单产生的手续费
 
-In the `fees` field:
+在`fees`里:
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`feeToken`|string|`USDT`|Fee token kind.
-`fee`|float|`0`|Actual transaction fees occurred.
+`feeToken`|string|`USDT`|手续费计价单位
+`fee`|float|`0`|实际费用值
 
 #### **Example:**
 
@@ -571,7 +572,7 @@ Name|type|example|description
 
 ### `positions`
 
-Retrieves current positions. This API endpoint requires your request to be signed.
+获取当前仓位信息。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -583,26 +584,27 @@ GET /openapi/option/v1/positions
 ```
 
 #### **Parameters:**
-Parameter|type|required|default|description
------------- | ------------ | ------------ | ------------ | --------
-`symbol`|string|`NO`||Name of the option. If not sent, positions for all options will be returned.
+
+名称|类型|是否强制|描述
+------------ | ------------ | ------------ | ------------
+`symbol`|string|`NO`|期权名称，如果没有发送默认返回所有期权的仓位。
 
 #### **Response:**
-For each unique `symbol`, this endpoint will return the following information.
+对于每个`symbol`（期权名称），这个端点将会返回以下信息。
 
-name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`symbol`|string|`BTC0405PS3850`|Name of the option.
-`position`|float|`-10.760`|The position of the option. Can be negative (short) or positive (long)
-`margin`|float|`5380`|Total margin amount for position held.
-`settlementTime`|integer|`1555056000000`|Settlement timestamp of the option.
-`strikePrice`|float|`4200`|Strike price of the option.
-`price`|float|`500.00`|Current option price
-`availablePosition`|float|`10.76`|Number of option contracts that can be closed.
-`averagePrice`|float|`9693.502194671`|Average price for the position
-`changed`|float|`-4018.21`|Profit or loss for holding the position.
-`changedRate`|float|`1.02`|**Long Position:** `changed`/`averagePrice` **Short Position:** (`changed` \* `position`) / (`margin` - `averagePrice` \* `position`)
-`index`|float|`5012.28666667`|Current index price of the underlying asset.
+`symbol`|string|`BTC0405PS3850`|期权名称
+`position`|float|`-10.760`|该期权的持仓量（张数）。可以为正（做多）也可以为负（做空）。
+`margin`|float|`5380`|当前仓位的总保证金量
+`settlementTime`|integer|`1555056000000`|该期权的交割时间戳，毫秒（ms）
+`strikePrice`|float|`4200`|该期权的行权价
+`price`|float|`500.00`|当前期权价格
+`availablePosition`|float|`10.76`|可平仓数量（张数）
+`averagePrice`|float|`9693.502194671`|持仓均价（持有仓位的成交金额/持仓量）
+`changed`|float|`-4018.21`|持仓盈亏。**做多：** （最新价-持仓均价）\* 持仓量 **做空：**（最新价-持仓均价）\* 持仓量 \*(-1)
+`changedRate`|float|`1.02`|持仓盈亏百分比。**做多：** 持仓盈亏/ （持仓均价 \* 持仓量） **做空：** 持仓盈亏/（保证金 - 持仓均价 \* 持仓量）
+`index`|float|`5012.28666667`|当前标的资产指数值
 
 #### **Example:**
 
@@ -626,7 +628,7 @@ name|type|example|description
 
 ### `historyOrders`
 
-Retrieves history of orders that have been partially or fully filled or canceled. This API endpoint requires your request to be signed.
+获取历史订单信息（部分成交的、全部成交的、取消的）。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -638,39 +640,39 @@ GET /openapi/option/v1/historyOrders
 ```
 
 #### **Parameters:**
-Parameter|type|required|efault|description
------------- | ------------ | ------------ | ------------ | --------
-`symbol`|string|`NO`||Name of the option. If not sent, orders of all options will be returned.
-`side`|string|`buy`|Direction of the order. Possible values include `BUY` and `SELL`.
-`type`|string||Order Type. Possible values include `LIMIT` and `MARKET`.
-`orderStatus`|string||Status of the order. Possible values include `PARTIALLY_FILLED`, `FILLED`, and `CANCELED`.
-`limit`|integer|`20`|Number of items to be returned
+Parameter|type|required|default|description
+------------ | ------------ | ------------ | ------------ | ---------
+`symbol`|string|`NO`||期权名称，如果没有发送将默认返回所有期权的订单。
+`side`|string|`NO`||订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`type`|string|`NO`||订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`orderStatus`|string|`NO`||订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`limit`|integer|`NO`|`20`|返回值的数量
 
 #### **Response:**
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`time`|long|`1541161088303`|Timestamp when order request is submitted (ms).
-`updateTime`|long|`1551062936784`|Last time this order was updated
-`orderId`|integer|`713637304`|ID of the order
-`clientOrderId`|string|`213443`|Unique ID of the order.
-`symbol`|string|`BTC0412CS4200`|Name of the option
-`price`|float||Price of the order.
-`origQty`|float|`1.01`|Quantity ordered
-`executedQty`|float|`1.01`|Quantity of orders that has been executed
-`avgPrice`|float|`44.24`|Average price of filled orders.
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`side`|string|`BUY`|Direction of the order. Possible values include `BUY` or `SELL`
-`status`|string|`NEW`|The state of the order.Possible values include `NEW`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, and `REJECTED`.
-`timeInForce`|string|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`fees`|||Fees incurred for this order.
+`time`|long|`1551062936784`|订单创建时的时间戳，毫秒（ms）
+`updateTime`|long|`1551062936784`|上次订单更新时间，毫秒（ms)
+`orderId`|integer|`891`|订单ID（系统生成）
+`clientOrderId`|integer|`213443`|订单ID（自己发送的）
+`symbol`|string|`BTC0412CS4200`|期权名称
+`price`|float|`4765.29`|订单价格
+`origQty`|float|`1.01`|订单数量
+`executedQty`|float|`1.01`|已经成交订单数量
+`avgPrice`|float|`4754.24`|订单已经成交的平均价格
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`status`|string|`NEW`|订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`timeInForce`|string|`GTC`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`fees`|||订单产生的手续费
 
-In the `fees` field:
+在`fees`里:
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`feeToken`|string|`USDT`|Fee token kind.
-`fee`|float|`0`|Actual transaction fees occurred.
+`feeToken`|string|`USDT`|手续费计价单位
+`fee`|float|`0`|实际费用值
 
 #### **Example:**
 ```js
@@ -697,7 +699,8 @@ Name|type|example|description
 ```
 
 ### `getOrder`
-Get details on a specific order, regardless of order state.
+
+获取某个订单的详细信息
 
 #### **Request Weight:**
 
@@ -709,36 +712,38 @@ GET /openapi/option/v1/getOrder
 ```
 
 #### **Parameters:**
-Parameter|type|required|default|description
------------- | ------------ | ------------ | ------------ | -------
-`orderId`|integer|`NO`|| Order ID. **Either `orderId` or `clientOrderId` must be sent**
-`clientOrderId`|string|`NO`||Unique client customized ID of the order. **Either `orderId` or `clientOrderId` must be sent**
+名称|类型|是否强制|默认|描述
+------------ | ------------ | ------------ | ------------ | --------
+`orderId`|integer|`NO`||订单ID
+`clientOrderId`|string|`NO`||用户定义的订单ID
+
+**注意：**` orderId` 或者 `clientOrderId` **必须发送其中之一**
+
 
 #### **Response:**
-
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`time`|long|`1541161088303`|Timestamp when order request is submitted (ms).
-`updateTime`|long|`1551062936784`|Last time this order was updated
-`orderId`|integer|`713637304`|ID of the order
-`clientOrderId`|string|`213443`|Unique ID of the order.
-`symbol`|string|`BTC0412CS4200`|Name of the option
-`price`|float||Price of the order.
-`origQty`|float|`1.01`|Quantity ordered
-`executedQty`|float|`1.01`|Quantity of orders that has been executed
-`avgPrice`|float|`44.24`|Average price of filled orders.
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`side`|string|`BUY`|Direction of the order. Possible values include `BUY` or `SELL`
-`status`|string|`NEW`|The state of the order.Possible values include `NEW`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, and `REJECTED`.
-`timeInForce`|string|`GTC`|Time in force. Possible values include `GTC`,`FOK`,`IOC`.
-`fees`|||Fees incurred for this order.
+`time`|long|`1551062936784`|订单创建时的时间戳，毫秒（ms）
+`updateTime`|long|`1551062936784`|上次订单更新时间，毫秒（ms)
+`orderId`|integer|`891`|订单ID（系统生成）
+`clientOrderId`|integer|`213443`|订单ID（自己发送的）
+`symbol`|string|`BTC0412CS4200`|期权名称
+`price`|float|`4765.29`|订单价格
+`origQty`|float|`1.01`|订单数量
+`executedQty`|float|`1.01`|已经成交订单数量
+`avgPrice`|float|`4754.24`|订单已经成交的平均价格
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`status`|string|`NEW`|订单状态。可能出现的值为：`NEW`(新订单，无成交)、`PARTIALLY_FILLED`（部分成交）、`FILLED`（全部成交）、`CANCELED`（已取消）和`REJECTED`（订单被拒绝）.
+`timeInForce`|string|`GTC`|订单时间指令（Time in Force）。可能出现的值为：`GTC`（Good Till Canceled，一直有效），`FOK`（Fill or Kill，全部成交或者取消），`IOC`（Immediate or Cancel，立即成交或者取消）.
+`fees`|||订单产生的手续费
 
-In the `fees` field:
+在`fees`里:
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`feeToken`|string|`USDT`|Fee token kind.
-`fee`|float|`0`|Actual transaction fees occurred.
+`feeToken`|string|`USDT`|手续费计价单位
+`fee`|float|`0`|实际费用值
 
 #### **Example:**
 
@@ -762,7 +767,8 @@ Name|type|example|description
 ```
 
 ### `myTrades`
-Retrieve the trade history of the account. This API endpoint requires your request to be signed.
+
+获取当前账户的成交订单记录。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -775,28 +781,28 @@ GET /openapi/option/v1/myTrades
 
 #### **Parameters:**
 Parameter|type|required|default|description
------------- | ------------ | ------------ | ------------ | -------
-`symbol`|string|`NO`|| Name of the option. If not sent, trades for all symbols will be returned.
-`limit`|integer|`NO`|`20`|The number of trades returned (clamped to max 1000)
-`side`|string|`NO`||Direction of the order.
-`fromId`|integer|`NO`||TradeId to fetch from.
-`toId`|integer|`NO`||TradeId to fetch to.
+------------ | ------------ | ------------ | ------------ | --------
+`symbol`|string|`NO`|| 期权名称，如果没有发送将默认返回所有期权的订单。
+`limit`|integer|`NO`|`20`|返回值的数量 (最大值为1000)
+`side`|string|`NO`||订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`fromId`|integer|`NO`||大于这个值的tradeId的订单
+`toId`|integer|`NO`||小于这个值的tradeId的订单
 
 #### **Response:**
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`time`|long|`1503439494351`|The timestamp of the trade（ms）
-`tradeId`|long|`49366`|The ID for the trade
-`orderId`|long|`630491422`|	ID of the order
-`matchOrderId`|long|`630491432`| ID of the match order
-`price`|float|`0.055`|The price of the trade.
-`quantity`|float|`23.3`|Quantity of the trade.
-`feeTokenName`|string|`USDT`|Fee token name
-`fee`|float|`0.000090000000000000`|Fee of the trade.
-`side`|string|`BUY`|Trade side from the user's point of view. Possible values include `BUY` and `SELL`
-`type`|string|`LIMIT`|The order type, possible types: `LIMIT`, `MARKET`
-`symbol`|string|`BTC0412PS3900`|	The name of the option
+`time`|long|`1503439494351`|订单成交时的时间戳，毫秒（ms）
+`tradeId`|long|`49366`|成交订单ID
+`orderId`|long|`630491422`|	订单ID
+`matchOrderId`|long|`630491432`| 成交对方订单ID
+`price`|float|`0.055`|订单价格
+`quantity`|float|`23.3`|订单数量
+`feeTokenName`|string|`USDT`|手续费计价单位
+`fee`|float|`0.000090000000000000`|手续费用值
+`side`|string|`BUY`|订单方向。可能出现的值只能为：`BUY`（买入做多） 和 `SELL`（卖出做空）
+`type`|string|`LIMIT`|订单类型。可能出现的值只能为:`LIMIT`(限价)和`MARKET`（市价）
+`symbol`|string|`BTC0412PS3900`|期权名称
 
 #### **Example:**
 ```js
@@ -819,7 +825,7 @@ Name|type|example|description
 
 ### `settlements`
 
-Retrieves settlement events that have affected your account. This API endpoint requires your request to be signed.
+获取你账户里交割期权的信息。这个API端点需要你的签名。
 
 #### **Request Weight:**
 
@@ -830,24 +836,23 @@ Retrieves settlement events that have affected your account. This API endpoint r
 GET  /openapi/option/v1/settlements
 ```
 #### **Parameters:**
-
 None
 
 #### **Responses:**
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`symbol`|string|`BTC0412PS3900`|Name of the option.
-`optionType`|string|`call`|Type of the option. Possible values include: 'call' and 'put'
-`margin`|float|`400`|Margin for the position
-`timestamp`|integer|`1517299201923`|The timestamp of the settlement.
-`strikePrice`|float|`3740`|Strike price of the option
-`settlementPrice`|float|`11008.37`|Settlement price (EDP, which is the average index price in the last 10 minutes) at time of settlement.
-`maxPayoff`|float|`400`|Maximum payoff of the option
-`averagePrice`|float|`9693.502194671`|Average price for the position
-`position`|string|`1000`|Position quantity
-`changed`|float|`20.3`|Settlement payoff of the option
-`changedRate`|float|`2.34`|**Long Position**: `changed`/(averagePrice \* position). **Short Position**: `changed`/(`margin` - averagePrice \* position)
+`symbol`|string|`BTC0412PS3900`|期权名称
+`optionType`|string|`call`|期权类型
+`margin`|float|`400`|仓位所需的保证金
+`timestamp`|integer|`1517299201923`|交割时间的时间戳，毫秒（ms）。
+`strikePrice`|float|`3740`|当前期权的行权价
+`settlementPrice`|float|`11008.37`|期权结算价格
+`maxPayoff`|float|`400`|期权的最大收益
+`averagePrice`|float|`9693.502194671`|持仓均价
+`position`|string|`1000`|持仓量（张）
+`changed`|float|`20.3`|交割收益
+`changedRate`|float|`2.34`|交割收益百分比。 **做多：** 做多交割收益/ (持仓均价 \* 持仓量) **做空：**做空交割收益/（保证金-持仓均价 \* 持仓量）
 
 #### **Examples:**
 ```js
@@ -868,8 +873,7 @@ Name|type|example|description
 
 ### `account`
 
-This endpoint is used to retrieve options account balance. This endpoint requires
-you to be signed.
+获取当前账户余额信息。这个API端点需要你的签名。
 
 #### **Request Weight:**
 1
@@ -883,20 +887,20 @@ GET  /openapi/option/v1/account
 None
 
 #### **Response:**
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`totalAsset`|float|`1000.0`|Total asset value in option account quoted in USDT.
-`optionAsset`|float|`100.0`|Total option value quoted in USDT
-`balances`|float||Show balance details.
+`totalAsset`|float|`1000.0`|期权账户中的全部资产估值（以USDT计算）
+`optionAsset`|float|`100.0`|期权账户中的期权估值（以USDT计算）
+`balances`|float||展示余额数据
 
-In the `balances` field:
+在`balances`数据组里:
 
-Name|type|example|description
+名称|类型|例子|描述
 ------------ | ------------ | ------------ | ------------
-`tokenName`|string|`USDT`|Name of the asset
-`free`|float|`600.0`|Amount available for use
-`locked`|float|`100.0`|Amount locked (for open orders)
-`margin`|float|`100.0`|Amount used for margin (for short positions)
+`tokenName`|string|`USDT`|资产的名称
+`free`|float|`600.0`|可用额
+`locked`|float|`100.0`|冻结额（未成交订单冻结）
+`margin`|float|`100.0`|保证金 （做空期权抵押）
 
 #### **Examples:**
 ```js

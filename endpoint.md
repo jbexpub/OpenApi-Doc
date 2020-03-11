@@ -1,6 +1,6 @@
-# Api Endpoints for JBEX Broker
+# JBEX API端点信息
 
-Name | base endpoint
+名称 | 基本端点
 ------------ | ------------
 rest-api | **[https://api.jbex.com](https://api.jbex.com)**
 web-socket-streams | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)**
