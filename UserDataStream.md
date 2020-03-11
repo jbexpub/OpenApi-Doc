@@ -1,30 +1,30 @@
-# User Data Stream
+# 用戶數據流推送
 
-## General WSS information
+## 基本資訊 
 
-* A User Data Stream `listenKey` is valid for 60 minutes after creation.
-* Doing a `PUT` on a `listenKey` will extend its validity for 60 minutes.
-* Doing a `DELETE` on a `listenKey` will close the stream.
-* User Data Streams are accessed at **/openapi/ws/\<listenKey\>**
-* A single connection to api endpoint is only valid for 24 hours; expect to be disconnected at the 24 hour mark
-* User data stream payloads are **not guaranteed** to be in order during heavy periods; **make sure to order your updates using Event**
+* 壹個用戶數據流的`listenKey`在創建之後的有效期只有60分鐘
+* 如果對`listenKey`做`PUT`請求可以延長有效期60分鐘
+* 如果對`listenKey`做`DELETE`請求會關閉推送
+* 用戶數據流推送在這個端點 **/openapi/ws/<listenKey>** 訪問
+* 單壹API連接的有效期只有24小時，請做好在24小時後被斷開連接的準備
+* 用戶數據流返回在訂單繁忙期**不保證**順序正常，**請使用E字段進行排序**
 
-## User Data Stream API
+## 推送接口
 
-### Create a listenKey
+### 創建listenKey
 
 ```shell
 POST /openapi/v1/userDataStream
 ```
 
-Start a new user data stream. The stream will close after 60 minutes unless a keepalive is sent.
+創建壹個新的用戶數據流。如果沒有發送keepalive，推送將會在60分鐘後斷開。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述 
 ------------ | ------------ | ------------ | ------------
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
@@ -37,20 +37,20 @@ timestamp | LONG | YES |
 }
 ```
 
-### Ping/Keep-alive a listenKey
+### 延長listenKey有效期
 
 ```shell
 PUT /openapi/v1/userDataStream
 ```
 
-Keepalive a user data stream to prevent a time out. User data streams will close after 60 minutes. It's recommended to send a ping about every 30 minutes.
+發送PUT請求會有效期延長至本次調用後60分鐘，建議每30分鐘發送壹個ping。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述 
 ------------ | ------------ | ------------ | ------------
 listenKey | STRING | YES |
 recvWindow | LONG | NO |
@@ -62,13 +62,13 @@ timestamp | LONG | YES |
 {}
 ```
 
-### Close a listenKey
+### 關閉listenKey
 
 ```shell
 DELETE /openapi/v1/userDataStream
 ```
 
-Close out a user data stream.
+關閉用戶數據流。
 
 **Weight:**
 1
@@ -89,80 +89,84 @@ timestamp | LONG | YES |
 
 ## Web Socket Payloads
 
-### Account Update
+### 賬戶更新
 
-Account state is updated with the `outboundAccountInfo` event.
+使用`outboundAccountInfo` event進行賬戶更新。
 
 **Payload:**
 
 ```javascript
 {
-  "e": "outboundAccountInfo",   // Event type
-  "E": 1499405658849,           // Event time
-  // "m": 0,                       // Maker commission rate (bips)
-  // "t": 0,                       // Taker commission rate (bips)
-  // "b": 0,                       // Buyer commission rate (bips)
-  // "s": 0,                       // Seller commission rate (bips)
-  "T": true,                    // Can trade?
-  "W": true,                    // Can withdraw?
-  "D": true,                    // Can deposit?
-  // "u": 1499405658848,           // Time of last account update
-  "B": [                        // Balances changed
+  "e": "outboundAccountInfo",   // 事件類型
+  "E": 1499405658849,           // 事件時間
+  "T": true,                    // 允許交易?
+  "W": true,                    // 允許體現?
+  "D": true,                    // 允許充值?
+  "B": [                        // 余額變化
     {
-      "a": "LTC",               // Asset
-      "f": "17366.18538083",    // Free amount
-      "l": "0.00000000"         // Locked amount
+      "a": "LTC",               // 資產名稱
+      "f": "17366.18538083",    // 可用數量
+      "l": "0.00000000"         // 凍結數量
     }
   ]
 }
 ```
 
-### Order Update
+### 訂單更新
 
-Orders are updated with the `executionReport` event. Check the API documentation and below for relevant enum definitions.
-Average price can be found by doing `Z` divided by `z`.
+訂單通過`executionReport`事件進行更新。詳細說明資訊請查看 [這裏](Spot%20API.md)。通過將`Z`除以`z`可以找到平均價格。
 
 **Payload:**
 
 ```javascript
 {
-  "e": "executionReport",        // Event type
-  "E": 1499405658658,            // Event time
-  "s": "ETHBTC",                 // Symbol
+  "e": "executionReport",        // 事件類型
+  "E": 1499405658658,            // 事件時間
+  "s": "ETHBTC",                 // 交易對
   "c": 1000087761,               // Client order ID
-  "S": "BUY",                    // Side
-  "o": "LIMIT",                  // Order type
+  "S": "BUY",                    // 訂單方向
+  "o": "LIMIT",                  // 訂單類型
   "f": "GTC",                    // Time in force
-  "q": "1.00000000",             // Order quantity
-  "p": "0.10264410",             // Order price
-  // "P": "0.00000000",             // Stop price
-  // "F": "0.00000000",             // Iceberg quantity
-  // "g": -1,                       // Ignore
-  // "x": "NEW",                    // Current execution type
-  "X": "NEW",                    // Current order status
-  // "r": "NONE",                   // Order reject reason; will be an error code.
+  "q": "1.00000000",             // 訂單數量
+  "p": "0.10264410",             // 訂單價格
+  "X": "NEW",                    // 當前訂單狀態
   "i": 4293153,                  // Order ID
-  "l": "0.00000000",             // Last executed quantity
-  "z": "0.00000000",             // Cumulative filled quantity
-  "L": "0.00000000",             // Last executed price
-  "n": "0",                      // Commission amount
-  "N": null,                     // Commission asset
-  "u": true,                     // Is the trade normal, ignore for now
-  // "T": 1499405658657,            // Transaction time
-  // "t": -1,                       // Trade ID
-  // "I": 8641984,                  // Ignore
-  "w": true,                     // Is the order working? Stops will have
-  "m": false,                    // Is this trade the maker side?
-  // "M": false,                    // Ignore
-  "O": 1499405658657,            // Order creation time
-  "Z": "0.00000000"              // Cumulative quote asset transacted quantity
+  "l": "0.00000000",             // 最新成交數量
+  "z": "0.00000000",             // 累計成交數量
+  "L": "0.00000000",             // 最新成交價格
+  "n": "0",                      // 手續費
+  "N": null,                     // 手續費幣種
+  "u": true,                     // 請忽略
+  "w": true,                     // 訂單是否工作，適合Stop單
+  "m": false,                    // 是否是maker，請忽略
+  "O": 1499405658657,            // 訂單創建時間
+  "Z": "0.00000000"              // 累計成交數額
 }
 ```
 
-**Execution types:**
+**執行類型:**
 
-* NEW
-* PARTIALLY_FILLED
-* FILLED
-* CANCELED
-* REJECTED
+* NEW（新訂單）
+* PARTIALLY_FILLED（部分成交）
+* FILLED（全部成交）
+* CANCELED（已撤銷）
+* REJECTED（已拒絕）
+
+### 持倉推送
+
+**Payload:**
+
+```javascript
+{
+  "e": "outboundContractPositionInfo",  // 事件類型
+  "A": "",                              // 賬戶ID
+  "s": "BTC-SWAP-USDT",                 // symbol
+  "S": "LONG",                          // 倉位方向
+  "p": "9851.5",                        // 平均價格
+  "P": "269",                           // 倉位數量
+  "a": "269",                           // 可用
+  "f": "7705.9",                        // 強子平倉價
+  "m": "59.7884",                       // 保證金
+  "r": "-0.0139"                        // 已實現盈虧
+}
+```

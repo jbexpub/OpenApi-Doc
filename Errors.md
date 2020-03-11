@@ -1,7 +1,6 @@
-# Error Codes
+# 錯誤碼
 
-Errors consist of two parts: an error code and a message. Codes are universal,
- but messages can vary. Here is the error JSON payload:
+返回報錯壹般由兩個部分組成：錯誤碼和錯誤資訊。錯誤碼是通用的，但是錯誤資訊會有所不同。如下是壹個報錯JSON Payload示例：
 
 ```javascript
 {
@@ -10,225 +9,222 @@ Errors consist of two parts: an error code and a message. Codes are universal,
 }
 ```
 
-## 10xx - General Server or Network issues
+## 10xx - 通用服務器和網絡錯誤
 
 ### -1000 UNKNOWN
 
-* An unknown error occured while processing the request.
+* 處理請求時發生未知錯誤
 
 ### -1001 DISCONNECTED
 
-* Internal error; unable to process your request. Please try again.
+* 內部錯誤; 無法處理您的請求。 請再試壹次.
 
 ### -1002 UNAUTHORIZED
 
-* You are not authorized to execute this request. Request need API Key included in . We suggest that API Key be included in any request.
+* 您無權執行此請求。請求需要發送API Key，我們建議在所有的請求種豆附加API Key 
 
 ### -1003 TOO_MANY_REQUESTS
 
-* Too many requests; please use the websocket for live updates.
-* Too many requests; current limit is %s requests per minute. Please use the websocket for live updates to avoid polling the API.
-* Way too many requests; IP banned until %s. Please use the websocket for live updates to avoid bans.
+* 排隊的請求過多。  
+* 請求權重過多； 請使用websocket進行實時更新。  
+* 請求權重過多； 當前限制為每分鐘％s請求權重。 請使用websocket進行實時更新，以避免輪詢API
+* 請求權重過多； IP被禁止，直到％s。 請使用websocket進行實時更新，以免被禁。
 
 ### -1006 UNEXPECTED_RESP
 
-* An unexpected response was received from the message bus. Execution status unknown. OPEN API server find some exception in execute request .Please report to Customer service.
+* 從消息總線收到意外的響應。 執行狀態未知。請向客服求證關於此訂單的詳細狀態和其他資訊。
 
 ### -1007 TIMEOUT
 
-* Timeout waiting for response from backend server. Send status unknown; execution status unknown.
+* 等待後端服務器響應超時。 發送狀態未知； 執行狀態未知。
 
 ### -1014 UNKNOWN_ORDER_COMPOSITION
 
-* Unsupported order combination.
+* 不支持的訂單組合。
 
 ### -1015 TOO_MANY_ORDERS
 
-* Reach the rate limit .Please slow down your request speed.
-* Too many new orders.
-* Too many new orders; current limit is %s orders per %s.
+* 新訂單太多。請減少妳的請求頻率
+* 新訂單太多； 當前限制為每％s ％s個訂單。
 
 ### -1016 SERVICE_SHUTTING_DOWN
 
-* This service is no longer available.
+* 該服務不可用
 
 ### -1020 UNSUPPORTED_OPERATION
 
-* This operation is not supported.
+* 不支持此操作
 
 ### -1021 INVALID_TIMESTAMP
 
-* Timestamp for this request is outside of the recvWindow.
-* Timestamp for this request was 1000ms ahead of the server's time.
-* Please check the difference between your local time and server time .
+* 此請求的時間戳不在recvWindow之外。
+* 此請求的時間戳比服務器時間提前1000毫秒。
+* 請查證妳的本地時間和服務器時間
 
 ### -1022 INVALID_SIGNATURE
 
-* Signature for this request is not valid.
+* 此請求的簽名無效。
 
-## 11xx - Request issues
+## 11xx - 請求問題
 
 ### -1100 ILLEGAL_CHARS
 
-* Illegal characters found in a parameter.
-* Illegal characters found in parameter '%s'; legal range is '%s'.
+* 在參數中發現非法字符。 
+* 在參數'％s'中發現非法字符； 合法範圍是“％s”。
 
 ### -1101 TOO_MANY_PARAMETERS
 
-* Too many parameters sent for this endpoint.
-* Too many parameters; expected '%s' and received '%s'.
-* Duplicate values for a parameter detected.
+* 為此端點發送的參數太多。  
+* 參數太多； 預期為“％s”並收到了“％s”。 
+* 檢測到的參數值重復。
 
 ### -1102 MANDATORY_PARAM_EMPTY_OR_MALFORMED
 
-* A mandatory parameter was not sent, was empty/null, or malformed.
-* Mandatory parameter '%s' was not sent, was empty/null, or malformed.
-* Param '%s' or '%s' must be sent, but both were empty/null!
+* 未發送強制性參數，該參數為空/空或格式錯誤。  
+* 強制參數'％s'未發送，為空/空或格式錯誤。  
+* 必須發送參數'％s'或'％s'，但兩者均為空！
 
 ### -1103 UNKNOWN_PARAM
 
-* An unknown parameter was sent.
-* In JBEx Open Api , each request requires at least one parameter. {Timestamp}.
+* 發送了未知參數。
+* 每條請求需要至少壹個參數{Timestamp}.
 
 ### -1104 UNREAD_PARAMETERS
 
-* Not all sent parameters were read.
-* Not all sent parameters were read; read '%s' parameter(s) but was sent '%s'.
+* 並非所有發送的參數都被讀取。
+* 並非所有發送的參數都被讀取； 讀取了'％s'參數，但被發送了'％s'。
 
 ### -1105 PARAM_EMPTY
 
-* A parameter was empty.
-* Parameter '%s' was empty.
+* 參數為空。
+* 參數'％s'為空。
 
 ### -1106 PARAM_NOT_REQUIRED
 
-* A parameter was sent when not required.
-* Parameter '%s' sent when not required.
+* 不需要時已發送參數。
+* 不需要時發送參數'％s'。
 
 ### -1111 BAD_PRECISION
 
-* Precision is over the maximum defined for this asset.
+* 精度超過為此資產定義的最大值。
 
 ### -1112 NO_DEPTH
 
-* No orders on book for symbol.
+* 交易對沒有掛單
 
 ### -1114 TIF_NOT_REQUIRED
 
-* TimeInForce parameter sent when not required.
+* 不需要時發送了TimeInForce參數。
 
 ### -1115 INVALID_TIF
 
-* Invalid timeInForce.
-* In the current version, this parameter is either empty or GTC.
+* 無效 timeInForce.
 
 ### -1116 INVALID_ORDER_TYPE
 
-* Invalid orderType.
-* In the current version , ORDER_TYPE values is LIMIT or MARKET.
+* 無效訂單類型。
 
 ### -1117 INVALID_SIDE
 
-* Invalid side.
-* ORDER_SIDE values is BUY or SELL
+* 無效買賣方向。
 
 ### -1118 EMPTY_NEW_CL_ORD_ID
 
-* New client order ID was empty.
+* 新的客戶訂單ID為空。
 
 ### -1119 EMPTY_ORG_CL_ORD_ID
 
-* Original client order ID was empty.
+* 原始客戶訂單ID為空。
 
 ### -1120 BAD_INTERVAL
 
-* Invalid interval.
+* 無效時間間隔。
 
 ### -1121 BAD_SYMBOL
 
-* Invalid symbol.
+* 無效符號。
 
 ### -1125 INVALID_LISTEN_KEY
 
-* This listenKey does not exist.
+* 該listenKey不存在。
 
 ### -1127 MORE_THAN_XX_HOURS
 
-* Lookup interval is too big.
-* More than %s hours between startTime and endTime.
+* 查詢間隔太大。
+* 從開始時間到結束時間之間超過％s小時。
 
 ### -1128 OPTIONAL_PARAMS_BAD_COMBO
 
-* Combination of optional parameters invalid.
+* 可選參數組合無效。
 
 ### -1130 INVALID_PARAMETER
 
-* Invalid data sent for a parameter.
-* Data sent for paramter '%s' is not valid.
+* 發送的參數為無效數據。
+* 發送參數'％s'的數據無效。
 
 ### -1132 ORDER_PRICE_TOO_HIGH
 
-* Order price too high.
+* 訂單價格過高
 
 ### -1133 ORDER_PRICE_TOO_SMALL
 
-* Order price lower than the minimum,please check general broker info.
+* 訂單價格過低，請查詢Broker Info資訊
 
 ### -1134 ORDER_PRICE_PRECISION_TOO_LONG
 
-* Order price decimal too long,please check general broker info.
+* 訂單價格精度過長，請查詢Broker Info資訊
 
 ### -1135 ORDER_QUANTITY_TOO_BIG
 
-* Order quantity too large.
+* 訂單quantity過大
 
 ### -1136 ORDER_QUANTITY_TOO_SMALL
 
-* Order quantity lower than the minimum.
+* 訂單quantity小於最小值
 
 ### -1137 ORDER_QUANTITY_PRECISION_TOO_LONG
 
-* Order quantity decimal too long.
+* 訂單quantity精度過長
 
 ### -1138 ORDER_PRICE_WAVE_EXCEED
 
-* Order price exceeds permissible range.
+* 訂單價格超出允許範圍
 
 ### -1139 ORDER_HAS_FILLED
 
-* Order has been filled.
+* 訂單已經被執行
 
 ### -1140 ORDER_AMOUNT_TOO_SMALL
 
-* Transaction amount lower than the minimum.
+* 交易金額小於最小值
 
 ### -1141 ORDER_DUPLICATED
 
-* Duplicate clientOrderId
+* clientOrderId重復
 
 ### -1142 ORDER_CANCELLED
 
-* Order has been canceled
+* 訂單已經被撤銷
 
 ### -1143 ORDER_NOT_FOUND_ON_ORDER_BOOK
 
-* Cannot be found on order book
+* 訂單當前不在訂單簿上
 
 ### -1144 ORDER_LOCKED
 
-* Order has been locked
+* 訂單已被鎖定
 
 ### -1145 ORDER_NOT_SUPPORT_CANCELLATION
 
-* This order type does not support cancellation
+* 該訂單類型不支持撤銷
 
 ### -1146 ORDER_CREATION_TIMEOUT
 
-* Order creation timeout
+* 訂單生成超時
 
 ### -1147 ORDER_CANCELLATION_TIMEOUT
 
-* Order cancellation timeout
+* 訂單撤銷超時
 
 ### -2010 NEW_ORDER_REJECTED
 
@@ -240,54 +236,53 @@ Errors consist of two parts: an error code and a message. Codes are universal,
 
 ### -2013 NO_SUCH_ORDER
 
-* Order does not exist.
+* Order不存在
 
 ### -2014 BAD_API_KEY_FMT
 
-* API-key format invalid.
+* API-key格式無效
 
 ### -2015 REJECTED_MBX_KEY
 
-* Invalid API-key, IP, or permissions for action.
+* 無效的API密鑰，IP或操作權限。.
 
 ### -2016 NO_TRADING_WINDOW
 
-* No trading window could be found for the symbol. Try ticker/24hrs instead.
+* 找不到該交易對的交易窗口。 嘗試改為24小時自動報價。
 
-## Messages for -1010 ERROR_MSG_RECEIVED, -2010 NEW_ORDER_REJECTED, and -2011 CANCEL_REJECTED
+## -1010 ERROR_MSG_RECEIVED, -2010 NEW_ORDER_REJECTED, -2011 CANCEL_REJECTED的錯誤資訊
 
-This code is sent when an error has been returned by the matching engine.
-The following messages which will indicate the specific error:
-
-Error message | Description
------------- | ------------
-"Unknown order sent." | The order (by either `orderId`, `clOrdId`, `origClOrdId`) could not be found
-"Duplicate order sent." | The `clOrdId` is already in use
-"Market is closed." | The symbol is not trading
-"Account has insufficient balance for requested action." | Not enough funds to complete the action
-"Market orders are not supported for this symbol." | `MARKET` is not enabled on the symbol
-"Iceberg orders are not supported for this symbol." | `icebergQty` is not enabled on the symbol
-"Stop loss orders are not supported for this symbol." | `STOP_LOSS` is not enabled on the symbol
-"Stop loss limit orders are not supported for this symbol." | `STOP_LOSS_LIMIT` is not enabled on the symbol
-"Take profit orders are not supported for this symbol." | `TAKE_PROFIT` is not enabled on the symbol
-"Take profit limit orders are not supported for this symbol." | `TAKE_PROFIT_LIMIT` is not enabled on the symbol
-"Price* QTY is zero or less." | `price`* `quantity` is too low
-"IcebergQty exceeds QTY." | `icebergQty` must be less than the order quantity
-"This action disabled is on this account." | Contact customer support; some actions have been disabled on the account.
-"Unsupported order combination" | The `orderType`, `timeInForce`, `stopPrice`, and/or `icebergQty` combination isn't allowed.
-"Order would trigger immediately." | The order's stop price is not valid when compared to the last traded price.
-"Cancel order is invalid. Check origClOrdId and orderId." | No `origClOrdId` or `orderId` was sent in.
-"Order would immediately match and take." | `LIMIT_MAKER` order type would immediately match and trade, and not be a pure maker order.
-
-## -9xxx Filter failures
+匹配引擎返回錯誤後，將發送此代碼。 以下消息將指示特定的錯誤：
 
 Error message | Description
 ------------ | ------------
-"Filter failure: PRICE_FILTER" | `price` is too high, too low, and/or not following the tick size rule for the symbol.
-"Filter failure: LOT_SIZE" | `quantity` is too high, too low, and/or not following the step size rule for the symbol.
-"Filter failure: MIN_NOTIONAL" | `price`* `quantity` is too low to be a valid order for the symbol.
-"Filter failure: MAX_NUM_ORDERS" | Account has too many open orders on the symbol.
-"Filter failure: MAX_ALGO_ORDERS" | Account has too many open stop loss and/or take profit orders on the symbol.
-"Filter failure: BROKER_MAX_NUM_ORDERS" | Account has too many open orders on the broker.
-"Filter failure: BROKER_MAX_ALGO_ORDERS" | Account has too many open stop loss and/or take profit orders on the broker.
-"Filter failure: ICEBERG_PARTS" | Iceberg order would break into too many parts; icebergQty is too small.
+"Unknown order sent." | 找不到訂單（通過`orderId`，`clientOrderId`，`origClientOrderId`）
+"Duplicate order sent." | `clOrdId`已經被使用
+"Market is closed." | 該交易對不在交易範圍
+"Account has insufficient balance for requested action." | 沒有足夠的資金來完成行動
+"Market orders are not supported for this symbol." | 交易對上未啟用`MARKET`
+"Iceberg orders are not supported for this symbol." | 該交易對未啟用`icebergQty`
+"Stop loss orders are not supported for this symbol." | 該交易對未啟用`STOP_LOSS`
+"Stop loss limit orders are not supported for this symbol." | 該交易對未啟用`STOP_LOSS_LIMIT`
+"Take profit orders are not supported for this symbol." | 該交易對未啟用`TAKE_PROFIT`
+"Take profit limit orders are not supported for this symbol." | 該交易對未啟用`TAKE_PROFIT_LIMIT`
+"Price* QTY is zero or less." | `price`* `quantity`太小
+"IcebergQty exceeds QTY." | `icebergQty` 必須小於訂單數量
+"This action disabled is on this account." | 聯系客戶支持；該帳戶已禁用了某些操作。
+"Unsupported order combination" | 不允許組合`orderType`, `timeInForce`, `stopPrice`, 和/或 `icebergQty`。
+"Order would trigger immediately." | 與最後交易價格相比，訂單的止損價無效。
+"Cancel order is invalid. Check origClOrdId and orderId." | 未發送`origClOrdId` 或 `orderId`。
+"Order would immediately match and take." | `LIMIT_MAKER`訂單類型將立即匹配並進行交易，而不是純粹的生成訂單。 
+
+## -9xxx 過濾器故障
+
+Error message | Description
+------------ | ------------
+"Filter failure: PRICE_FILTER" | `價格`過高，過低和/或不遵循交易對的最小價格規則。
+"Filter failure: LOT_SIZE" | `數量`太高，太低和/或不遵循該交易對的步長規則。 
+"Filter failure: MIN_NOTIONAL" | `價格` * `數量`太低，無法成為該交易對的有效訂單 
+"Filter failure: MAX_NUM_ORDERS" | 客戶在交易對上有太多掛單。
+"Filter failure: MAX_ALGO_ORDERS" | 客戶在交易對上有太多止損/止盈掛單。
+"Filter failure: BROKER_MAX_NUM_ORDERS" | 客戶在當前券商上有太多掛單。
+"Filter failure: BROKER_MAX_ALGO_ORDERS" | 客戶在當前券商上有太多止損/止盈掛單。
+"Filter failure: ICEBERG_PARTS" | 冰山訂單可能分成太多部分，`icebergQty`設置的太小。

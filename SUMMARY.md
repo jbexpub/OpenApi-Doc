@@ -1,9 +1,10 @@
 # OPEN API DOC
 
-* [General Information](REST%20API.md)
-* [Spot](Spot%20API.md)
-* [Contract](Contract%20API.md)
-* [Options](Options%20Open%20API.md)
-* [Websocket](Websocket%20Stream.md)
-* [User Data Stream](UserDataStream.md)
-* [Errors](Errors.md)
+* [更新日誌](README.md)
+* [通用基本信息](REST%20API.md)
+* [幣幣交易](Spot%20API.md)
+* [合約交易](Contract%20API.md)
+* [期權交易](Options%20Open%20API.md)
+* [Websocket推送](Websocket%20Stream.md)
+* [用戶數據流推送](UserDataStream.md)
+* [錯誤碼](Errors.md)

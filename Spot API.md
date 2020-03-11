@@ -1,61 +1,62 @@
-# Spot
+# 幣幣交易
 
-## Terminology
+## 術語解釋
 
-* `base asset` refers to the asset that is the `quantity` of a symbol.
-* `quote asset` refers to the asset that is the `price` of a symbol.
+* `base asset` 指的是symbol的`quantity`（即數量）。
 
-## ENUM definitions
+* `quote asset` 指的是symbol的`price`（即價格）。
 
-**Symbol status:**
+## ENUM 定義
 
-* TRADING
-* HALT
-* BREAK
+**Symbol 狀態:**
 
-**Symbol type:**
+* TRADING - 交易中
+* HALT - 終止
+* BREAK - 斷開
 
-* SPOT
+**Symbol 類型:**
 
-**Asset type:**
+* SPOT - 現貨
 
-* CASH
-* MARGIN
+**資產類型:**
 
-**Order status:**
+* CASH - 現金
+* MARGIN - 保證金
 
-* NEW
-* PARTIALLY_FILLED
-* FILLED
-* CANCELED
-* PENDING_CANCEL
-* REJECTED
+**訂單狀態:**
 
-**Order types:**
+* NEW - 新訂單，暫無成交
+* PARTIALLY_FILLED - 部分成交
+* FILLED - 完全成交
+* CANCELED - 已取消
+* PENDING_CANCEL - 等待取消
+* REJECTED - 被拒絕
 
-* LIMIT
-* MARKET
-* LIMIT_MAKER
-* STOP_LOSS (unavailable now)
-* STOP_LOSS_LIMIT (unavailable now)
-* TAKE_PROFIT (unavailable now)
-* TAKE_PROFIT_LIMIT (unavailable now)
-* MARKET_OF_PAYOUT (unavailable now)
+**訂單類型:**
 
-**Order side:**
+* LIMIT - 限價單
+* MARKET - 市價單
+* LIMIT_MAKER - maker限價單
+* STOP_LOSS (unavailable now) - 暫無
+* STOP_LOSS_LIMIT (unavailable now) - 暫無
+* TAKE_PROFIT (unavailable now) - 暫無
+* TAKE_PROFIT_LIMIT (unavailable now) - 暫無
+* MARKET_OF_PAYOUT (unavailable now) - 暫無
 
-* BUY
-* SELL
+**訂單方向:**
 
-**Time in force:**
+* BUY - 買單
+* SELL - 賣單
+
+**訂單時效類型:**
 
 * GTC
 * IOC
 * FOK
 
-**Kline/Candlestick chart intervals:**
+**k線/燭線圖區間:**
 
-  m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
+m -> 分鐘; h -> 小時; d -> 天; w -> 周; M -> 月
 
 * 1m
 * 3m
@@ -73,26 +74,26 @@
 * 1w
 * 1M
 
-**Rate limiters (rateLimitType)**
+**頻率限制類型 (rateLimitType)**
 
 * REQUESTS_WEIGHT
 * ORDERS
 
-**Rate limit intervals**
+**頻率限制區間**
 
 * SECOND
 * MINUTE
 * DAY
 
-## General API
+## 通用接口
 
-### Test connectivity
+### 測試連接
 
 ```shell
 GET /openapi/v1/ping
 ```
 
-Test connectivity to the Rest API.
+測試REST API的連接。
 
 **Weight:**
 0
@@ -106,13 +107,13 @@ NONE
 {}
 ```
 
-### Check server time
+### 伺服器時間
 
 ```shell
 GET /openapi/v1/time
 ```
 
-Test connectivity to the Rest API and get the current server time.
+測試連接並獲取當前伺服器的時間。
 
 **Weight:**
 0
@@ -124,17 +125,17 @@ NONE
 
 ```javascript
 {
-  "serverTime": 1538323200000
+"serverTime": 1538323200000
 }
 ```
 
-### Broker information
+### Broker資訊
 
 ```shell
 GET /openapi/v1/brokerInfo
 ```
 
-Current broker trading rules and symbol information
+當前broker交易規則和symbol資訊
 
 **Weight:**
 0
@@ -146,61 +147,62 @@ NONE
 
 ```javascript
 {
-  "timezone": "UTC",
-  "serverTime": 1538323200000,
-  "rateLimits": [{
-      "rateLimitType": "REQUESTS_WEIGHT",
-      "interval": "MINUTE",
-      "limit": 1500
-    },
-    {
-      "rateLimitType": "ORDERS",
-      "interval": "SECOND",
-      "limit": 20
-    },
-    {
-      "rateLimitType": "ORDERS",
-      "interval": "DAY",
-      "limit": 350000
-    }
-  ],
-  "brokerFilters":[],
-  "symbols": [{
-    "symbol": "ETHBTC",
-    "status": "TRADING",
-    "baseAsset": "ETH",
-    "baseAssetPrecision": "0.001",
-    "quoteAsset": "BTC",
-    "quotePrecision": "0.01",
-    "icebergAllowed": false,
-    "filters": [{
-      "filterType": "PRICE_FILTER",
-      "minPrice": "0.00000100",
-      "maxPrice": "100000.00000000",
-      "tickSize": "0.00000100"
-    }, {
-      "filterType": "LOT_SIZE",
-      "minQty": "0.00100000",
-      "maxQty": "100000.00000000",
-      "stepSize": "0.00100000"
-    }, {
-      "filterType": "MIN_NOTIONAL",
-      "minNotional": "0.00100000"
-    }]
-  }]
+"timezone": "UTC",
+"serverTime": 1538323200000,
+"rateLimits": [{
+"rateLimitType": "REQUESTS_WEIGHT",
+"interval": "MINUTE",
+"limit": 1500
+},
+{
+"rateLimitType": "ORDERS",
+"interval": "SECOND",
+"limit": 20
+},
+{
+"rateLimitType": "ORDERS",
+"interval": "DAY",
+"limit": 350000
+}
+],
+"brokerFilters":[],
+"symbols": [{
+"symbol": "ETHBTC",
+"status": "TRADING",
+"baseAsset": "ETH",
+"baseAssetPrecision": "0.001",
+"quoteAsset": "BTC",
+"quotePrecision": "0.01",
+"icebergAllowed": false,
+"filters": [{
+"filterType": "PRICE_FILTER",
+"minPrice": "0.00000100",
+"maxPrice": "100000.00000000",
+"tickSize": "0.00000100"
+}, {
+"filterType": "LOT_SIZE",
+"minQty": "0.00100000",
+"maxQty": "100000.00000000",
+"stepSize": "0.00100000"
+}, {
+"filterType": "MIN_NOTIONAL",
+"minNotional": "0.00100000"
+}]
+}]
 }
 ```
 
-## Market Data API
+## 行情接口
 
-### Order book
+### 訂單簿
 
 ```shell
 GET /openapi/quote/v1/depth
 ```
 
 **Weight:**
-Adjusted based on the limit:
+
+根據limit不同：
 
 Limit | Weight
 ------------ | ------------
@@ -210,56 +212,56 @@ Limit | Weight
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | YES |
-limit | INT | NO | Default 100; max 100.
+limit | INT | NO | 默認 100; 最大 100.
 
-**Caution:** setting limit=0 can return a lot of data.
+**注意:** 如果設置limit=0會返回很多數據。
 
 **Response:**
 
-[PRICE, QTY]
+[價格, 數量]
 
 ```javascript
 {
-  "bids": [
-    [
-      "3.90000000",   // PRICE
-      "431.00000000"  // QTY
-    ],
-    [
-      "4.00000000",
-      "431.00000000"
-    ]
-  ],
-  "asks": [
-    [
-      "4.00000200",  // PRICE
-      "12.00000000"  // QTY
-    ],
-    [
-      "5.10000000",
-      "28.00000000"
-    ]
-  ]
+"bids": [
+[
+"3.90000000", // 價格
+"431.00000000" // 數量
+],
+[
+"4.00000000",
+"431.00000000"
+]
+],
+"asks": [
+[
+"4.00000200", // 價格
+"12.00000000" // 數量
+],
+[
+"5.10000000",
+"28.00000000"
+]
+]
 }
 ```
 
-### Recent trades list
+### 最近成交
 
 ```shell
 GET /openapi/quote/v1/trades
 ```
 
-Get recent trades (up to last 500).
+獲取當前最新成交（最多500）
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | YES |
 limit | INT | NO | Default 500; max 1000.
@@ -268,91 +270,92 @@ limit | INT | NO | Default 500; max 1000.
 
 ```javascript
 [
-  {
-    "price": "4.00000100",
-    "qty": "12.00000000",
-    "time": 1499865549590,
-    "isBuyerMaker": true
-  }
+{
+"price": "4.00000100",
+"qty": "12.00000000",
+"time": 1499865549590,
+"isBuyerMaker": true
+}
 ]
 ```
 
-### Kline/Candlestick data
+### k線/燭線圖數據
 
 ```shell
 GET /openapi/quote/v1/klines
 ```
 
-Kline/candlestick bars for a symbol.
-Klines are uniquely identified by their open time.
+symbol的k線/燭線圖數據
+K線會根據開盤時間而辨別。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | YES |
 interval | ENUM | YES |
 startTime | LONG | NO |
 endTime | LONG | NO |
-limit | INT | NO | Default 500; max 1000.
+limit | INT | NO | 默認500; 最大1000.
 
-* If startTime and endTime are not sent, the most recent klines are returned.
+* 如果startTime和endTime沒有發送，只有最新的K線會被返回。
 
 **Response:**
 
 ```javascript
 [
-  [
-    1499040000000,      // Open time
-    "0.01634790",       // Open
-    "0.80000000",       // High
-    "0.01575800",       // Low
-    "0.01577100",       // Close
-    "148976.11427815",  // Volume
-    1499644799999,      // Close time
-    "2434.19055334",    // Quote asset volume
-    308,                // Number of trades
-    "1756.87402397",    // Taker buy base asset volume
-    "28.46694368"       // Taker buy quote asset volume
-  ]
+[
+1499040000000, // 開盤時間
+"0.01634790", // 開盤價
+"0.80000000", // 最高價
+"0.01575800", // 最低價
+"0.01577100", // 收盤價
+"148976.11427815", // 交易量
+1499644799999, // 收盤時間
+"2434.19055334", // Quote asset數量
+308, // 交易次數
+"1756.87402397", // Taker buy base asset數量
+"28.46694368" // Taker buy quote asset數量
+]
 ]
 ```
 
-### 24hr ticker price change statistics
+### 24小時ticker價格變化數據
 
 ```shell
 GET /openapi/quote/v1/ticker/24hr
 ```
 
-24 hour price change statistics. **Careful** when accessing this with no symbol.
+24小時價格變化數據。**注意** 如果沒有發送symbol，會返回很多數據。
 
 **Weight:**
-1 for a single symbol; **40** when the symbol parameter is omitted
+
+如果只有一個symbol，1; 如果symbol沒有被發送，**40**。
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | NO |
 
-* If the symbol is not sent, tickers for all symbols will be returned in an array.
+* 如果symbol沒有被發送，所有symbol的數據都會被返回。
 
 **Response:**
 
 ```javascript
 {
-  "time": 1538725500422,
-  "symbol": "ETHBTC",
-  "bestBidPrice": "4.00000200",
-  "bestAskPrice": "4.00000200",
-  "lastPrice": "4.00000200",
-  "openPrice": "99.00000000",
-  "highPrice": "100.00000000",
-  "lowPrice": "0.10000000",
-  "volume": "8913.30000000"
+"time": 1538725500422,
+"symbol": "ETHBTC",
+"bestBidPrice": "4.00000200",
+"bestAskPrice": "4.00000200",
+"lastPrice": "4.00000200",
+"openPrice": "99.00000000",
+"highPrice": "100.00000000",
+"lowPrice": "0.10000000",
+"volume": "8913.30000000"
 }
 ```
 
@@ -360,42 +363,42 @@ OR
 
 ```javascript
 [
-  {
-    "time": 1538725500422,
-    "symbol": "ETHBTC",
-    "lastPrice": "4.00000200",
-    "openPrice": "99.00000000",
-    "highPrice": "100.00000000",
-    "lowPrice": "0.10000000",
-    "volume": "8913.30000000"
- }
+{
+"time": 1538725500422,
+"symbol": "ETHBTC",
+"lastPrice": "4.00000200",
+"openPrice": "99.00000000",
+"highPrice": "100.00000000",
+"lowPrice": "0.10000000",
+"volume": "8913.30000000"
+}
 ]
 ```
 
-### Symbol price ticker
+### Symbol價格
 
 ```shell
 GET /openapi/quote/v1/ticker/price
 ```
 
-Latest price for a symbol or symbols.
+單個或多個symbol的最新價。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | NO |
 
-* If the symbol is not sent, prices for all symbols will be returned in an array.
+* 如果symbol沒有發送，所有symbol的最新價都會被返回。
 
 **Response:**
 
 ```javascript
 {
-  "price": "4.00000200"
+"price": "4.00000200"
 }
 ```
 
@@ -403,45 +406,45 @@ OR
 
 ```javascript
 [
-  {
-    "symbol": "LTCBTC",
-    "price": "4.00000200"
-  },
-  {
-    "symbol": "ETHBTC",
-    "price": "0.07946600"
-  }
+{
+"symbol": "LTCBTC",
+"price": "4.00000200"
+},
+{
+"symbol": "ETHBTC",
+"price": "0.07946600"
+}
 ]
 ```
 
-### Symbol order book ticker
+### Symbol最佳訂單簿價格
 
 ```shell
 GET /openapi/quote/v1/ticker/bookTicker
 ```
 
-Best price/qty on the order book for a symbol or symbols.
+單個或者多個symbol的最佳買單賣單價格。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | NO |
 
-* If the symbol is not sent, bookTickers for all symbols will be returned in an array.
+* 如果symbol沒有被發送，所有symbol的最佳訂單簿價格都會被返回。
 
 **Response:**
 
 ```javascript
 {
-  "symbol": "LTCBTC",
-  "bidPrice": "4.00000000",
-  "bidQty": "431.00000000",
-  "askPrice": "4.00000200",
-  "askQty": "9.00000000"
+"symbol": "LTCBTC",
+"bidPrice": "4.00000000",
+"bidQty": "431.00000000",
+"askPrice": "4.00000200",
+"askQty": "9.00000000"
 }
 ```
 
@@ -449,39 +452,39 @@ OR
 
 ```javascript
 [
-  {
-    "symbol": "LTCBTC",
-    "bidPrice": "4.00000000",
-    "bidQty": "431.00000000",
-    "askPrice": "4.00000200",
-    "askQty": "9.00000000"
-  },
-  {
-    "symbol": "ETHBTC",
-    "bidPrice": "0.07946700",
-    "bidQty": "9.00000000",
-    "askPrice": "100000.00000000",
-    "askQty": "1000.00000000"
-  }
+{
+"symbol": "LTCBTC",
+"bidPrice": "4.00000000",
+"bidQty": "431.00000000",
+"askPrice": "4.00000200",
+"askQty": "9.00000000"
+},
+{
+"symbol": "ETHBTC",
+"bidPrice": "0.07946700",
+"bidQty": "9.00000000",
+"askPrice": "100000.00000000",
+"askQty": "1000.00000000"
+}
 ]
 ```
 
-## Account API
+## 帳戶接口
 
-### New order  (TRADE)
+### 創建新訂單 (TRADE)
 
 ```shell
-POST /openapi/v1/order  (HMAC SHA256)
+POST /openapi/v1/order (HMAC SHA256)
 ```
 
-Send in a new order.
+發送一個新的訂單
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | STRING | YES |
 assetType | STRING | NO |
@@ -490,60 +493,48 @@ type | ENUM | YES |
 timeInForce | ENUM | NO |
 quantity | DECIMAL | YES |
 price | DECIMAL | NO |
-newClientOrderId | STRING | NO | A unique id for the order. Automatically generated if not sent.
-stopPrice | DECIMAL | NO | Used with `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders. Unavailable
-icebergQty | DECIMAL | NO | Used with `LIMIT`, `STOP_LOSS_LIMIT`, and `TAKE_PROFIT_LIMIT` to create an iceberg order. Unavailable
+newClientOrderId | STRING | NO | 一個自己給訂單定義的ID，如果沒有發送會自動生成。
+stopPrice | DECIMAL | NO | 與 `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, 和`TAKE_PROFIT_LIMIT` 訂單一起使用. **當前不可用**
+icebergQty | DECIMAL | NO | 與 `LIMIT`, `STOP_LOSS_LIMIT`, 和 `TAKE_PROFIT_LIMIT` 來創建冰山訂單. **當前不可用**
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
 
-Additional mandatory parameters based on `type`:
+在`type`上的額外強制參數:
 
-Type | Additional mandatory parameters
+類型 | 額外強制參數
 ------------ | ------------
 `LIMIT` | `timeInForce`, `quantity`, `price`
 `MARKET` | `quantity`
-`STOP_LOSS` | `quantity`, `stopPrice`
-`STOP_LOSS_LIMIT` | `timeInForce`, `quantity`,  `price`, `stopPrice`
-`TAKE_PROFIT` | `quantity`, `stopPrice`
-`TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice`
+`STOP_LOSS` | `quantity`, `stopPrice` **當前不可用**
+`STOP_LOSS_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用**
+`TAKE_PROFIT` | `quantity`, `stopPrice` **當前不可用**
+`TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用**
 `LIMIT_MAKER` | `quantity`, `price`
-
-Other info:
-
-* `LIMIT_MAKER` are `LIMIT` orders that will be rejected if they would immediately match and trade as a taker.
-* `STOP_LOSS` and `TAKE_PROFIT` will execute a `MARKET` order when the `stopPrice` is reached.
-* Any `LIMIT` or `LIMIT_MAKER` type order can be made an iceberg order by sending an `icebergQty`.
-* Any order with an `icebergQty` MUST have `timeInForce` set to `GTC`.
-
-Trigger order price rules against market price for both MARKET and LIMIT versions:
-
-* Price above market price: `STOP_LOSS` `BUY`, `TAKE_PROFIT` `SELL`
-* Price below market price: `STOP_LOSS` `SELL`, `TAKE_PROFIT` `BUY`
 
 **Response:**
 
 ```javascript
 {
-  "orderId": 28,
-  "clientOrderId": "6k9M212T12092"
+"orderId": 28,
+"clientOrderId": "6k9M212T12092"
 }
 ```
 
-### Test new order (TRADE)
+### 測試新訂單 (TRADE)
 
 ```shell
 POST /openapi/v1/order/test (HMAC SHA256)
 ```
 
-Test new order creation and signature/recvWindow long.
-Creates and validates a new order but does not send it into the matching engine.
+用signature和recvWindow測試生成新訂單。
+創建和驗證一個新訂單但是不送入撮合引擎。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Same as `POST /openapi/v1/order`
+和 `POST /openapi/v1/order`一樣。
 
 **Response:**
 
@@ -551,20 +542,20 @@ Same as `POST /openapi/v1/order`
 {}
 ```
 
-### Query order (USER_DATA)
+### 查詢訂單 (USER_DATA)
 
 ```shell
 GET /openapi/v1/order (HMAC SHA256)
 ```
 
-Check an order's status.
+查詢訂單狀態。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 orderId | LONG | NO |
 origClientOrderId | STRING | NO |
@@ -573,131 +564,128 @@ timestamp | LONG | YES |
 
 Notes:
 
-* Either `orderId` or `origClientOrderId` must be sent.
-* For some historical orders `cummulativeQuoteQty` will be < 0, meaning the data is not available at this time.
+* 單一 `orderId` 或者 `origClientOrderId` 必須被發送。
+* 對於某些歷史數據 `cummulativeQuoteQty` 可能會 < 0, 這說明數據當前不可用。
 
 **Response:**
 
 ```javascript
 {
-  "symbol": "LTCBTC",
-  "orderId": 1,
-  "clientOrderId": "9t1M2K0Ya092",
-  "price": "0.1",
-  "origQty": "1.0",
-  "executedQty": "0.0",
-  "cummulativeQuoteQty": "0.0",
-  "avgPrice": "0.0",
-  "status": "NEW",
-  "timeInForce": "GTC",
-  "type": "LIMIT",
-  "side": "BUY",
-  "stopPrice": "0.0",
-  "icebergQty": "0.0",
-  "time": 1499827319559,
-  "updateTime": 1499827319559,
-  "isWorking": true
+"symbol": "LTCBTC",
+"orderId": 1,
+"clientOrderId": "9t1M2K0Ya092",
+"price": "0.1",
+"origQty": "1.0",
+"executedQty": "0.0",
+"cummulativeQuoteQty": "0.0",
+"status": "NEW",
+"timeInForce": "GTC",
+"type": "LIMIT",
+"side": "BUY",
+"stopPrice": "0.0",
+"icebergQty": "0.0",
+"time": 1499827319559,
+"updateTime": 1499827319559,
+"isWorking": true
 }
 ```
 
-### Cancel order (TRADE)
+### 取消訂單 (TRADE)
 
 ```shell
-DELETE /openapi/v1/order  (HMAC SHA256)
+DELETE /openapi/v1/order (HMAC SHA256)
 ```
 
-Cancel an active order.
+取消當前正在交易的訂單。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 orderId | LONG | NO |
 clientOrderId | STRING | NO |
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
 
-Either `orderId` or `clientOrderId` must be sent.
+單一 `orderId` 或者 `clientOrderId`必須被發送。
 
 **Response:**
 
 ```javascript
 {
-  "symbol": "LTCBTC",
-  "clientOrderId": "tU721112KM",
-  "orderId": 1,
-  "status": "CANCELED"
+"symbol": "LTCBTC",
+"clientOrderId": "tU721112KM",
+"orderId": 1,
+"status": "CANCELED"
 }
 ```
 
-### Current open orders (USER_DATA)
+### 當前訂單(USER_DATA)
 
 ```shell
-GET /openapi/v1/openOrders  (HMAC SHA256)
+GET /openapi/v1/openOrders (HMAC SHA256)
 ```
 
-GET all open orders on a symbol. **Careful** when accessing this with no symbol.
+獲取當前單個或者多個symbol的當前訂單。**注意** 如果沒有發送symbol，會返回很多數據。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | String | NO |
 orderId | LONG | NO |
-limit | INT | NO | Default 500; max 1000.
+limit | INT | NO | 默認 500; 最多 1000.
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
 
 **Notes:**
 
-* If `orderId` is set, it will get orders < that `orderId`. Otherwise most recent orders are returned.
+* 如果`orderId`設定好了，會篩選訂單小於`orderId`的。否則會返回最近的訂單資訊。
 
 **Response:**
 
 ```javascript
 [
-  {
-    "symbol": "LTCBTC",
-    "orderId": 1,
-    "clientOrderId": "t7921223K12",
-    "price": "0.1",
-    "origQty": "1.0",
-    "executedQty": "0.0",
-    "cummulativeQuoteQty": "0.0",
-    "avgPrice": "0.0",
-    "status": "NEW",
-    "timeInForce": "GTC",
-    "type": "LIMIT",
-    "side": "BUY",
-    "stopPrice": "0.0",
-    "icebergQty": "0.0",
-    "time": 1499827319559,
-    "updateTime": 1499827319559,
-    "isWorking": true
-  }
+{
+"symbol": "LTCBTC",
+"orderId": 1,
+"clientOrderId": "t7921223K12",
+"price": "0.1",
+"origQty": "1.0",
+"executedQty": "0.0",
+"cummulativeQuoteQty": "0.0",
+"status": "NEW",
+"timeInForce": "GTC",
+"type": "LIMIT",
+"side": "BUY",
+"stopPrice": "0.0",
+"icebergQty": "0.0",
+"time": 1499827319559,
+"updateTime": 1499827319559,
+"isWorking": true
+}
 ]
 ```
 
-### History orders (USER_DATA)
+### 歷史訂單 (USER_DATA)
 
 ```shell
 GET /openapi/v1/historyOrders (HMAC SHA256)
 ```
-
-GET all orders of the account;  canceled, filled or rejected.
+獲取當前帳戶的所有訂單。亦或是取消的，完全成交的，拒絕的。
 
 **Weight:**
 5
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 symbol | String | NO |
 orderId | LONG | NO |
@@ -709,48 +697,47 @@ timestamp | LONG | YES |
 
 **Notes:**
 
-* If `orderId` is set, it will get orders < that `orderId`. Otherwise most recent orders are returned.
+* 如果`orderId`設定好了，會篩選訂單小於`orderId`的。否則會返回最近的訂單資訊。
 
 **Response:**
 
 ```javascript
 [
-  {
-    "symbol": "LTCBTC",
-    "orderId": 1,
-    "clientOrderId": "987yjj2Ym",
-    "price": "0.1",
-    "origQty": "1.0",
-    "executedQty": "0.0",
-    "cummulativeQuoteQty": "0.0",
-    "avgPrice": "0.0",
-    "status": "NEW",
-    "timeInForce": "GTC",
-    "type": "LIMIT",
-    "side": "BUY",
-    "stopPrice": "0.0",
-    "icebergQty": "0.0",
-    "time": 1499827319559,
-    "updateTime": 1499827319559,
-    "isWorking": true
-  }
+{
+"symbol": "LTCBTC",
+"orderId": 1,
+"clientOrderId": "987yjj2Ym",
+"price": "0.1",
+"origQty": "1.0",
+"executedQty": "0.0",
+"cummulativeQuoteQty": "0.0",
+"status": "NEW",
+"timeInForce": "GTC",
+"type": "LIMIT",
+"side": "BUY",
+"stopPrice": "0.0",
+"icebergQty": "0.0",
+"time": 1499827319559,
+"updateTime": 1499827319559,
+"isWorking": true
+}
 ]
 ```
 
-### Account information (USER_DATA)
+### 帳戶資訊 (USER_DATA)
 
 ```shell
 GET /openapi/v1/account (HMAC SHA256)
 ```
 
-GET current account information.
+獲取當前帳戶資訊
 
 **Weight:**
 5
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
@@ -759,39 +746,39 @@ timestamp | LONG | YES |
 
 ```javascript
 {
-  "canTrade": true,
-  "canWithdraw": true,
-  "canDeposit": true,
-  "updateTime": 123456789,
-  "balances": [
-    {
-      "asset": "BTC",
-      "free": "4723846.89208129",
-      "locked": "0.00000000"
-    },
-    {
-      "asset": "LTC",
-      "free": "4763368.68006011",
-      "locked": "0.00000000"
-    }
-  ]
+"canTrade": true,
+"canWithdraw": true,
+"canDeposit": true,
+"updateTime": 123456789,
+"balances": [
+{
+"asset": "BTC",
+"free": "4723846.89208129",
+"locked": "0.00000000"
+},
+{
+"asset": "LTC",
+"free": "4763368.68006011",
+"locked": "0.00000000"
+}
+]
 }
 ```
 
-### Account trade list (USER_DATA)
+### 帳戶交易記錄 (USER_DATA)
 
 ```shell
-GET /openapi/v1/myTrades  (HMAC SHA256)
+GET /openapi/v1/myTrades (HMAC SHA256)
 ```
 
-GET trades for a specific account.
+獲取當前帳戶歷史成交記錄
 
 **Weight:**
 5
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 startTime | LONG | NO |
 endTime | LONG | NO |
@@ -803,85 +790,84 @@ timestamp | LONG | YES |
 
 **Notes:**
 
-* If only `fromId` is set，it will get orders < that `fromId` in descending order.
-* If only `toId` is set, it will get orders > that `toId` in ascending order.
-* If `fromId` is set and `toId` is set, it will get orders < that `fromId` and > that `toId` in descending order.
-* If `fromId` is not set and `toId` it not set, most recent order are returned in descending order.
-
+* 如果只有`fromId`，會返回訂單號小於`fromId`的，倒序排列。
+* 如果只有`toId`，會返回訂單號小於`toId`的，昇冪排列。
+* 如果同時有`fromId`和`toId`, 會返回訂單號在`fromId`和`toId`的，倒序排列。
+* 如果`fromId`和`toId`都沒有，會返回最新的成交記錄，倒序排列。
 **Response:**
 
 ```javascript
 [
-  {
-    "symbol": "ETHBTC",
-    "id": 28457,
-    "orderId": 100234,
-    "matchOrderId": 109834,
-    "price": "4.00000100",
-    "qty": "12.00000000",
-    "commission": "10.10000000",
-    "commissionAsset": "ETH",
-    "time": 1499865549590,
-    "isBuyer": true,
-    "isMaker": false
-  }
+{
+"symbol": "ETHBTC",
+"id": 28457,
+"orderId": 100234,
+"matchOrderId": 109834,
+"price": "4.00000100",
+"qty": "12.00000000",
+"commission": "10.10000000",
+"commissionAsset": "ETH",
+"time": 1499865549590,
+"isBuyer": true,
+"isMaker": false
+}
 ]
 ```
 
-### Account deposit list (USER_DATA)
+### 帳戶存款記錄 (USER_DATA)
 
 ```shell
-GET /openapi/v1/depositOrders  (HMAC SHA256)
+GET /openapi/v1/depositOrders (HMAC SHA256)
 ```
 
-GET deposit orders for a specific account.
+獲取當前帳戶的存款記錄
 
 **Weight:**
 5
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 startTime | LONG | NO |
 endTime | LONG | NO |
-fromId | LONG | NO | Deposit OrderId to fetch from. Default gets most recent deposit orders.
-limit | INT | NO | Default 500; max 1000.
+fromId | LONG | NO | 從哪個OrderId起開始抓取。默認抓取最新的存款記錄。
+limit | INT | NO | 默認 500; 最大 1000.
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
 
 **Notes:**
 
-* If `fromId` is set, it will get orders > that `fromId`. Otherwise most recent orders are returned.
+* 如果`orderId`設定好了，會篩選訂單小於`orderId`的。否則會返回最近的訂單資訊。
 
 **Response:**
 
 ```javascript
 [
-  {
-	"orderId": 100234,
-	"token": "EOS",
-	"address": "deposit2jb",
-	"addressTag": "19012584",
-	"fromAddress": "clarkkent",
-	"fromAddressTag": "19029901",
-	"time": 1499865549590,
-	"quantity": "1.01"
-  }
+{
+"orderId": 100234,
+"token": "EOS",
+"address": "deposit2jb",
+"addressTag": "19012584",
+"fromAddress": "clarkkent",
+"fromAddressTag": "19029901",
+"time": 1499865549590,
+"quantity": "1.01"
+}
 ]
 ```
 
-### Sub-account list(SUB_ACCOUNT_LIST)
+### 子帳戶列表(SUB_ACCOUNT_LIST)
 
 ```shell
 POST /openapi/v1/subAccount/query
 ```
 
-Query sub-account lists
+查詢子帳戶列表
 
 **Parameters:**
 
-None
+無
 
 **Weight:**
 5
@@ -890,175 +876,174 @@ None
 
 ```javascript
 [
-    {
-        "accountId": "122216245228131",
-        "accountName": "",
-        "accountType": 1,
-        "accountIndex": 0 // main-account: 0, sub-account: 1
-    },
-    {
-        "accountId": "482694560475091200",
-        "accountName": "createSubAccountByCurl", // sub-account name
-        "accountType": 1, // sub-account type 1. token trading 3. contract trading
-        "accountIndex": 1
-    },
-    {
-        "accountId": "422446415267060992",
-        "accountName": "",
-        "accountType": 3,
-        "accountIndex": 0
-    },
-    {
-        "accountId": "482711469199298816",
-        "accountName": "createSubAccountByCurl",
-        "accountType": 3,
-        "accountIndex": 1
-    },
+{
+"accountId": "122216245228131",
+"accountName": "",
+"accountType": 1,
+"accountIndex": 0 // 帳戶index 0 默認帳戶 >0, 創建的子帳戶
+},
+{
+"accountId": "482694560475091200",
+"accountName": "createSubAccountByCurl", // 子帳戶名稱
+"accountType": 1, // 子帳戶類型 1 幣幣帳戶 3 合約帳戶
+"accountIndex": 1
+},
+{
+"accountId": "422446415267060992",
+"accountName": "",
+"accountType": 3,
+"accountIndex": 0
+},
+{
+"accountId": "482711469199298816",
+"accountName": "createSubAccountByCurl",
+"accountType": 3,
+"accountIndex": 1
+},
 ]
 ```
 
-### Internal Account Transfer (ACCOUNT_TRANSFER)
+### 帳戶內轉賬 (ACCOUNT_TRANSFER)
 
 ```shell
 POST /openapi/v1/transfer
 ```
 
-Internal transfer
+轉賬
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Typee | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
-fromAccountType | int | YES |source account type: 1. token trading account 2.Options account 3. Contracts account
-fromAccountIndex | int | YES |sub-account index(valid when using main-account api, get sub-account indices from `SUB_ACCOUNT_LIST` endpoint)
-toAccountType | int | YES | Target account type: 1. token trading account 2.Options account 3. Contracts account
-toAccountIndex | int | YES | sub-account index(valid when using main-account api, get sub-account indices from `SUB_ACCOUNT_LIST` endpoint)
+fromAccountType | int | YES |源帳戶類型, 1 錢包(幣幣)帳戶 2 期權帳戶 3 合約帳戶
+fromAccountIndex | int | YES |子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取
+toAccountType | int | YES | 目標帳戶類型, 1 錢包(幣幣)帳戶 2 期權帳戶 3 合約帳戶
+toAccountIndex | int | YES | 子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取
 tokenId | STRING | YES | tokenID
-amount | STRING | YES | Transfer amount
+amount | STRING | YES | 轉賬數量
 
 **Response:**
 
 ```javascript
 {
-    "success":"true" // success
+"success":"true" // 0成功
 }
 ```
 
-**Explanation**
+**說明**
 
-1. Either transferring or receiving account must be the main account (Token trading account)
+1、轉賬帳戶和收款帳戶的其中一方，必須是主帳戶(錢包帳戶)
 
-2. Main account api can support transferring to other account(including sub-accounts) and receiving from other accounts
+2、主帳戶Api可以從錢包帳戶向其他帳戶(包括子帳戶)轉賬，也可以從其他帳戶向錢包帳戶轉賬
 
-3. **Sub-account API only supports transferring from current account to the main-account. Therefore `fromAccountType\fromAccountIndex\toAccountType\toAccountIndex` should be left empty.**
+3、**子帳戶Api調用的時候只能從當前子帳戶向主帳戶(錢包帳戶)轉賬，所以fromAccountType\fromAccountIndex\toAccountType\toAccountIndex不用填**
 
-
-### Check Balance Flow (BALANCE_FLOW)
+### 查詢流水 (BALANCE_FLOW)
 
 ```shell
 POST /openapi/v1/balance_flow
 ```
 
-Check blance flow
+查詢帳戶流水
 
 **Weight:**
 5
 
 **Parameters:**
 
-|Name | Type | Mandatory | Description
+|名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
- | accountType   | int     | no | Account account_type | 默认1 |
- | accountIndex  | int     | no | Account account_index | 默认0 |
- | tokenId       | string  | no     | token_id     | eg: BTC                                |
- | fromFlowId  | long    | no     |  | Query data that id < fromFlowId|
- | endFlowId   | long    | no     |  | Query data that id > |endFlowId  |
-| startTime     | long    | no    | Start Time     | Timestamp (millisecond)                             |
-| endTime       | long    | no     | End Time     | Timestamp (millisecond)                             |
-| limit          | integer | no    | Number of entries   | Default is 50，max is 100                                       |
+| accountType | int | 否 | 帳戶對應的account_type | 默認1 |
+| accountIndex | int | 否 | 帳戶對應的account_index | 默認0 |
+| tokenId | string | 否 | token_id | eg: BTC |
+| fromFlowId | long | 否 | 順向查詢數據 | 指定查詢 id < fromFlowId的數據 |
+| endFlowId | long | 否 | 反向查詢數據 | 指定查詢 id > |endFlowId的數據 |
+| startTime | long | 否 | 開始時間 | 毫秒時間戳 |
+| endTime | long | 否 | 結束時間 | 毫秒時間戳 |
+| limit | integer | 否 | 每頁記錄數 | 默認50，最大100 |
 
 **Response:**
 
 ```javascript
 [
-    {
-        "id": "539870570957903104",
-        "accountId": "122216245228131",
-        "tokenId": "BTC",
-        "tokenName": "BTC",
-        "flowTypeValue": 51, // balance flow type
-        "flowType": "USER_ACCOUNT_TRANSFER", // balance flow type name
-        "flowName": "Transfer", // balance flow type Explanation
-        "change": "-12.5", // change
-        "total": "379.624059937852365", // total asset after change
-        "created": "1579093587214"
-    },
-    {
-        "id": "536072393645448960",
-        "accountId": "122216245228131",
-        "tokenId": "USDT",
-        "tokenName": "USDT",
-        "flowTypeValue": 7,
-        "flowType": "AIRDROP",
-        "flowName": "Airdrop",
-        "change": "-2000",
-        "total": "918662.0917630848",
-        "created": "1578640809195"
-    }
+{
+"id": "539870570957903104",
+"accountId": "122216245228131",
+"tokenId": "BTC",
+"tokenName": "BTC",
+"flowTypeValue": 51, // 流水類型
+"flowType": "USER_ACCOUNT_TRANSFER", // 流水類型名稱
+"flowName": "Transfer", // 流水類型說明
+"change": "-12.5", // 變動值
+"total": "379.624059937852365", // 變動後當前tokenId總資產
+"created": "1579093587214"
+},
+{
+"id": "536072393645448960",
+"accountId": "122216245228131",
+"tokenId": "USDT",
+"tokenName": "USDT",
+"flowTypeValue": 7,
+"flowType": "AIRDROP",
+"flowName": "Airdrop",
+"change": "-2000",
+"total": "918662.0917630848",
+"created": "1578640809195"
+}
 ]
 ```
 
-**Explanation**
+**說明**
 
-1. Main-account API can query balance flow for token account and other accounts(including sub-accounts, or designated `accountType` and `accountIndex` accounts)
+1、主帳戶Api可以查詢錢包帳戶或者其他帳戶(包括子帳戶，指定accountType和accountIndex)的流水’
 
-2. Sub-account API can only query current sub-account, therefore `accountType` and `accountIndex` is not required.
+2、子帳戶Api只能查詢當前子帳戶的流水，所以不用指定accountType和accountIndex
 
-**Please see the following for balance flow types**
+**流水類型說明請見如下**
 
-Category|Parameter Type Name|Parameter Type Id|Explanation|
+歸類|類型參數名|類型參數代號|解釋說明|
 ------|------|------|------|
-General Balance Flow|TRADE|1|trades|
-General Balance Flow|FEE|2|trading fees|
-General Balance Flow|TRANSFER|3|transfer|
-General Balance Flow|DEPOSIT|4|deposit|
-Derivatives|MAKER_REWARD|27|maker reward
-Derivatives|PNL|28|PnL from contracts
-Derivatives|SETTLEMENT|30|Settlement
-Derivatives|LIQUIDATION|31|Liquidation
-Derivatives|FUNDING_SETTLEMENT|32|期货等的资金费率结算
-Internal Transfer|USER_ACCOUNT_TRANSFER|51|userAccountTransfer 专用，流水没有subjectExtId
-OTC|OTC_BUY_COIN|65|OTC buy coin
-OTC|OTC_SELL_COIN|66|OTC sell coin
-OTC|OTC_FEE|73|OTC fees
-OTC|OTC_TRADE|200|Old OTC balance flow
-Campaign|ACTIVITY_AWARD|67|Campaign reward
-Campaign|INVITATION_REFERRAL_BONUS|68|邀请返佣
-Campaign|REGISTER_BONUS|69|Registration reward
-Campaign|AIRDROP|70|Airdrop
-Campaign|MINE_REWARD|71|Mining reward
+通用流水類|TRADE|1|交易|
+通用流水類|FEE|2|交易手續費|
+通用流水類|TRANSFER|3|轉賬|
+通用流水類|DEPOSIT|4|充值|
+衍生品業務|MAKER_REWARD|27|maker獎勵
+衍生品業務|PNL|28|期貨等的盈虧
+衍生品業務|SETTLEMENT|30|交割
+衍生品業務|LIQUIDATION|31|強平
+衍生品業務|FUNDING_SETTLEMENT|32|期貨等的資金費率結算
+用戶子帳戶之間內部轉賬|USER_ACCOUNT_TRANSFER|51|userAccountTransfer 專用，流水沒有subjectExtId
+OTC|OTC_BUY_COIN|65|OTC 買入coin
+OTC|OTC_SELL_COIN|66|OTC 賣出coin
+OTC|OTC_FEE|73|OTC 手續費
+OTC|OTC_TRADE|200|舊版 OTC 流水
+活動|ACTIVITY_AWARD|67|活動獎勵
+活動|INVITATION_REFERRAL_BONUS|68|邀請返傭
+活動|REGISTER_BONUS|69|註冊送禮
+活動|AIRDROP|70|空投
+活動|MINE_REWARD|71|挖礦獎勵
 
-## User data stream API
+## 用戶數據流接口
 
-Specifics on how user data streams work is in another document.
+詳細的用戶資訊流說明在另一個文檔中。
 
-### Start user data stream (USER_STREAM)
+### 開始用戶資訊流 (USER_STREAM)
 
 ```shell
 POST /openapi/v1/userDataStream
 ```
 
-Start a new user data stream. The stream will close after 60 minutes unless a keepalive is sent.
+開始一個新的用戶資訊流。如果keepalive指令沒有發送，資訊流將將會在60分鐘後關閉。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 recvWindow | LONG | NO |
 timestamp | LONG | YES |
@@ -1067,24 +1052,24 @@ timestamp | LONG | YES |
 
 ```javascript
 {
-  "listenKey": "1A9LWJjuMwKWYP4QQPw34GRm8gz3x5AephXSuqcDef1RnzoBVhEeGE963CoS1Sgj"
+"listenKey": "1A9LWJjuMwKWYP4QQPw34GRm8gz3x5AephXSuqcDef1RnzoBVhEeGE963CoS1Sgj"
 }
 ```
 
-### Keepalive user data stream (USER_STREAM)
+### Keepalive用戶資訊流 (USER_STREAM)
 
 ```shell
 PUT /openapi/v1/userDataStream
 ```
 
-Keepalive a user data stream to prevent a time out. User data streams will close after 60 minutes. It's recommended to send a ping about every 30 minutes.
+維持用戶資訊流來防止斷開連接。用戶資訊流會在60分鐘後自動中斷，所以建議30分鐘發送一次ping請求。
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 listenKey | STRING | YES |
 recvWindow | LONG | NO |
@@ -1096,20 +1081,20 @@ timestamp | LONG | YES |
 {}
 ```
 
-### Close user data stream (USER_STREAM)
+### 關閉用戶資訊流 (USER_STREAM)
 
 ```shell
 DELETE /openapi/v1/userDataStream
 ```
 
-Close out a user data stream.
+關閉用戶資訊流
 
 **Weight:**
 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
+名稱 | 類型 | 是否強制 | 描述
 ------------ | ------------ | ------------ | ------------
 listenKey | STRING | YES |
 recvWindow | LONG | NO |
@@ -1121,95 +1106,79 @@ timestamp | LONG | YES |
 {}
 ```
 
-## Filters
+## 過濾層
 
-Filters define trading rules on a symbol or an broker.
-Filters come in two forms: `symbol filters` and `broker filters`.
+過濾層（filter）定義某個broker的某個symbol的交易規則
+過濾層（filter）有兩個大類：`symbol filters` 和 `broker filters`
 
-### Symbol filters
+### Symbol過濾層
 
 #### PRICE_FILTER
 
-The `PRICE_FILTER` defines the `price` rules for a symbol. There are 3 parts:
+`PRICE_FILTER` 定義某個symbol的`price` 精度. 一共有3個部分：
 
-* `minPrice` defines the minimum `price`/`stopPrice` allowed.
-* `maxPrice` defines the maximum `price`/`stopPrice` allowed.
-* `tickSize` defines the intervals that a `price`/`stopPrice` can be increased/decreased by.
+* `minPrice` 定義最小允許的 `price`/`stopPrice`
+* `maxPrice` 定義最大允許的 `price`/`stopPrice`.
+* `tickSize` 定義`price`/`stopPrice` 可以增加和減少的間隔。
 
-In order to pass the `price filter`, the following must be true for `price`/`stopPrice`:
+如果要通過`price filter`要求，`price`/`stopPrice`必須滿足：
 
 * `price` >= `minPrice`
 * `price` <= `maxPrice`
 * (`price`-`minPrice`) % `tickSize` == 0
 
-**/brokerInfo format:**
+**/brokerInfo格式:**
 
 ```javascript
-  {
-    "filterType": "PRICE_FILTER",
-    "minPrice": "0.00000100",
-    "maxPrice": "100000.00000000",
-    "tickSize": "0.00000100"
-  }
+{
+"filterType": "PRICE_FILTER",
+"minPrice": "0.00000100",
+"maxPrice": "100000.00000000",
+"tickSize": "0.00000100"
+}
 ```
 
 #### LOT_SIZE
 
-The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol. There are 3 parts:
+`LOT_SIZE` 過濾層定義某個symbol `quantity`(在拍賣行裏又稱為"lots"）的精度。 一共有三個部分：
 
-* `minQty` defines the minimum `quantity`/`icebergQty` allowed.
-* `maxQty` defines the maximum `quantity`/`icebergQty` allowed.
-* `stepSize` defines the intervals that a `quantity`/`icebergQty` can be increased/decreased by.
+* `minQty` 定義最小允許的 `quantity`/`icebergQty`
+* `maxQty` 定義最大允許的 `quantity`/`icebergQty`
+* `stepSize`定義`quantity`/`icebergQty`可以增加和減少的間隔。
 
-In order to pass the `lot size`, the following must be true for `quantity`/`icebergQty`:
+如果要通過`lot size`要求，`quantity`/`icebergQty`必須滿足:
 
 * `quantity` >= `minQty`
 * `quantity` <= `maxQty`
 * (`quantity`-`minQty`) % `stepSize` == 0
 
-**/brokerInfo format:**
+**/brokerInfo格式:**
 
 ```javascript
-  {
-    "filterType": "LOT_SIZE",
-    "minQty": "0.00100000",
-    "maxQty": "100000.00000000",
-    "stepSize": "0.00100000"
-  }
+{
+"filterType": "LOT_SIZE",
+"minQty": "0.00100000",
+"maxQty": "100000.00000000",
+"stepSize": "0.00100000"
+}
 ```
 
 #### MIN_NOTIONAL
 
-The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
-An order's notional value is the `price` * `quantity`.
+`MIN_NOTIONAL` 過濾層定義某個symbol的名義金額精度。一個訂單的名義金額為 `price` * `quantity`.
 
 **/brokerInfo format:**
 
 ```javascript
-  {
-    "filterType": "MIN_NOTIONAL",
-    "minNotional": "0.00100000"
-  }
-```
-
-#### MAX_NUM_ORDERS
-
-The `MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on a symbol.
-Note that both "algo" orders and normal orders are counted for this filter.
-
-**/brokerInfo format:**
-
-```javascript
-  {
-    "filterType": "MAX_NUM_ORDERS",
-    "limit": 25
-  }
+{
+"filterType": "MIN_NOTIONAL",
+"minNotional": "0.00100000"
+}
 ```
 
 #### MAX_NUM_ALGO_ORDERS
 
-The `MAX_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on a symbol.
-"Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+`MAX_ALGO_ORDERS` 過濾層定義賬戶在某個symbol上的最大“算法”掛單數。“算法”訂單包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等訂單類型。
 
 **/brokerInfo format:**
 
@@ -1222,7 +1191,7 @@ The `MAX_ALGO_ORDERS` filter defines the maximum number of "algo" orders an acco
 
 #### ICEBERG_PARTS
 
-The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have. The number of `ICEBERG_PARTS` is defined as `CEIL(qty / icebergQty)`.
+`ICEBERG_PARTS` 過濾層定義冰山訂單部件的最大值。`ICEBERG_PARTS`的定義為`CEIL(qty / icebergQty)`.
 
 **/brokerInfo format:**
 
@@ -1237,8 +1206,7 @@ The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have. 
 
 #### BROKER_MAX_NUM_ORDERS
 
-The `MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on the broker.
-Note that both "algo" orders and normal orders are counted for this filter.
+`BROKER_MAX_NUM_ORDERS` 過濾層定義賬戶在broker上的最大掛單數。請註意，此過濾層同時計算“算法”訂單和普通訂單。
 
 **/brokerInfo format:**
 
@@ -1251,8 +1219,7 @@ Note that both "algo" orders and normal orders are counted for this filter.
 
 #### BROKER_MAX_NUM_ALGO_ORDERS
 
-The `MAX_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on the broker.
-"Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+`BROKER_MAX_NUM_ALGO_ORDERS` 過濾層定義賬戶在broker上的最大“算法”掛單數。“算法”訂單包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等訂單類型。
 
 **/brokerInfo format:**
 
