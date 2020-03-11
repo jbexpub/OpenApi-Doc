@@ -3,7 +3,6 @@
 ## 術語解釋
 
 * `base asset` 指的是symbol的`quantity`（即數量）。
-
 * `quote asset` 指的是symbol的`price`（即價格）。
 
 ## ENUM 定義
@@ -26,22 +25,22 @@
 **訂單狀態:**
 
 * NEW - 新訂單，暫無成交
-* PARTIALLY_FILLED - 部分成交
+* PARTIALLY\_FILLED - 部分成交
 * FILLED - 完全成交
 * CANCELED - 已取消
-* PENDING_CANCEL - 等待取消
+* PENDING\_CANCEL - 等待取消
 * REJECTED - 被拒絕
 
 **訂單類型:**
 
 * LIMIT - 限價單
 * MARKET - 市價單
-* LIMIT_MAKER - maker限價單
-* STOP_LOSS (unavailable now) - 暫無
-* STOP_LOSS_LIMIT (unavailable now) - 暫無
-* TAKE_PROFIT (unavailable now) - 暫無
-* TAKE_PROFIT_LIMIT (unavailable now) - 暫無
-* MARKET_OF_PAYOUT (unavailable now) - 暫無
+* LIMIT\_MAKER - maker限價單
+* STOP\_LOSS \(unavailable now\) - 暫無
+* STOP\_LOSS\_LIMIT \(unavailable now\) - 暫無
+* TAKE\_PROFIT \(unavailable now\) - 暫無
+* TAKE\_PROFIT\_LIMIT \(unavailable now\) - 暫無
+* MARKET\_OF\_PAYOUT \(unavailable now\) - 暫無
 
 **訂單方向:**
 
@@ -56,7 +55,7 @@
 
 **k線/燭線圖區間:**
 
-m -> 分鐘; h -> 小時; d -> 天; w -> 周; M -> 月
+m -&gt; 分鐘; h -&gt; 小時; d -&gt; 天; w -&gt; 周; M -&gt; 月
 
 * 1m
 * 3m
@@ -74,9 +73,9 @@ m -> 分鐘; h -> 小時; d -> 天; w -> 周; M -> 月
 * 1w
 * 1M
 
-**頻率限制類型 (rateLimitType)**
+**頻率限制類型 \(rateLimitType\)**
 
-* REQUESTS_WEIGHT
+* REQUESTS\_WEIGHT
 * ORDERS
 
 **頻率限制區間**
@@ -89,17 +88,15 @@ m -> 分鐘; h -> 小時; d -> 天; w -> 周; M -> 月
 
 ### 測試連接
 
-```shell
+```text
 GET /openapi/v1/ping
 ```
 
 測試REST API的連接。
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -109,17 +106,15 @@ NONE
 
 ### 伺服器時間
 
-```shell
+```text
 GET /openapi/v1/time
 ```
 
 測試連接並獲取當前伺服器的時間。
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -131,17 +126,15 @@ NONE
 
 ### Broker資訊
 
-```shell
+```text
 GET /openapi/v1/brokerInfo
 ```
 
 當前broker交易規則和symbol資訊
 
-**Weight:**
-0
+**Weight:** 0
 
-**Parameters:**
-NONE
+**Parameters:** NONE
 
 **Response:**
 
@@ -196,7 +189,7 @@ NONE
 
 ### 訂單簿
 
-```shell
+```text
 GET /openapi/quote/v1/depth
 ```
 
@@ -204,24 +197,24 @@ GET /openapi/quote/v1/depth
 
 根據limit不同：
 
-Limit | Weight
------------- | ------------
-5, 10, 20, 50, 100 | 1
-500 | 5
-1000 | 10
+| Limit | Weight |
+| :--- | :--- |
+| 5, 10, 20, 50, 100 | 1 |
+| 500 | 5 |
+| 1000 | 10 |
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-limit | INT | NO | 默認 100; 最大 100.
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| limit | INT | NO | 默認 100; 最大 100. |
 
 **注意:** 如果設置limit=0會返回很多數據。
 
 **Response:**
 
-[價格, 數量]
+\[價格, 數量\]
 
 ```javascript
 {
@@ -250,21 +243,20 @@ limit | INT | NO | 默認 100; 最大 100.
 
 ### 最近成交
 
-```shell
+```text
 GET /openapi/quote/v1/trades
 ```
 
 獲取當前最新成交（最多500）
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-limit | INT | NO | Default 500; max 1000.
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| limit | INT | NO | Default 500; max 1000. |
 
 **Response:**
 
@@ -281,25 +273,23 @@ limit | INT | NO | Default 500; max 1000.
 
 ### k線/燭線圖數據
 
-```shell
+```text
 GET /openapi/quote/v1/klines
 ```
 
-symbol的k線/燭線圖數據
-K線會根據開盤時間而辨別。
+symbol的k線/燭線圖數據 K線會根據開盤時間而辨別。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-interval | ENUM | YES |
-startTime | LONG | NO |
-endTime | LONG | NO |
-limit | INT | NO | 默認500; 最大1000.
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| interval | ENUM | YES |  |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| limit | INT | NO | 默認500; 最大1000. |
 
 * 如果startTime和endTime沒有發送，只有最新的K線會被返回。
 
@@ -325,7 +315,7 @@ limit | INT | NO | 默認500; 最大1000.
 
 ### 24小時ticker價格變化數據
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/24hr
 ```
 
@@ -337,9 +327,9 @@ GET /openapi/quote/v1/ticker/24hr
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol沒有被發送，所有symbol的數據都會被返回。
 
@@ -377,20 +367,19 @@ OR
 
 ### Symbol價格
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/price
 ```
 
 單個或多個symbol的最新價。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol沒有發送，所有symbol的最新價都會被返回。
 
@@ -419,20 +408,19 @@ OR
 
 ### Symbol最佳訂單簿價格
 
-```shell
+```text
 GET /openapi/quote/v1/ticker/bookTicker
 ```
 
 單個或者多個symbol的最佳買單賣單價格。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | NO |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | NO |  |
 
 * 如果symbol沒有被發送，所有symbol的最佳訂單簿價格都會被返回。
 
@@ -471,45 +459,44 @@ OR
 
 ## 帳戶接口
 
-### 創建新訂單 (TRADE)
+### 創建新訂單 \(TRADE\)
 
-```shell
+```text
 POST /openapi/v1/order (HMAC SHA256)
 ```
 
 發送一個新的訂單
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | STRING | YES |
-assetType | STRING | NO |
-side | ENUM | YES |
-type | ENUM | YES |
-timeInForce | ENUM | NO |
-quantity | DECIMAL | YES |
-price | DECIMAL | NO |
-newClientOrderId | STRING | NO | 一個自己給訂單定義的ID，如果沒有發送會自動生成。
-stopPrice | DECIMAL | NO | 與 `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, 和`TAKE_PROFIT_LIMIT` 訂單一起使用. **當前不可用**
-icebergQty | DECIMAL | NO | 與 `LIMIT`, `STOP_LOSS_LIMIT`, 和 `TAKE_PROFIT_LIMIT` 來創建冰山訂單. **當前不可用**
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | STRING | YES |  |
+| assetType | STRING | NO |  |
+| side | ENUM | YES |  |
+| type | ENUM | YES |  |
+| timeInForce | ENUM | NO |  |
+| quantity | DECIMAL | YES |  |
+| price | DECIMAL | NO |  |
+| newClientOrderId | STRING | NO | 一個自己給訂單定義的ID，如果沒有發送會自動生成。 |
+| stopPrice | DECIMAL | NO | 與 `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, 和`TAKE_PROFIT_LIMIT` 訂單一起使用. **當前不可用** |
+| icebergQty | DECIMAL | NO | 與 `LIMIT`, `STOP_LOSS_LIMIT`, 和 `TAKE_PROFIT_LIMIT` 來創建冰山訂單. **當前不可用** |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 在`type`上的額外強制參數:
 
-類型 | 額外強制參數
------------- | ------------
-`LIMIT` | `timeInForce`, `quantity`, `price`
-`MARKET` | `quantity`
-`STOP_LOSS` | `quantity`, `stopPrice` **當前不可用**
-`STOP_LOSS_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用**
-`TAKE_PROFIT` | `quantity`, `stopPrice` **當前不可用**
-`TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用**
-`LIMIT_MAKER` | `quantity`, `price`
+| 類型 | 額外強制參數 |
+| :--- | :--- |
+| `LIMIT` | `timeInForce`, `quantity`, `price` |
+| `MARKET` | `quantity` |
+| `STOP_LOSS` | `quantity`, `stopPrice` **當前不可用** |
+| `STOP_LOSS_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用** |
+| `TAKE_PROFIT` | `quantity`, `stopPrice` **當前不可用** |
+| `TAKE_PROFIT_LIMIT` | `timeInForce`, `quantity`, `price`, `stopPrice` **當前不可用** |
+| `LIMIT_MAKER` | `quantity`, `price` |
 
 **Response:**
 
@@ -520,17 +507,15 @@ timestamp | LONG | YES |
 }
 ```
 
-### 測試新訂單 (TRADE)
+### 測試新訂單 \(TRADE\)
 
-```shell
+```text
 POST /openapi/v1/order/test (HMAC SHA256)
 ```
 
-用signature和recvWindow測試生成新訂單。
-創建和驗證一個新訂單但是不送入撮合引擎。
+用signature和recvWindow測試生成新訂單。 創建和驗證一個新訂單但是不送入撮合引擎。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
@@ -542,30 +527,29 @@ POST /openapi/v1/order/test (HMAC SHA256)
 {}
 ```
 
-### 查詢訂單 (USER_DATA)
+### 查詢訂單 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/order (HMAC SHA256)
 ```
 
 查詢訂單狀態。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-orderId | LONG | NO |
-origClientOrderId | STRING | NO |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| orderId | LONG | NO |  |
+| origClientOrderId | STRING | NO |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 Notes:
 
 * 單一 `orderId` 或者 `origClientOrderId` 必須被發送。
-* 對於某些歷史數據 `cummulativeQuoteQty` 可能會 < 0, 這說明數據當前不可用。
+* 對於某些歷史數據 `cummulativeQuoteQty` 可能會 &lt; 0, 這說明數據當前不可用。
 
 **Response:**
 
@@ -590,25 +574,24 @@ Notes:
 }
 ```
 
-### 取消訂單 (TRADE)
+### 取消訂單 \(TRADE\)
 
-```shell
+```text
 DELETE /openapi/v1/order (HMAC SHA256)
 ```
 
 取消當前正在交易的訂單。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-orderId | LONG | NO |
-clientOrderId | STRING | NO |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| orderId | LONG | NO |  |
+| clientOrderId | STRING | NO |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 單一 `orderId` 或者 `clientOrderId`必須被發送。
 
@@ -623,26 +606,25 @@ timestamp | LONG | YES |
 }
 ```
 
-### 當前訂單(USER_DATA)
+### 當前訂單\(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/openOrders (HMAC SHA256)
 ```
 
 獲取當前單個或者多個symbol的當前訂單。**注意** 如果沒有發送symbol，會返回很多數據。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | String | NO |
-orderId | LONG | NO |
-limit | INT | NO | 默認 500; 最多 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | String | NO |  |
+| orderId | LONG | NO |  |
+| limit | INT | NO | 默認 500; 最多 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -673,27 +655,27 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 歷史訂單 (USER_DATA)
+### 歷史訂單 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/historyOrders (HMAC SHA256)
 ```
+
 獲取當前帳戶的所有訂單。亦或是取消的，完全成交的，拒絕的。
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-symbol | String | NO |
-orderId | LONG | NO |
-startTime | LONG | NO |
-endTime | LONG | NO |
-limit | INT | NO | Default 500; max 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| symbol | String | NO |  |
+| orderId | LONG | NO |  |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| limit | INT | NO | Default 500; max 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -724,23 +706,22 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 帳戶資訊 (USER_DATA)
+### 帳戶資訊 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/account (HMAC SHA256)
 ```
 
 獲取當前帳戶資訊
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -765,28 +746,27 @@ timestamp | LONG | YES |
 }
 ```
 
-### 帳戶交易記錄 (USER_DATA)
+### 帳戶交易記錄 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/myTrades (HMAC SHA256)
 ```
 
 獲取當前帳戶歷史成交記錄
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-startTime | LONG | NO |
-endTime | LONG | NO |
-fromId | LONG | NO | TradeId to fetch from.
-toId | LONG | NO | TradeId to fetch to.
-limit | INT | NO | Default 500; max 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| fromId | LONG | NO | TradeId to fetch from. |
+| toId | LONG | NO | TradeId to fetch to. |
+| limit | INT | NO | Default 500; max 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -794,7 +774,8 @@ timestamp | LONG | YES |
 * 如果只有`toId`，會返回訂單號小於`toId`的，昇冪排列。
 * 如果同時有`fromId`和`toId`, 會返回訂單號在`fromId`和`toId`的，倒序排列。
 * 如果`fromId`和`toId`都沒有，會返回最新的成交記錄，倒序排列。
-**Response:**
+
+  **Response:**
 
 ```javascript
 [
@@ -814,27 +795,26 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 帳戶存款記錄 (USER_DATA)
+### 帳戶存款記錄 \(USER\_DATA\)
 
-```shell
+```text
 GET /openapi/v1/depositOrders (HMAC SHA256)
 ```
 
 獲取當前帳戶的存款記錄
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-startTime | LONG | NO |
-endTime | LONG | NO |
-fromId | LONG | NO | 從哪個OrderId起開始抓取。默認抓取最新的存款記錄。
-limit | INT | NO | 默認 500; 最大 1000.
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| startTime | LONG | NO |  |
+| endTime | LONG | NO |  |
+| fromId | LONG | NO | 從哪個OrderId起開始抓取。默認抓取最新的存款記錄。 |
+| limit | INT | NO | 默認 500; 最大 1000. |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Notes:**
 
@@ -857,9 +837,9 @@ timestamp | LONG | YES |
 ]
 ```
 
-### 子帳戶列表(SUB_ACCOUNT_LIST)
+### 子帳戶列表\(SUB\_ACCOUNT\_LIST\)
 
-```shell
+```text
 POST /openapi/v1/subAccount/query
 ```
 
@@ -869,8 +849,7 @@ POST /openapi/v1/subAccount/query
 
 無
 
-**Weight:**
-5
+**Weight:** 5
 
 **Response:**
 
@@ -903,27 +882,26 @@ POST /openapi/v1/subAccount/query
 ]
 ```
 
-### 帳戶內轉賬 (ACCOUNT_TRANSFER)
+### 帳戶內轉賬 \(ACCOUNT\_TRANSFER\)
 
-```shell
+```text
 POST /openapi/v1/transfer
 ```
 
 轉賬
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-fromAccountType | int | YES |源帳戶類型, 1 錢包(幣幣)帳戶 2 期權帳戶 3 合約帳戶
-fromAccountIndex | int | YES |子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取
-toAccountType | int | YES | 目標帳戶類型, 1 錢包(幣幣)帳戶 2 期權帳戶 3 合約帳戶
-toAccountIndex | int | YES | 子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取
-tokenId | STRING | YES | tokenID
-amount | STRING | YES | 轉賬數量
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| fromAccountType | int | YES | 源帳戶類型, 1 錢包\(幣幣\)帳戶 2 期權帳戶 3 合約帳戶 |
+| fromAccountIndex | int | YES | 子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取 |
+| toAccountType | int | YES | 目標帳戶類型, 1 錢包\(幣幣\)帳戶 2 期權帳戶 3 合約帳戶 |
+| toAccountIndex | int | YES | 子帳戶index, 主帳戶Api調用時候有用，從子帳戶列表介面獲取 |
+| tokenId | STRING | YES | tokenID |
+| amount | STRING | YES | 轉賬數量 |
 
 **Response:**
 
@@ -935,35 +913,34 @@ amount | STRING | YES | 轉賬數量
 
 **說明**
 
-1、轉賬帳戶和收款帳戶的其中一方，必須是主帳戶(錢包帳戶)
+1、轉賬帳戶和收款帳戶的其中一方，必須是主帳戶\(錢包帳戶\)
 
-2、主帳戶Api可以從錢包帳戶向其他帳戶(包括子帳戶)轉賬，也可以從其他帳戶向錢包帳戶轉賬
+2、主帳戶Api可以從錢包帳戶向其他帳戶\(包括子帳戶\)轉賬，也可以從其他帳戶向錢包帳戶轉賬
 
-3、**子帳戶Api調用的時候只能從當前子帳戶向主帳戶(錢包帳戶)轉賬，所以fromAccountType\fromAccountIndex\toAccountType\toAccountIndex不用填**
+3、**子帳戶Api調用的時候只能從當前子帳戶向主帳戶\(錢包帳戶\)轉賬，所以fromAccountType\fromAccountIndex\toAccountType\toAccountIndex不用填**
 
-### 查詢流水 (BALANCE_FLOW)
+### 查詢流水 \(BALANCE\_FLOW\)
 
-```shell
+```text
 POST /openapi/v1/balance_flow
 ```
 
 查詢帳戶流水
 
-**Weight:**
-5
+**Weight:** 5
 
 **Parameters:**
 
-|名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-| accountType | int | 否 | 帳戶對應的account_type | 默認1 |
-| accountIndex | int | 否 | 帳戶對應的account_index | 默認0 |
-| tokenId | string | 否 | token_id | eg: BTC |
-| fromFlowId | long | 否 | 順向查詢數據 | 指定查詢 id < fromFlowId的數據 |
-| endFlowId | long | 否 | 反向查詢數據 | 指定查詢 id > |endFlowId的數據 |
-| startTime | long | 否 | 開始時間 | 毫秒時間戳 |
-| endTime | long | 否 | 結束時間 | 毫秒時間戳 |
-| limit | integer | 否 | 每頁記錄數 | 默認50，最大100 |
+| 名稱 | 類型 | 是否強制 | 描述 |  |  |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| accountType | int | 否 | 帳戶對應的account\_type | 默認1 |  |
+| accountIndex | int | 否 | 帳戶對應的account\_index | 默認0 |  |
+| tokenId | string | 否 | token\_id | eg: BTC |  |
+| fromFlowId | long | 否 | 順向查詢數據 | 指定查詢 id &lt; fromFlowId的數據 |  |
+| endFlowId | long | 否 | 反向查詢數據 | 指定查詢 id &gt; | endFlowId的數據 |
+| startTime | long | 否 | 開始時間 | 毫秒時間戳 |  |
+| endTime | long | 否 | 結束時間 | 毫秒時間戳 |  |
+| limit | integer | 否 | 每頁記錄數 | 默認50，最大100 |  |
 
 **Response:**
 
@@ -998,55 +975,54 @@ POST /openapi/v1/balance_flow
 
 **說明**
 
-1、主帳戶Api可以查詢錢包帳戶或者其他帳戶(包括子帳戶，指定accountType和accountIndex)的流水’
+1、主帳戶Api可以查詢錢包帳戶或者其他帳戶\(包括子帳戶，指定accountType和accountIndex\)的流水’
 
 2、子帳戶Api只能查詢當前子帳戶的流水，所以不用指定accountType和accountIndex
 
 **流水類型說明請見如下**
 
-歸類|類型參數名|類型參數代號|解釋說明|
-------|------|------|------|
-通用流水類|TRADE|1|交易|
-通用流水類|FEE|2|交易手續費|
-通用流水類|TRANSFER|3|轉賬|
-通用流水類|DEPOSIT|4|充值|
-衍生品業務|MAKER_REWARD|27|maker獎勵
-衍生品業務|PNL|28|期貨等的盈虧
-衍生品業務|SETTLEMENT|30|交割
-衍生品業務|LIQUIDATION|31|強平
-衍生品業務|FUNDING_SETTLEMENT|32|期貨等的資金費率結算
-用戶子帳戶之間內部轉賬|USER_ACCOUNT_TRANSFER|51|userAccountTransfer 專用，流水沒有subjectExtId
-OTC|OTC_BUY_COIN|65|OTC 買入coin
-OTC|OTC_SELL_COIN|66|OTC 賣出coin
-OTC|OTC_FEE|73|OTC 手續費
-OTC|OTC_TRADE|200|舊版 OTC 流水
-活動|ACTIVITY_AWARD|67|活動獎勵
-活動|INVITATION_REFERRAL_BONUS|68|邀請返傭
-活動|REGISTER_BONUS|69|註冊送禮
-活動|AIRDROP|70|空投
-活動|MINE_REWARD|71|挖礦獎勵
+| 歸類 | 類型參數名 | 類型參數代號 | 解釋說明 |
+| :--- | :--- | :--- | :--- |
+| 通用流水類 | TRADE | 1 | 交易 |
+| 通用流水類 | FEE | 2 | 交易手續費 |
+| 通用流水類 | TRANSFER | 3 | 轉賬 |
+| 通用流水類 | DEPOSIT | 4 | 充值 |
+| 衍生品業務 | MAKER\_REWARD | 27 | maker獎勵 |
+| 衍生品業務 | PNL | 28 | 期貨等的盈虧 |
+| 衍生品業務 | SETTLEMENT | 30 | 交割 |
+| 衍生品業務 | LIQUIDATION | 31 | 強平 |
+| 衍生品業務 | FUNDING\_SETTLEMENT | 32 | 期貨等的資金費率結算 |
+| 用戶子帳戶之間內部轉賬 | USER\_ACCOUNT\_TRANSFER | 51 | userAccountTransfer 專用，流水沒有subjectExtId |
+| OTC | OTC\_BUY\_COIN | 65 | OTC 買入coin |
+| OTC | OTC\_SELL\_COIN | 66 | OTC 賣出coin |
+| OTC | OTC\_FEE | 73 | OTC 手續費 |
+| OTC | OTC\_TRADE | 200 | 舊版 OTC 流水 |
+| 活動 | ACTIVITY\_AWARD | 67 | 活動獎勵 |
+| 活動 | INVITATION\_REFERRAL\_BONUS | 68 | 邀請返傭 |
+| 活動 | REGISTER\_BONUS | 69 | 註冊送禮 |
+| 活動 | AIRDROP | 70 | 空投 |
+| 活動 | MINE\_REWARD | 71 | 挖礦獎勵 |
 
 ## 用戶數據流接口
 
 詳細的用戶資訊流說明在另一個文檔中。
 
-### 開始用戶資訊流 (USER_STREAM)
+### 開始用戶資訊流 \(USER\_STREAM\)
 
-```shell
+```text
 POST /openapi/v1/userDataStream
 ```
 
 開始一個新的用戶資訊流。如果keepalive指令沒有發送，資訊流將將會在60分鐘後關閉。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -1056,24 +1032,23 @@ timestamp | LONG | YES |
 }
 ```
 
-### Keepalive用戶資訊流 (USER_STREAM)
+### Keepalive用戶資訊流 \(USER\_STREAM\)
 
-```shell
+```text
 PUT /openapi/v1/userDataStream
 ```
 
 維持用戶資訊流來防止斷開連接。用戶資訊流會在60分鐘後自動中斷，所以建議30分鐘發送一次ping請求。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -1081,24 +1056,23 @@ timestamp | LONG | YES |
 {}
 ```
 
-### 關閉用戶資訊流 (USER_STREAM)
+### 關閉用戶資訊流 \(USER\_STREAM\)
 
-```shell
+```text
 DELETE /openapi/v1/userDataStream
 ```
 
 關閉用戶資訊流
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -1108,12 +1082,11 @@ timestamp | LONG | YES |
 
 ## 過濾層
 
-過濾層（filter）定義某個broker的某個symbol的交易規則
-過濾層（filter）有兩個大類：`symbol filters` 和 `broker filters`
+過濾層（filter）定義某個broker的某個symbol的交易規則 過濾層（filter）有兩個大類：`symbol filters` 和 `broker filters`
 
 ### Symbol過濾層
 
-#### PRICE_FILTER
+#### PRICE\_FILTER
 
 `PRICE_FILTER` 定義某個symbol的`price` 精度. 一共有3個部分：
 
@@ -1123,9 +1096,9 @@ timestamp | LONG | YES |
 
 如果要通過`price filter`要求，`price`/`stopPrice`必須滿足：
 
-* `price` >= `minPrice`
-* `price` <= `maxPrice`
-* (`price`-`minPrice`) % `tickSize` == 0
+* `price` &gt;= `minPrice`
+* `price` &lt;= `maxPrice`
+* \(`price`-`minPrice`\) % `tickSize` == 0
 
 **/brokerInfo格式:**
 
@@ -1138,9 +1111,9 @@ timestamp | LONG | YES |
 }
 ```
 
-#### LOT_SIZE
+#### LOT\_SIZE
 
-`LOT_SIZE` 過濾層定義某個symbol `quantity`(在拍賣行裏又稱為"lots"）的精度。 一共有三個部分：
+`LOT_SIZE` 過濾層定義某個symbol `quantity`\(在拍賣行裏又稱為"lots"）的精度。 一共有三個部分：
 
 * `minQty` 定義最小允許的 `quantity`/`icebergQty`
 * `maxQty` 定義最大允許的 `quantity`/`icebergQty`
@@ -1148,9 +1121,9 @@ timestamp | LONG | YES |
 
 如果要通過`lot size`要求，`quantity`/`icebergQty`必須滿足:
 
-* `quantity` >= `minQty`
-* `quantity` <= `maxQty`
-* (`quantity`-`minQty`) % `stepSize` == 0
+* `quantity` &gt;= `minQty`
+* `quantity` &lt;= `maxQty`
+* \(`quantity`-`minQty`\) % `stepSize` == 0
 
 **/brokerInfo格式:**
 
@@ -1163,9 +1136,9 @@ timestamp | LONG | YES |
 }
 ```
 
-#### MIN_NOTIONAL
+#### MIN\_NOTIONAL
 
-`MIN_NOTIONAL` 過濾層定義某個symbol的名義金額精度。一個訂單的名義金額為 `price` * `quantity`.
+`MIN_NOTIONAL` 過濾層定義某個symbol的名義金額精度。一個訂單的名義金額為 `price` \* `quantity`.
 
 **/brokerInfo format:**
 
@@ -1176,7 +1149,7 @@ timestamp | LONG | YES |
 }
 ```
 
-#### MAX_NUM_ALGO_ORDERS
+#### MAX\_NUM\_ALGO\_ORDERS
 
 `MAX_ALGO_ORDERS` 過濾層定義賬戶在某個symbol上的最大“算法”掛單數。“算法”訂單包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等訂單類型。
 
@@ -1189,7 +1162,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### ICEBERG_PARTS
+#### ICEBERG\_PARTS
 
 `ICEBERG_PARTS` 過濾層定義冰山訂單部件的最大值。`ICEBERG_PARTS`的定義為`CEIL(qty / icebergQty)`.
 
@@ -1204,7 +1177,7 @@ timestamp | LONG | YES |
 
 ### Broker Filters
 
-#### BROKER_MAX_NUM_ORDERS
+#### BROKER\_MAX\_NUM\_ORDERS
 
 `BROKER_MAX_NUM_ORDERS` 過濾層定義賬戶在broker上的最大掛單數。請註意，此過濾層同時計算“算法”訂單和普通訂單。
 
@@ -1217,7 +1190,7 @@ timestamp | LONG | YES |
   }
 ```
 
-#### BROKER_MAX_NUM_ALGO_ORDERS
+#### BROKER\_MAX\_NUM\_ALGO\_ORDERS
 
 `BROKER_MAX_NUM_ALGO_ORDERS` 過濾層定義賬戶在broker上的最大“算法”掛單數。“算法”訂單包括`STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`等訂單類型。
 
@@ -1229,3 +1202,4 @@ timestamp | LONG | YES |
     "limit": 200
   }
 ```
+

@@ -1,10 +1,11 @@
-# OPEN API DOC
+# Table of contents
 
 * [更新日誌](README.md)
-* [通用基本信息](REST%20API.md)
-* [幣幣交易](Spot%20API.md)
-* [合約交易](Contract%20API.md)
-* [期權交易](Options%20Open%20API.md)
-* [Websocket推送](Websocket%20Stream.md)
-* [用戶數據流推送](UserDataStream.md)
-* [錯誤碼](Errors.md)
+* [通用基本信息](rest-api.md)
+* [幣幣交易](spot-api.md)
+* [合約交易](contract-api.md)
+* [期權交易](options-open-api.md)
+* [Websocket推送](websocket-stream.md)
+* [用戶數據流推送](userdatastream.md)
+* [錯誤碼](errors.md)
+

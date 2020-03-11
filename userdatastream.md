@@ -1,11 +1,11 @@
 # 用戶數據流推送
 
-## 基本資訊 
+## 基本資訊
 
 * 壹個用戶數據流的`listenKey`在創建之後的有效期只有60分鐘
 * 如果對`listenKey`做`PUT`請求可以延長有效期60分鐘
 * 如果對`listenKey`做`DELETE`請求會關閉推送
-* 用戶數據流推送在這個端點 **/openapi/ws/<listenKey>** 訪問
+* 用戶數據流推送在這個端點 **/openapi/ws/** 訪問
 * 單壹API連接的有效期只有24小時，請做好在24小時後被斷開連接的準備
 * 用戶數據流返回在訂單繁忙期**不保證**順序正常，**請使用E字段進行排序**
 
@@ -13,21 +13,20 @@
 
 ### 創建listenKey
 
-```shell
+```text
 POST /openapi/v1/userDataStream
 ```
 
 創建壹個新的用戶數據流。如果沒有發送keepalive，推送將會在60分鐘後斷開。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述 
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -39,22 +38,21 @@ timestamp | LONG | YES |
 
 ### 延長listenKey有效期
 
-```shell
+```text
 PUT /openapi/v1/userDataStream
 ```
 
 發送PUT請求會有效期延長至本次調用後60分鐘，建議每30分鐘發送壹個ping。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-名稱 | 類型 | 是否強制 | 描述 
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| 名稱 | 類型 | 是否強制 | 描述 |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -64,22 +62,21 @@ timestamp | LONG | YES |
 
 ### 關閉listenKey
 
-```shell
+```text
 DELETE /openapi/v1/userDataStream
 ```
 
 關閉用戶數據流。
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| Name | Type | Mandatory | Description |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -114,7 +111,7 @@ timestamp | LONG | YES |
 
 ### 訂單更新
 
-訂單通過`executionReport`事件進行更新。詳細說明資訊請查看 [這裏](Spot%20API.md)。通過將`Z`除以`z`可以找到平均價格。
+訂單通過`executionReport`事件進行更新。詳細說明資訊請查看 [這裏](spot-api.md)。通過將`Z`除以`z`可以找到平均價格。
 
 **Payload:**
 
@@ -147,7 +144,7 @@ timestamp | LONG | YES |
 **執行類型:**
 
 * NEW（新訂單）
-* PARTIALLY_FILLED（部分成交）
+* PARTIALLY\_FILLED（部分成交）
 * FILLED（全部成交）
 * CANCELED（已撤銷）
 * REJECTED（已拒絕）
@@ -170,3 +167,4 @@ timestamp | LONG | YES |
   "r": "-0.0139"                        // 已實現盈虧
 }
 ```
+

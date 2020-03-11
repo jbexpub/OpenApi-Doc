@@ -1,12 +1,12 @@
-# 通用基本資訊
+# 通用基本信息
 
 ## 端點資訊
 
-名稱 | 基本端點
------------- | ------------
-rest-api | **[https://api.jbex.com](https://api.jbex.com)**
-web-socket-streams | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)**
-user-data-stream | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)*
+| 名稱 | 基本端點 |
+| :--- | :--- |
+| rest-api | [**https://api.jbex.com**](https://api.jbex.com) |
+| web-socket-streams | [**wss://wsapi.jbex.com**](wss://wsapi.jbex.com) |
+| user-data-stream | _\*_[_wss://wsapi.jbex.com_](wss://wsapi.jbex.com) |
 
 ## 通用API資訊
 
@@ -48,17 +48,17 @@ user-data-stream | **[wss://wsapi.jbex.com](wss://wsapi.jbex.com)*
 * API-keys和secret-keys **要區分大小寫**。
 * 默認情況下，API-keys可以訪問所有的安全節點。
 
-安全類型 | 描述
------------- | ------------
-NONE | 端點可以自由訪問。
-TRADE | 端點需要發送有效的API-Key和簽名。
-USER_DATA | 端點需要發送有效的API-Key和簽名。
-USER_STREAM | 端點需要發送有效的API-Key。
-MARKET_DATA | 端點需要發送有效的API-Key。
+| 安全類型 | 描述 |
+| :--- | :--- |
+| NONE | 端點可以自由訪問。 |
+| TRADE | 端點需要發送有效的API-Key和簽名。 |
+| USER\_DATA | 端點需要發送有效的API-Key和簽名。 |
+| USER\_STREAM | 端點需要發送有效的API-Key。 |
+| MARKET\_DATA | 端點需要發送有效的API-Key。 |
 
 * `TRADE` 和 `USER_DATA` 端點是 `SIGNED`（需要簽名）的端點。
 
-### SIGNED（有簽名的）(TRADE和USER_DATA) 端點安全
+### SIGNED（有簽名的）\(TRADE和USER\_DATA\) 端點安全
 
 * `SIGNED`（需要簽名）的端點需要發送一個參數，`signature`，在`query string` 或者 `request body`裏。
 * 端點用`HMAC SHA256`簽名。`HMAC SHA256 signature`是一個對key進行`HMAC SHA256`加密的結果。用你的`secretKey`作為key和`totalParams`作為value來完成這一加密過程。
@@ -67,7 +67,7 @@ MARKET_DATA | 端點需要發送有效的API-Key。
 
 ### 時效安全
 
-* 一個`SIGNED`(有簽名)的端點還需要發送一個參數，`timestamp`，這是當請求發起時的毫秒級時間戳。
+* 一個`SIGNED`\(有簽名\)的端點還需要發送一個參數，`timestamp`，這是當請求發起時的毫秒級時間戳。
 * 一個額外的參數（非強制性）, `recvWindow`, 可以說明這個請求在多少毫秒內是有效的。如果`recvWindow`沒有被發送，**默認值是5000**。
 * 在當前，只有創建訂單的時候才會用到`recvWindow`。
 * 該參數的邏輯如下：
@@ -80,8 +80,7 @@ if (timestamp < (serverTime + 1000) && (serverTime - timestamp) <= recvWindow) {
 }
 ```
 
-**嚴謹的交易和時效緊緊相關** 網路有時會不穩定或者不可靠，這會導致請求發送伺服器的時間不一致。
-有了`recvWindow`，你可以說明在多少毫秒內請求是有效的，否則就會被服務器拒絕。
+**嚴謹的交易和時效緊緊相關** 網路有時會不穩定或者不可靠，這會導致請求發送伺服器的時間不一致。 有了`recvWindow`，你可以說明在多少毫秒內請求是有效的，否則就會被服務器拒絕。
 
 **建議使用一個相對小的recvWindow（5000或以下）！**
 
@@ -89,52 +88,52 @@ if (timestamp < (serverTime + 1000) && (serverTime - timestamp) <= recvWindow) {
 
 這裏有一個詳細的用Linux`echo`, `openssl`, 和 `curl`舉例來展示如何發送一個有效的簽名payload。
 
-Key | 值
------------- | ------------
-apiKey | tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW
-secretKey | lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76
+| Key | 值 |
+| :--- | :--- |
+| apiKey | tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW |
+| secretKey | lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76 |
 
-參數名 | 參數值
------------- | ------------
-symbol | ETHBTC
-side | BUY
-type | LIMIT
-timeInForce | GTC
-quantity | 1
-price | 0.1
-recvWindow | 5000
-timestamp | 1538323200000
+| 參數名 | 參數值 |
+| :--- | :--- |
+| symbol | ETHBTC |
+| side | BUY |
+| type | LIMIT |
+| timeInForce | GTC |
+| quantity | 1 |
+| price | 0.1 |
+| recvWindow | 5000 |
+| timestamp | 1538323200000 |
 
 #### 例子 1: 在`queryString`裏
 
-* **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order?symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6'
 ```
 
 #### 例子 2: 在`request body`裏
 
-* **requestBody:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **requestBody:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order' -d 'symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=5f2750ad7589d1d40757a55342e621a44037dad23b5128cc70e18ec1d1c3f4c6'
 ```
@@ -142,19 +141,20 @@ timestamp | 1538323200000
 #### 例子 3: `queryString`和`request body`混合在一起
 
 * **queryString:** symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC
-* **requestBody:** quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000
+* **requestBody:** quantity=1&price=0.1&recvWindow=5000×tamp=1538323200000
 * **HMAC SHA256 signature:**
 
-```shell
+```text
 [linux]$ echo -n "symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTCquantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000" | openssl dgst -sha256 -hmac "lH3ELTNiFxCQTmi9pPcWWikhsjO04Yoqw3euoHUuOLC3GYBW64ZqzQsiOEHXQS76"
 (stdin)= 885c9e3dd89ccd13408b25e6d54c2330703759d7494bea6dd5a3d1fd16ba3afa
 ```
 
 * **curl command:**
 
-```shell
+```text
 (HMAC SHA256)
 [linux]$ curl -H "X-BH-APIKEY: tAQfOrPIZAhym0qHISRt8EFvxPemdBm5j5WMlkm3Ke9aFp0EGWC2CGM8GHV4kCYW" -X POST 'https://$HOST/openapi/v1/order?symbol=ETHBTC&side=BUY&type=LIMIT&timeInForce=GTC' -d 'quantity=1&price=0.1&recvWindow=5000&timestamp=1538323200000&signature=885c9e3dd89ccd13408b25e6d54c2330703759d7494bea6dd5a3d1fd16ba3afa'
 ```
 
-***注意在例子3裏有一點不一樣，"GTC"和"quantity=1"之間沒有&。***
+_**注意在例子3裏有一點不一樣，"GTC"和"quantity=1"之間沒有&。**_
+
