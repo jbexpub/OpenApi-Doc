@@ -5,7 +5,7 @@
 * A User Data Stream `listenKey` is valid for 60 minutes after creation.
 * Doing a `PUT` on a `listenKey` will extend its validity for 60 minutes.
 * Doing a `DELETE` on a `listenKey` will close the stream.
-* User Data Streams are accessed at **/openapi/ws/\<listenKey\>**
+* User Data Streams are accessed at **/openapi/ws/\**
 * A single connection to api endpoint is only valid for 24 hours; expect to be disconnected at the 24 hour mark
 * User data stream payloads are **not guaranteed** to be in order during heavy periods; **make sure to order your updates using Event**
 
@@ -13,21 +13,20 @@
 
 ### Create a listenKey
 
-```shell
+```text
 POST /openapi/v1/userDataStream
 ```
 
 Start a new user data stream. The stream will close after 60 minutes unless a keepalive is sent.
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
------------- | ------------ | ------------ | ------------
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| Name | Type | Mandatory | Description |
+| :--- | :--- | :--- | :--- |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -39,22 +38,21 @@ timestamp | LONG | YES |
 
 ### Ping/Keep-alive a listenKey
 
-```shell
+```text
 PUT /openapi/v1/userDataStream
 ```
 
 Keepalive a user data stream to prevent a time out. User data streams will close after 60 minutes. It's recommended to send a ping about every 30 minutes.
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| Name | Type | Mandatory | Description |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -64,22 +62,21 @@ timestamp | LONG | YES |
 
 ### Close a listenKey
 
-```shell
+```text
 DELETE /openapi/v1/userDataStream
 ```
 
 Close out a user data stream.
 
-**Weight:**
-1
+**Weight:** 1
 
 **Parameters:**
 
-Name | Type | Mandatory | Description
------------- | ------------ | ------------ | ------------
-listenKey | STRING | YES |
-recvWindow | LONG | NO |
-timestamp | LONG | YES |
+| Name | Type | Mandatory | Description |
+| :--- | :--- | :--- | :--- |
+| listenKey | STRING | YES |  |
+| recvWindow | LONG | NO |  |
+| timestamp | LONG | YES |  |
 
 **Response:**
 
@@ -119,8 +116,7 @@ Account state is updated with the `outboundAccountInfo` event.
 
 ### Order Update
 
-Orders are updated with the `executionReport` event. Check the API documentation and below for relevant enum definitions.
-Average price can be found by doing `Z` divided by `z`.
+Orders are updated with the `executionReport` event. Check the API documentation and below for relevant enum definitions. Average price can be found by doing `Z` divided by `z`.
 
 **Payload:**
 
@@ -162,7 +158,8 @@ Average price can be found by doing `Z` divided by `z`.
 **Execution types:**
 
 * NEW
-* PARTIALLY_FILLED
+* PARTIALLY\_FILLED
 * FILLED
 * CANCELED
 * REJECTED
+

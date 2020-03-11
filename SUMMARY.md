@@ -1,10 +1,11 @@
-# OPEN API DOC
+# Table of contents
 
 * [Changelog](README.md)
-* [General Information](REST%20API.md)
-* [Spot](Spot%20API.md)
-* [Contract](Contract%20API.md)
-* [Options](Options%20Open%20API.md)
-* [Websocket](Websocket%20Stream.md)
-* [User Data Stream](UserDataStream.md)
-* [Errors](Errors.md)
+* [General Information](rest-api.md)
+* [Spot](spot-api.md)
+* [Contract](contract-api.md)
+* [Options](options-open-api.md)
+* [Websocket](websocket-stream.md)
+* [User Data Stream](userdatastream.md)
+* [Errors](errors.md)
+

@@ -1,15 +1,15 @@
-# Web Socket
+# Websocket
 
 ## General WSS information
 
-* The base endpoint is [here](endpoint.md)
+* The base endpoint is [here](https://github.com/jbexpub/OpenApi-Doc/tree/cd625eccebff30dde72ee2984196c50e8ec8bcab/endpoint.md)
 * Raw streams are accessed at **/openapi/quote/ws/v1**
 
 | name | values |
-| :--- | :---- |
-| topic | realtimes, trade, kline_$interval, depth|
-| event | sub, cancel, cancel_all|
-| interval | 1m, 5m, 15m, 30m, 1h, 2h, 6h, 12h, 1d, 1w, 1M|
+| :--- | :--- |
+| topic | realtimes, trade, kline\_$interval, depth |
+| event | sub, cancel, cancel\_all |
+| interval | 1m, 5m, 15m, 30m, 1h, 2h, 6h, 12h, 1d, 1w, 1M |
 
 **Sample Subscription Data:**
 
@@ -29,27 +29,29 @@
 ```
 
 | name | Explanation |
-| :--- | :---- |
-|limit|Specify number of entries returned|
-|binary|Whether returned values is in binary format. **DEFAULT** value is **false**|
+| :--- | :--- |
+| limit | Specify number of entries returned |
+| binary | Whether returned values is in binary format. **DEFAULT** value is **false** |
 
 ## Heartbeat
 
-The  client need to send a `PING` message to the server regularly through the Websocket, which then the server replies with `PONG`. If the client does not send the message every 5 minutes, the server will close the connection.
+The client need to send a `PING` message to the server regularly through the Websocket, which then the server replies with `PONG`. If the client does not send the message every 5 minutes, the server will close the connection.
 
 * Request
-```javascript
-{
+
+  ```javascript
+  {
     "ping": 1535975085052
-}
-```
+  }
+  ```
 
 * Response
-```javascript
-{
+
+  ```javascript
+  {
     "pong": 1535975085052
-}
-```
+  }
+  ```
 
 ## Trade Streams
 
@@ -57,7 +59,7 @@ The Trade Streams push raw trade information; each trade has a unique buyer and 
 
 After successful handshake and connected to server, the server will return the latest 60 trades. After this payload, the following will be real-time trades.
 
-Variable "v" acts as an tradeId. This variable is shared across different symbols; however, each ID is unique. For example, suppose in the last 5 seconds 3 trades happened in ETHSUDT, BTCUSDT, and JBTBTC. Their version (which is "v") will be consecutive: 112, 113, 114.   
+Variable "v" acts as an tradeId. This variable is shared across different symbols; however, each ID is unique. For example, suppose in the last 5 seconds 3 trades happened in ETHSUDT, BTCUSDT, and JBTBTC. Their version \(which is "v"\) will be consecutive: 112, 113, 114.
 
 **Subscription message structure:**
 
@@ -132,14 +134,13 @@ Variable "v" acts as an tradeId. This variable is shared across different symbol
 }
 ```
 
-
 ## Kline/Candlestick Streams
 
 The Kline/Candlestick Stream push updates to the current klines/candlestick every second.
 
 **Kline/Candlestick chart intervals:**
 
-m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
+m -&gt; minutes; h -&gt; hours; d -&gt; days; w -&gt; weeks; M -&gt; months
 
 * 1m
 * 5m
@@ -192,6 +193,7 @@ m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
 The Depth Streams for symbols.
 
 Here is the book dump instructions：
+
 * The book dump frequency：Every 300ms, if book version changed.
 * The book dump depth：300 for asks and bids each.
 * The book version change event：
@@ -266,7 +268,7 @@ Here is the book dump instructions：
 
 Order book price and quantity depth updates used to locally manage an order book pushed every second.
 
-In the Diff. (difference) depth stream, the quantity doesn"t necessarily mean the corresponding quantity to the price anymore. If the quantity is 0, it means this previous price level is not in the orderbook anymore. If the quantity is > 0, it means the updated quantity for this price level.
+In the Diff. \(difference\) depth stream, the quantity doesn"t necessarily mean the corresponding quantity to the price anymore. If the quantity is 0, it means this previous price level is not in the orderbook anymore. If the quantity is &gt; 0, it means the updated quantity for this price level.
 
 Suppose now we have received the first depth data payload:
 
@@ -275,15 +277,19 @@ Suppose now we have received the first depth data payload:
 ```
 
 If the next payload is:
+
 ```javascript
 ["0.00181860", "12.3"]
 ```
+
 This means that this price level"s quantity has changed.
 
 If the next payload is:
+
 ```javascript
 ["0.00181860", "0"]
 ```
+
 This means that this price level is not in orderbook anymore.
 
 **Payload:**
@@ -363,3 +369,4 @@ PERIOD_EMPTY("-10008", "Period required!")
 PERIOD_ERROR("-10009", "Invalid period!")
 SYMBOLS_ERROR("-100010", "Invalid Symbols!")
 ```
+
