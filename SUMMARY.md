@@ -8,4 +8,4 @@
 * [Websocket](websocket-stream.md)
 * [User Data Stream](userdatastream.md)
 * [Errors](errors.md)
-
+* [Github SDK](github-sdk.md)
