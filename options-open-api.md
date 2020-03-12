@@ -1,6 +1,6 @@
 # Options
 
-The base url of broker open API can be found [here](https://github.com/jbexpub/OpenApi-Doc/tree/cd625eccebff30dde72ee2984196c50e8ec8bcab/endpoint.md)
+The base url of broker open API can be found [here](endpoint.md)
 
 ## Terminology
 
