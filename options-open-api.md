@@ -2,6 +2,84 @@
 
 Broker Open API的地址请见[这里](https://github.com/jbexpub/OpenApi-Doc/tree/625c4d977dc5ca8a7d69164f53fa3f5c7e150622/endpoint.md)
 
+## 术语解释
+
+* `base asset` 指的是symbol的`quantity`（即数量）。
+* `quote asset` 指的是symbol的`price`（即价格）。
+
+## ENUM 定义
+
+**Symbol 状态:**
+
+* TRADING - 交易中
+* HALT - 终止
+* BREAK - 断开
+
+**订单状态:**
+
+* NEW - 新订单，暂无成交
+* PARTIALLY\_FILLED - 部分成交
+* FILLED - 完全成交
+* CANCELED - 已取消
+* PENDING\_CANCEL - 等待取消
+* REJECTED - 被拒
+
+**订单类型:**
+
+* LIMIT - 限价单
+* MARKET - 市价
+
+**订单方向:**
+
+* BUY - 买单
+* SELL - 卖
+
+**订单时效类型:**
+
+* GTC
+* IOC
+* FOK
+
+**k线/烛线图区间:**
+
+m -&gt; 分钟; h -&gt; 小时; d -&gt; 天; w -&gt; 周; M -&gt; 月
+
+* 1m
+* 3m
+* 5m
+* 15m
+* 30m
+* 1h
+* 2h
+* 4h
+* 6h
+* 8h
+* 12h
+* 1d
+* 3d
+* 1w
+* 1M
+
+**频率限制类型 \(rateLimitType\)**
+
+* REQUESTS\_WEIGHT
+* ORDERS
+
+**频率限制区间**
+
+* SECOND
+* MINUTE
+* DAY
+
+比如:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## 公共接口
 
 ### `brokerInfo`

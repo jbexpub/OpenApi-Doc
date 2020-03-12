@@ -84,6 +84,15 @@ m -&gt; 分钟; h -&gt; 小时; d -&gt; 天; w -&gt; 周; M -&gt; 月
 * MINUTE
 * DAY
 
+比如:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## 通用接口
 
 ### 测试连接
@@ -1215,4 +1224,3 @@ DELETE /openapi/v1/userDataStream
     "limit": 200
   }
 ```
-
