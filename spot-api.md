@@ -84,6 +84,15 @@ m -&gt; 分鐘; h -&gt; 小時; d -&gt; 天; w -&gt; 周; M -&gt; 月
 * MINUTE
 * DAY
 
+比如:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## 通用接口
 
 ### 測試連接
