@@ -84,6 +84,15 @@ m -&gt; minutes; h -&gt; hours; d -&gt; days; w -&gt; weeks; M -&gt; months
 * MINUTE
 * DAY
 
+For example:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## General API
 
 ### Test connectivity

@@ -2,6 +2,82 @@
 
 The base url of broker open API can be found [here](https://github.com/jbexpub/OpenApi-Doc/tree/cd625eccebff30dde72ee2984196c50e8ec8bcab/endpoint.md)
 
+## Key parameter explanation:
+
+### `side`
+
+The side of the trade.
+
+`BUY_OPEN`: open a long position.
+
+`SELL_CLOSE`: close a long position.
+
+`SELL_OPEN`: open a short position.
+
+`BUY_CLOSE`: close a short position.
+
+### `priceType`
+
+Price types.
+
+`INPUT`: The system will use the price you entered exactly to fill the orders.
+
+`OPPONENT`: Orders will be filled using the opposite side's best quote.
+
+For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11. You will send an order buying 10 contracts at 11. If the order, is not fully filled, the rest will be left on the orderbook.
+
+`QUEUE`: Order will be send using the same side's best quote.
+
+For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11. You will be send an order buying 10 contracts at 10.
+
+`OVER`: The price will be the best opposite's quote + overPrice\(not a fixed value\).
+
+For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11, you set the overPrice at 3. You will be send an order buying 10 contracts at \(11+3\)=14.
+
+`MARKET`: The price will be newest price \* \(1 ± 5%\).
+
+For example, if you are opening 10 contracts long, the latest price is 10. Then you will be sending out an order buying 10 contracts at \(10 \* 1.05\)=10.5.
+
+### `timeInForce`
+
+Time in force.
+
+`GTC`: Good till canceled. Meaning the order will stand unless otherwise cancelled.
+
+`IOC`: Immediate or cancel. Meaning the order will be cancelled if not executed immediately. Recommended if you want to fill the entire order immediately.
+
+`FOK`: Fill or kill. Meaning the order will be canceled if not immediately filled. Recommended if you want to fill as much as possible, but not necessarily all of, the order immediately.
+
+`LIMIT_MAKER`: Order will be cancelled if executed immediately.
+
+### `orderType`
+
+Order type.
+
+`LIMIT`: Orders to be executed given a specified price or better.
+
+`STOP`: Order that will be triggered once it reaches the `triggerPrice`.
+
+### `Rate limiters(rateLimitType)`
+
+*  REQUESTS_WEIGHT
+*  ORDERS
+
+### `Rate limit intervals`
+
+* SECOND
+* MINUTE
+* DAY
+
+For example:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## Public API
 
 ### `brokerInfo`
@@ -1139,60 +1215,3 @@ A confirmation message will be returned.
   'timestamp': 1541161088303
 }
 ```
-
-### Key parameter explanation:
-
-#### `side`
-
-The side of the trade.
-
-`BUY_OPEN`: open a long position.
-
-`SELL_CLOSE`: close a long position.
-
-`SELL_OPEN`: open a short position.
-
-`BUY_CLOSE`: close a short position.
-
-#### `priceType`
-
-Price types.
-
-`INPUT`: The system will use the price you entered exactly to fill the orders.
-
-`OPPONENT`: Orders will be filled using the opposite side's best quote.
-
-For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11. You will send an order buying 10 contracts at 11. If the order, is not fully filled, the rest will be left on the orderbook.
-
-`QUEUE`: Order will be send using the same side's best quote.
-
-For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11. You will be send an order buying 10 contracts at 10.
-
-`OVER`: The price will be the best opposite's quote + overPrice\(not a fixed value\).
-
-For example, if you are opening 10 contracts long, the best buy price is 10 and the best sell price is 11, you set the overPrice at 3. You will be send an order buying 10 contracts at \(11+3\)=14.
-
-`MARKET`: The price will be newest price \* \(1 ± 5%\).
-
-For example, if you are opening 10 contracts long, the latest price is 10. Then you will be sending out an order buying 10 contracts at \(10 \* 1.05\)=10.5.
-
-#### `timeInForce`
-
-Time in force.
-
-`GTC`: Good till canceled. Meaning the order will stand unless otherwise cancelled.
-
-`IOC`: Immediate or cancel. Meaning the order will be cancelled if not executed immediately. Recommended if you want to fill the entire order immediately.
-
-`FOK`: Fill or kill. Meaning the order will be canceled if not immediately filled. Recommended if you want to fill as much as possible, but not necessarily all of, the order immediately.
-
-`LIMIT_MAKER`: Order will be cancelled if executed immediately.
-
-#### `orderType`
-
-Order type.
-
-`LIMIT`: Orders to be executed given a specified price or better.
-
-`STOP`: Order that will be triggered once it reaches the `triggerPrice`.
-

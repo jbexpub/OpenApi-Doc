@@ -2,6 +2,84 @@
 
 The base url of broker open API can be found [here](https://github.com/jbexpub/OpenApi-Doc/tree/cd625eccebff30dde72ee2984196c50e8ec8bcab/endpoint.md)
 
+## Terminology
+
+* `base asset` refers to the asset that is the `quantity` of a symbol.
+* `quote asset` refers to the asset that is the `price` of a symbol.
+
+## ENUM definitions
+
+**Symbol status:**
+
+* TRADING
+* HALT
+* BREAK
+
+**Order status:**
+
+* NEW
+* PARTIALLY\_FILLED
+* FILLED
+* CANCELED
+* PENDING\_CANCEL
+* REJECTED
+
+**Order types:**
+
+* LIMIT
+* MARKET
+
+**Order side:**
+
+* BUY
+* SELL
+
+**Time in force:**
+
+* GTC
+* IOC
+* FOK
+
+**Kline/Candlestick chart intervals:**
+
+m -&gt; minutes; h -&gt; hours; d -&gt; days; w -&gt; weeks; M -&gt; months
+
+* 1m
+* 3m
+* 5m
+* 15m
+* 30m
+* 1h
+* 2h
+* 4h
+* 6h
+* 8h
+* 12h
+* 1d
+* 3d
+* 1w
+* 1M
+
+**Rate limiters \(rateLimitType\)**
+
+* REQUESTS\_WEIGHT
+* ORDERS
+
+**Rate limit intervals**
+
+* SECOND
+* MINUTE
+* DAY
+
+For example:
+```javascript
+{
+  "rateLimitType": "ORDERS",
+  "interval": "SECOND",
+  "limit": 20
+}
+```
+
 ## Public API
 
 ### `brokerInfo`
