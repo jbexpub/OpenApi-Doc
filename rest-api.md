@@ -6,7 +6,7 @@
 | :--- | :--- |
 | rest-api | [**https://api.jbex.com**](https://api.jbex.com) |
 | web-socket-streams | [**wss://wsapi.jbex.com**](wss://wsapi.jbex.com) |
-| user-data-stream | _\*_[_wss://wsapi.jbex.com_](wss://wsapi.jbex.com) |
+| user-data-stream | [**wss://wsapi.jbex.com**](wss://wsapi.jbex.com) |
 
 ## 通用API資訊
 
