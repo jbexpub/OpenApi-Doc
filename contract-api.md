@@ -1,6 +1,6 @@
 # 合約交易
 
-Broker Open API的地址請見[這裏](https://github.com/jbexpub/OpenApi-Doc/tree/23a93e3847690a9a1abcb45f62561df188e4c14f/endpoint.md)
+Broker Open API的地址請見[這裏](endpoint.md)
 
 ## 關鍵參數解釋說明:
 

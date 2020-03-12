@@ -2,7 +2,7 @@
 
 ## 基本資訊
 
-* 行情基礎端點請參見[這裏](https://github.com/jbexpub/OpenApi-Doc/tree/23a93e3847690a9a1abcb45f62561df188e4c14f/endpoint.md)
+* 行情基礎端點請參見[這裏](endpoint.md)
 * 直接訪問時URL格式為 **/openapi/quote/ws/v1**
 
 | 名稱 | 值 |
